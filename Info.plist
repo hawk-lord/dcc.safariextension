@@ -38,11 +38,9 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>test-content.js</string>
-			</array>
-			<key>Start</key>
-			<array>
-				<string>grep.js</string>
+				<string>dcc-regexes.js</string>
+				<string>dcc-content.js</string>
+				<string>dcc-safari-content-adapter.js</string>
 			</array>
 		</dict>
 	</dict>

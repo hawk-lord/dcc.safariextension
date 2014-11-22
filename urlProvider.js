@@ -13,7 +13,8 @@ var UrlProvider = (function() {
     // const {data} = require("sdk/self");
     return {
         getUrl : function(aUrl) {
-            return chrome.runtime.getURL(aUrl);
+            return aUrl;
+            // return chrome.runtime.getURL(aUrl);
         }
     };
 }());

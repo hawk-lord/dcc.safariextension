@@ -564,7 +564,7 @@ const DirectCurrencyContent = (function() {
         }
     };
     const onSendEnabledStatus = function(aStatus) {
-        // console.log("content  onSendEnabledStatus ");
+        console.log("content  onSendEnabledStatus ");
         // console.log("onSendEnabledStatus.this " + this);
         const isEnabled = aStatus.isEnabled;
         const hasConvertedElements = aStatus.hasConvertedElements;

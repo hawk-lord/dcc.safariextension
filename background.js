@@ -205,8 +205,9 @@ const DirectCurrencyConverter = (function() {
         var storage = {excludedDomains: [], dccPrefs: {}};
         return {
             init: function(aDefaultEnabled) {
-                chrome.storage.local.get(null, function(aStorage) {
-                    storage = aStorage;
+                // FIXME
+                // chrome.storage.local.get(null, function(aStorage) {
+                    //storage = aStorage;
                     if (storage.excludedDomains == null) {
                         storage.excludedDomains = ["images.google.com", "docs.google.com", "drive.google.com", "twitter.com"];
                     }
@@ -804,9 +805,10 @@ const DirectCurrencyConverter = (function() {
                             }
                         }
                     }
-                    chrome.storage.local.set(storage);
+                    // chrome.storage.local.set(storage);
+                    safari.extension.settings = storage;
                     controller.loadUserCountryAndQuotes();
-                });
+                //});
             },
             get convertToCurrency () {
                 // console.log("storage.dccPrefs.convertToCurrency " + storage.dccPrefs.convertToCurrency);
@@ -815,28 +817,32 @@ const DirectCurrencyConverter = (function() {
             set convertToCurrency (aCurrency) {
                 // console.log("To Currency: " + aCurrency);
                 storage.dccPrefs.convertToCurrency = aCurrency;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get convertToCountry () {
                 return storage.dccPrefs.convertToCountry;
             },
             set convertToCountry (aCountry) {
                 storage.dccPrefs.convertToCountry = aCountry;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get customSymbols () {
                 return storage.dccPrefs.customSymbols;
             },
             set customSymbols (aCustomSymbols) {
                 storage.dccPrefs.customSymbols = aCustomSymbols;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get decimalSep () {
                 return storage.dccPrefs.subUnitSeparator;
             },
             set decimalSep (aDecimalSep) {
                 storage.dccPrefs.subUnitSeparator = aDecimalSep;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get enableOnStart () {
                 if (storage.dccPrefs != null) {
@@ -846,21 +852,24 @@ const DirectCurrencyConverter = (function() {
             },
             set enableOnStart (anEnableOnStart) {
                 storage.dccPrefs.enableOnStart = anEnableOnStart;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get excludedDomains () {
                 return storage.excludedDomains;
             },
             set excludedDomains (anExcludedDomains) {
                 storage.excludedDomains = anExcludedDomains;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get enabledCurrencies () {
                 return storage.dccPrefs.enabledCurrencies;
             },
             set enabledCurrencies (anEnabledCurrencies) {
                 storage.dccPrefs.enabledCurrencies = anEnabledCurrencies;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             //isFromCurrencyEnabled (aCurrency) {
             //    return storage.dccPrefs.enabledCurrencies[aCurrency];
@@ -870,49 +879,56 @@ const DirectCurrencyConverter = (function() {
             },
             set quoteAdjustmentPercent (aQuoteAdjustmentPercent) {
                 storage.dccPrefs.quoteAdjustmentPercent = aQuoteAdjustmentPercent;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get roundPrices () {
                 return storage.dccPrefs.roundAmounts;
             },
             set roundPrices (aRoundPrices) {
                 storage.dccPrefs.roundAmounts = aRoundPrices;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get separatePrice () {
                 return storage.dccPrefs.separatePrice;
             },
             set separatePrice (aSeparatePrice) {
                 storage.dccPrefs.separatePrice = aSeparatePrice;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get showOriginalPrices () {
                 return storage.dccPrefs.showOriginalPrices;
             },
             set showOriginalPrices (aShowOriginalPrices) {
                 storage.dccPrefs.showOriginalPrices = aShowOriginalPrices;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get unitAfter () {
                 return storage.dccPrefs.unitAfter;
             },
             set unitAfter (aUnitAfter) {
                 storage.dccPrefs.unitAfter = aUnitAfter;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get thousandSep () {
                 return storage.dccPrefs.thousandSep;
             },
             set thousandSep (aThousandSep) {
                 storage.dccPrefs.thousandSep = aThousandSep;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             get tempConvertUnits () {
                 return storage.dccPrefs.tempConvertUnits;
             },
             set tempConvertUnits (aTempConvertUnits) {
                 storage.dccPrefs.tempConvertUnits = aTempConvertUnits;
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             },
             //setFormat: function(aFormat) {
             //    storage.dccPrefs.subUnitSeparator = aFormat.subUnitSeparator;
@@ -924,14 +940,16 @@ const DirectCurrencyConverter = (function() {
                 //delete storage.dccPrefs;
                 //delete storage.excludedDomains;
                 storage = {excludedDomains: [], dccPrefs: {}};
-                chrome.storage.local.set(storage);
+                // chrome.storage.local.set(storage);
+                safari.extension.settings = storage;
             }
         };
     };
     // Stereotype Information holder
     const InformationHolder = function(aUrlProvider, aStorageService) {
         // const _ = require("sdk/l10n").get;
-        const _ = chrome.i18n;
+        // FIXME
+        // const _ = chrome.i18n;
         // var conversionEnabled = aStorageService.enableOnStart;
         // alert("920 " + conversionEnabled);
         var fromCurrencies = ["AFN", "AED", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XTS", "XUA", "XXX", "YER", "ZAR", "ZMW", "ZWL"];
@@ -946,7 +964,9 @@ const DirectCurrencyConverter = (function() {
             if (defaultEnabled[aCurrency] == undefined) {
                 defaultEnabled[aCurrency] = false;
             }
-            currencyNames[aCurrency] = _.getMessage(aCurrency);
+            // FIXME
+            // currencyNames[aCurrency] = _.getMessage(aCurrency);
+            currencyNames[aCurrency] = aCurrency;
         });
         // console.log(currencyNames);
         var numberOfFromCurrencies = fromCurrencies.length;
@@ -1224,7 +1244,8 @@ const DirectCurrencyConverter = (function() {
             eventAggregator.publish("resetSettings");
         }
     };
-    chrome.runtime.onMessage.addListener(onMessageFromSettings);
+    // FIXME
+    // chrome.runtime.onMessage.addListener(onMessageFromSettings);
 
     const customTabObjects = [];
 
@@ -1234,6 +1255,7 @@ const DirectCurrencyConverter = (function() {
      */
     const ContentScriptInterface = function(aUrlProvider, anInformationHolder) {
         // alert ("new ContentScriptInterface");
+/*
         var contentPort;
         const attachHandler = function (tabId, changeInfo, tab) {
             // alert ("attachHandler " + tabId + " status " + changeInfo.status + " tab " + tab);
@@ -1260,10 +1282,11 @@ const DirectCurrencyConverter = (function() {
             };
             const onScriptExecuted = function () {
                 // If conversion is enabled
-                contentPort = chrome.tabs.connect(tabId, {name: "dccContentPort"});
+                // contentPort = chrome.tabs.connect(tabId, {name: "dccContentPort"});
                 try {
                     //contentPort.postMessage(dccStatus);
-                    contentPort.postMessage(makeContentScriptParams(tab, informationHolder));
+                    // contentPort.postMessage(makeContentScriptParams(tab, informationHolder));
+
                 }
                 catch (err) {
                     console.error(err);
@@ -1271,35 +1294,53 @@ const DirectCurrencyConverter = (function() {
                 contentPort.onMessage.addListener(finishedTabProcessingHandler);
                 //    alert ("posted Message");
             };
+            onScriptExecuted();
             // alert("executeScript" + " tabId " + tabId + " changeInfo.status " + changeInfo.status);
             // defaults to the active tab of the current window.
-            chrome.tabs.executeScript({file: "dcc-regexes.js", allFrames: true}, function(){
-                chrome.tabs.executeScript({file: "dcc-content.js", allFrames: true}, function(){
-                    chrome.tabs.executeScript({file: "dcc-chrome-content-adapter.js", allFrames: true}, onScriptExecuted);
-                });
-            });
+            //chrome.tabs.executeScript({file: "dcc-regexes.js", allFrames: true}, function(){
+            //    chrome.tabs.executeScript({file: "dcc-content.js", allFrames: true}, function(){
+            //        chrome.tabs.executeScript({file: "dcc-chrome-content-adapter.js", allFrames: true}, onScriptExecuted);
+            //    });
+            //});
         };
-        chrome.tabs.onUpdated.addListener(attachHandler);
+*/
+        // chrome.tabs.onUpdated.addListener(attachHandler);
+        const attachHandlerSafari = function(event) {
+            console.log("navigate win " + event);
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                "contentScriptParams", makeContentScriptParams(null, informationHolder));
+            // SafariEventListener
+            const finishedTabProcessing = function(event) {
+                console.log(event.name + " " + event.message);
+            };
+            safari.application.addEventListener("message", finishedTabProcessing, false);
+        };
+        // When a tab has been reloaded
+        safari.application.activeBrowserWindow.addEventListener("navigate", attachHandlerSafari, false);
+
         //chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //    alert ("onUpdated " + tabId + " status " + changeInfo.status + " tab id " + tab.id+ " tab url " + tab.url);
         //});
 
-        const attachCreationHandler = function(tab) {
-            // alert ("created " + tab.id);
-        };
-        chrome.tabs.onCreated.addListener(attachCreationHandler);
+        //const attachCreationHandler = function(tab) {
+        //    // alert ("created " + tab.id);
+        //};
+        //chrome.tabs.onCreated.addListener(attachCreationHandler);
 
         return {
             sendEnabledStatus: function(customTabObject, status) {
                 if (customTabObject.port != null) {
                     customTabObject.port.postMessage(status);
                 }
+            },
+            sendEnabledStatusSafari: function(status) {
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("sendEnabledStatus", status);
             }
         }
     };
     const TabsInterface = function(aUrlProvider, anInformationHolder) {
         //const tabs = require("sdk/tabs");
-        const tabs = chrome.tabs;
+        // const tabs = chrome.tabs;
         var isRegisteredToTabsEvents = false;
         // var settingsWorker = null;
         var testPageWorker = null;
@@ -1308,11 +1349,11 @@ const DirectCurrencyConverter = (function() {
             //    return settingsWorker.settingsTab;
             //},
             toggleConversion: function (aStatus) {
-                const tabCallback = function(tabs) {
+                const tabCallback = function(aTabs) {
                     // alert ("tabCallback " + tabs.length);
                     // alert ("tabCallback aStatus " + aStatus);
-                    if (tabs.length > 0) {
-                        const activeTab = tabs[0];
+                    if (aTabs.length > 0) {
+                        const activeTab = aTabs[0];
                         if (customTabObjects[activeTab.id] != null) {
                             // alert ("tabCallback aStatus " + aStatus);
                             customTabObjects[activeTab.id].isEnabled = aStatus;
@@ -1343,7 +1384,12 @@ const DirectCurrencyConverter = (function() {
                         }
                     }
                 };
-                tabs.query({active: true}, tabCallback);
+                // chrome.tabs.query({active: true}, tabCallback);
+                const status = {};
+                // FIXME real values
+                status.isEnabled = true;
+                status.hasConvertedElements = false;
+                contentScriptInterface.sendEnabledStatusSafari(customTabObject, status);
             },
             registerToTabsEvents: function() {
                 const setTabs = function(aTab) {
@@ -1378,11 +1424,18 @@ const DirectCurrencyConverter = (function() {
                     //    });
                     //});
                     //tabs.on("ready", setTabs);
-                    tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-                        if (tab.url.indexOf("http") === 0 && changeInfo.status === "complete") {
-                            setTabs(tab);
-                        }
-                    });
+                    //chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+                    //    if (tab.url.indexOf("http") === 0 && changeInfo.status === "complete") {
+                    //        setTabs(tab);
+                    //    }
+                    //});
+                    const navigateEvent2 = function(event) {
+                        console.log("navigate win " + event);
+                        // convert(event);
+                        eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
+                    };
+                    // When a tab has been reloaded
+                    safari.application.activeBrowserWindow.addEventListener("navigate", navigateEvent2, false);
                     //tabs.on("close", releaseTabs);
                     isRegisteredToTabsEvents = true;
                 }
@@ -1457,6 +1510,7 @@ const DirectCurrencyConverter = (function() {
         eventAggregator.publish("toggleConversion", buttonStatus);
     };
     // Toggle button clicked
-    chrome.browserAction.onClicked.addListener(onBrowserAction);
+    // chrome.browserAction.onClicked.addListener(onBrowserAction);
+    safari.application.addEventListener("command", onBrowserAction);
 })();
 
