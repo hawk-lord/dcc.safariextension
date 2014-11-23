@@ -11,7 +11,7 @@
 const ContentAdapter = function() {
 
     const messageListener = function(msg) {
-        if (msg.name === "contentScriptParams") {
+        if (msg.name === "updateSettings") {
             DirectCurrencyContent.onUpdateSettings(msg.message);
         }
         else if (msg.name === "sendEnabledStatus") {

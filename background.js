@@ -1256,60 +1256,61 @@ const DirectCurrencyConverter = (function() {
      */
     const ContentScriptInterface = function(aUrlProvider, anInformationHolder) {
         // alert ("new ContentScriptInterface");
-/*
-        var contentPort;
-        const attachHandler = function (tabId, changeInfo, tab) {
-            // alert ("attachHandler " + tabId + " status " + changeInfo.status + " tab " + tab);
-            if (tab.url.indexOf("http") === -1 || changeInfo.status !== "complete") {
-                // alert ("tab.url.indexOf(http) " + tab.url.indexOf("http") + " status " + changeInfo.status);
-                return;
-            }
-            const finishedTabProcessingHandler = function (aHasConvertedElements) {
-                try {
-                    // alert("finishedTabProcessingHandler " + aHasConvertedElements);
-                    if (customTabObjects[tabId] == null) {
-                        customTabObjects[tabId] = new CustomTabObject();
+        console.log("new ContentScriptInterface");
+        /*
+                var contentPort;
+                const attachHandler = function (tabId, changeInfo, tab) {
+                    // alert ("attachHandler " + tabId + " status " + changeInfo.status + " tab " + tab);
+                    if (tab.url.indexOf("http") === -1 || changeInfo.status !== "complete") {
+                        // alert ("tab.url.indexOf(http) " + tab.url.indexOf("http") + " status " + changeInfo.status);
+                        return;
                     }
-                    customTabObjects[tabId].isEnabled = anInformationHolder.conversionEnabled;
-                    // tab.customTabObject.workers.push(aWorker);
-                    customTabObjects[tabId].hasConvertedElements = aHasConvertedElements;
-                    customTabObjects[tabId].port = contentPort;
-                    // alert ("post Message to contentPort " + contentPort.name + " conversionEnabled " + anInformationHolder.conversionEnabled);
-                    // contentPort.postMessage(anInformationHolder.conversionEnabled);
-                }
-                catch (err) {
-                    console.error("finishedTabProcessingHandler " + err);
-                }
-            };
-            const onScriptExecuted = function () {
-                // If conversion is enabled
-                // contentPort = chrome.tabs.connect(tabId, {name: "dccContentPort"});
-                try {
-                    //contentPort.postMessage(dccStatus);
-                    // contentPort.postMessage(makeContentScriptParams(tab, informationHolder));
+                    const finishedTabProcessingHandler = function (aHasConvertedElements) {
+                        try {
+                            // alert("finishedTabProcessingHandler " + aHasConvertedElements);
+                            if (customTabObjects[tabId] == null) {
+                                customTabObjects[tabId] = new CustomTabObject();
+                            }
+                            customTabObjects[tabId].isEnabled = anInformationHolder.conversionEnabled;
+                            // tab.customTabObject.workers.push(aWorker);
+                            customTabObjects[tabId].hasConvertedElements = aHasConvertedElements;
+                            customTabObjects[tabId].port = contentPort;
+                            // alert ("post Message to contentPort " + contentPort.name + " conversionEnabled " + anInformationHolder.conversionEnabled);
+                            // contentPort.postMessage(anInformationHolder.conversionEnabled);
+                        }
+                        catch (err) {
+                            console.error("finishedTabProcessingHandler " + err);
+                        }
+                    };
+                    const onScriptExecuted = function () {
+                        // If conversion is enabled
+                        // contentPort = chrome.tabs.connect(tabId, {name: "dccContentPort"});
+                        try {
+                            //contentPort.postMessage(dccStatus);
+                            // contentPort.postMessage(makeContentScriptParams(tab, informationHolder));
 
-                }
-                catch (err) {
-                    console.error(err);
-                }
-                contentPort.onMessage.addListener(finishedTabProcessingHandler);
-                //    alert ("posted Message");
-            };
-            onScriptExecuted();
-            // alert("executeScript" + " tabId " + tabId + " changeInfo.status " + changeInfo.status);
-            // defaults to the active tab of the current window.
-            //chrome.tabs.executeScript({file: "dcc-regexes.js", allFrames: true}, function(){
-            //    chrome.tabs.executeScript({file: "dcc-content.js", allFrames: true}, function(){
-            //        chrome.tabs.executeScript({file: "dcc-chrome-content-adapter.js", allFrames: true}, onScriptExecuted);
-            //    });
-            //});
-        };
-*/
+                        }
+                        catch (err) {
+                            console.error(err);
+                        }
+                        contentPort.onMessage.addListener(finishedTabProcessingHandler);
+                        //    alert ("posted Message");
+                    };
+                    onScriptExecuted();
+                    // alert("executeScript" + " tabId " + tabId + " changeInfo.status " + changeInfo.status);
+                    // defaults to the active tab of the current window.
+                    //chrome.tabs.executeScript({file: "dcc-regexes.js", allFrames: true}, function(){
+                    //    chrome.tabs.executeScript({file: "dcc-content.js", allFrames: true}, function(){
+                    //        chrome.tabs.executeScript({file: "dcc-chrome-content-adapter.js", allFrames: true}, onScriptExecuted);
+                    //    });
+                    //});
+                };
+        */
         // chrome.tabs.onUpdated.addListener(attachHandler);
         const attachHandlerSafari = function(event) {
-            console.log("navigate win " + event);
+            console.log("attachHandlerSafari " + event);
             safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
-                "contentScriptParams", makeContentScriptParams(null, informationHolder));
+                "updateSettings", makeContentScriptParams(null, informationHolder));
             // SafariEventListener
             const finishedTabProcessing = function(event) {
                 console.log(event.name + " " + event.message);
@@ -1318,6 +1319,15 @@ const DirectCurrencyConverter = (function() {
         };
         // When a tab has been reloaded
         safari.application.activeBrowserWindow.addEventListener("navigate", attachHandlerSafari, false);
+
+        // initialise all tabs
+        for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+            var browserWindow = safari.application.browserWindows[i];
+            for (var j = 0; j < browserWindow.tabs.length; ++j)
+                browserWindow.tabs[j].page.dispatchMessage(
+                    "updateSettings", makeContentScriptParams(null, informationHolder));
+        }
+
 
         //chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //    alert ("onUpdated " + tabId + " status " + changeInfo.status + " tab id " + tab.id+ " tab url " + tab.url);
@@ -1329,13 +1339,30 @@ const DirectCurrencyConverter = (function() {
         //chrome.tabs.onCreated.addListener(attachCreationHandler);
 
         return {
+/*
             sendEnabledStatus: function(customTabObject, status) {
                 if (customTabObject.port != null) {
                     customTabObject.port.postMessage(status);
                 }
             },
+*/
             sendEnabledStatusSafari: function(status) {
-                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("sendEnabledStatus", status);
+                for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+                    var browserWindow = safari.application.browserWindows[i];
+                    for (var j = 0; j < browserWindow.tabs.length; ++j)
+                        browserWindow.tabs[j].page.dispatchMessage("sendEnabledStatus", status);
+                }
+                // safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("sendEnabledStatus", status);
+                // Init toggle button
+                var toolbarItems = safari.extension.toolbarItems;
+                for (var i = 0; i < toolbarItems.length; i++) {
+                    var item = toolbarItems[i];
+                    if (item != null) {
+                        if (item.identifier == "dcc-toggle-button") {
+                            item.badge = buttonStatus ? 1 : 0;
+                        }
+                    }
+                }
             }
         }
     };
@@ -1350,6 +1377,7 @@ const DirectCurrencyConverter = (function() {
             //    return settingsWorker.settingsTab;
             //},
             toggleConversion: function (aStatus) {
+/*
                 const tabCallback = function(aTabs) {
                     // alert ("tabCallback " + tabs.length);
                     // alert ("tabCallback aStatus " + aStatus);
@@ -1385,11 +1413,17 @@ const DirectCurrencyConverter = (function() {
                         }
                     }
                 };
+*/
                 // chrome.tabs.query({active: true}, tabCallback);
                 const status = {};
                 status.isEnabled = aStatus;
                 status.hasConvertedElements = true;
-                contentScriptInterface.sendEnabledStatusSafari(status);
+                try {
+                    contentScriptInterface.sendEnabledStatusSafari(status);
+                }
+                catch (err) {
+                    console.error(err);
+                }
             },
             registerToTabsEvents: function() {
                 const setTabs = function(aTab) {
@@ -1435,8 +1469,13 @@ const DirectCurrencyConverter = (function() {
                         eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
                     };
                     // When a tab has been reloaded
-                    safari.application.activeBrowserWindow.addEventListener("navigate", navigateEvent2, false);
+                    for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+                        var browserWindow = safari.application.browserWindows[i];
+                        browserWindow.addEventListener("navigate", navigateEvent2, false);
+                    }
+                    // safari.application.activeBrowserWindow.addEventListener("navigate", navigateEvent2, false);
                     //tabs.on("close", releaseTabs);
+                    navigateEvent2(null);
                     isRegisteredToTabsEvents = true;
                 }
             }
@@ -1449,6 +1488,7 @@ const DirectCurrencyConverter = (function() {
             if (informationHolder.isAllCurrenciesRead()) {
                 contentScriptInterface = new ContentScriptInterface(urlProvider, informationHolder);
                 // barsInterface.setIconsEnabled();
+                tabsInterface.registerToTabsEvents();
             }
         });
         anEventAggregator.subscribe("saveSettings", function(eventArgs) {
@@ -1503,14 +1543,35 @@ const DirectCurrencyConverter = (function() {
     const tabsInterface = new TabsInterface(urlProvider, informationHolder);
     const controller = new Controller(eventAggregator);
     controller.loadStorage();
-    tabsInterface.registerToTabsEvents();
+    // tabsInterface.registerToTabsEvents();
     var buttonStatus = informationHolder.conversionEnabled;
     const onBrowserAction = function() {
-        buttonStatus = !buttonStatus;
-        eventAggregator.publish("toggleConversion", buttonStatus);
+        var toolbarItems = safari.extension.toolbarItems;
+        // returns "0" for (item in toolbarItems) {}
+        for (var i = 0; i < toolbarItems.length; i++) {
+            var item = toolbarItems[i];
+            if (item != null) {
+                if (item.identifier == "dcc-toggle-button") {
+                    buttonStatus = !buttonStatus;
+                    eventAggregator.publish("toggleConversion", buttonStatus);
+                    // var t = item.browserWindow.activeTab;
+                    item.badge = buttonStatus ? 1 : 0;
+/*
+                    item.toolTip = buttonStatus;
+                    if (myState && myT)
+                        item.image = safari.extension.baseURI + 'button+.png';
+                    else if (!myState && myT)
+                        item.image = safari.extension.baseURI + 'button--.png';
+                    else if (!myState && !myT)
+                        item.image = safari.extension.baseURI + 'button-.png';
+                    else
+                        item.image = safari.extension.baseURI + 'button.png';
+*/
+                }
+            }
+        }
     };
-    // Toggle button clicked
-    // chrome.browserAction.onClicked.addListener(onBrowserAction);
+    // Toggle button listener
     safari.application.addEventListener("command", onBrowserAction);
 })();
 
