@@ -3,37 +3,52 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Per Johansson</string>
+	<string>Per Johansson, Johanssons Informationsteknik JOINT</string>
 	<key>Builder Version</key>
 	<string>10600.1.25.1</string>
 	<key>CFBundleDisplayName</key>
-	<string>DCC</string>
+	<string>Direct Currency Converter</string>
 	<key>CFBundleIdentifier</key>
 	<string>ax.joint.dcc</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>2.0.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>2.0.0.0</string>
 	<key>Chrome</key>
 	<dict>
+		<key>Database Quota</key>
+		<real>5242880</real>
 		<key>Global Page</key>
 		<string>main.html</string>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
+				<key>Command</key>
+				<string>toggle</string>
 				<key>Identifier</key>
-				<string>DCC-Id</string>
+				<string>dcc-toggle-button</string>
 				<key>Image</key>
 				<string>1402781551_currency_exchange_1.png</string>
 				<key>Label</key>
-				<string>DCC-Label</string>
+				<string>Direct Currency Converter</string>
+				<key>Palette Label</key>
+				<string>Direct Currency Converter toggle conversion</string>
+				<key>Tool Tip</key>
+				<string>Direct Currency Converter toggle conversion on and off</string>
 			</dict>
 		</array>
 	</dict>
 	<key>Content</key>
 	<dict>
+		<key>Blacklist</key>
+		<array>
+			<string>https://images.google.com/*</string>
+			<string>https://drive.google.com/*</string>
+			<string>https://docs.google.com/*</string>
+			<string>https://twitter.com/*</string>
+		</array>
 		<key>Scripts</key>
 		<dict>
 			<key>End</key>
@@ -45,7 +60,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Direct Currency Converter</string>
+	<string>Converts prices from any currency (USD, GBP, etc.) to prices in a selectable currency automatically.</string>
 	<key>DeveloperIdentifier</key>
 	<string>3X77WF8NVX</string>
 	<key>ExtensionInfoDictionaryVersion</key>
