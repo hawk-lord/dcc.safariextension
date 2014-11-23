@@ -11,14 +11,10 @@
 const ContentAdapter = function() {
 
     const messageListener = function(msg) {
-        // alert("messageListener ");
-        // Check "sendEnabledStatus" or "updateSettings"
         if (msg.name === "contentScriptParams") {
-            // alert("onUpdateSettings");
             DirectCurrencyContent.onUpdateSettings(msg.message);
         }
-        else {
-            // alert("onSendEnabledStatus");
+        else if (msg.name === "sendEnabledStatus") {
             DirectCurrencyContent.onSendEnabledStatus(msg.message);
         }
     };
@@ -31,21 +27,9 @@ const ContentAdapter = function() {
 
     return {
         finish: function (hasConvertedElements) {
-            // "finishedTabProcessing"
-            //thePort.postMessage(hasConvertedElements);
             safari.self.tab.dispatchMessage("finishedTabProcessing", hasConvertedElements);
         }
     };
 
 }();
 
-
-// OK example connect to main
-//var port = chrome.runtime.connect({name: "knockknock"});
-//port.postMessage({joke: "Knock knock"});
-//port.onMessage.addListener(function(msg) {
-//    if (msg.question == "Who's there?")
-//        port.postMessage({answer: "Madame"});
-//    else if (msg.question == "Madame who?")
-//        port.postMessage({answer: "Madame... Bovary"});
-//});
