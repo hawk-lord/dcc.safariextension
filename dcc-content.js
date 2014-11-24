@@ -494,7 +494,7 @@ const DirectCurrencyContent = (function() {
     };
     const startObserve = function() {
         const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-        if (document === null || MutationObserver === null) {
+        if (document === null || MutationObserver == null) {
             return;
         }
         const mutationHandler = function(aMutationRecord) {

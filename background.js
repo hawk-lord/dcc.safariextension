@@ -204,7 +204,7 @@ const DirectCurrencyConverter = (function() {
         // const storage = chrome.storage.local;
         var storage = {excludedDomains: [], dccPrefs: {}};
         return {
-            init: function(aDefaultEnabled) {
+            init: function(aDefaultEnabledCurrencies) {
                 // FIXME
                 // chrome.storage.local.get(null, function(aStorage) {
                     //storage = aStorage;
@@ -217,7 +217,8 @@ const DirectCurrencyConverter = (function() {
                             //convertToCountry: "PL",
                             customSymbols: {},
                             subUnitSeparator: ",",
-                            enableOnStart: true,
+                            //enableOnStart: true,
+                            enableOnStart: safari.extension.settings.enabledOnStart === "on" ? true : false,
                             quoteAdjustmentPercent: 0,
                             roundAmounts: false,
                             separatePrice: true,
@@ -225,8 +226,9 @@ const DirectCurrencyConverter = (function() {
                             unitAfter: true,
                             tempConvertUnits: false,
                             thousandSep: ".",
-                            enabledCurrencies: aDefaultEnabled
+                            enabledCurrencies: aDefaultEnabledCurrencies
                         };
+                        console.log("storage.dccPrefs == null  safari.extension.settings.enabledOnStart " + safari.extension.settings.enabledOnStart);
                     }
                     else {
                         //if (storage.dccPrefs.convertToCurrency == null) {
@@ -242,7 +244,9 @@ const DirectCurrencyConverter = (function() {
                             storage.dccPrefs.subUnitSeparator = ",";
                         }
                         if (storage.dccPrefs.enableOnStart == null) {
-                            storage.dccPrefs.enableOnStart = true;
+                            // storage.dccPrefs.enableOnStart = true;
+                            console.log("safari.extension.settings.enabledOnStart " + safari.extension.settings.enabledOnStart);
+                            storage.dccPrefs.enableOnStart = safari.extension.settings.enabledOnStart === "on" ? true : false;
                         }
                         if (storage.dccPrefs.quoteAdjustmentPercent == null) {
                             storage.dccPrefs.quoteAdjustmentPercent = 0;
@@ -266,542 +270,542 @@ const DirectCurrencyConverter = (function() {
                             storage.dccPrefs.thousandSep = ".";
                         }
                         if (storage.dccPrefs.enabledCurrencies == null) {
-                            storage.dccPrefs.enabledCurrencies = aDefaultEnabled;
+                            storage.dccPrefs.enabledCurrencies = aDefaultEnabledCurrencies;
                         }
                         else {
                             if (storage.dccPrefs.enabledCurrencies.AED == null) {
-                                storage.dccPrefs.enabledCurrencies.AED = aDefaultEnabled.AED;
+                                storage.dccPrefs.enabledCurrencies.AED = aDefaultEnabledCurrencies.AED;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ALL == null) {
-                                storage.dccPrefs.enabledCurrencies.ALL = aDefaultEnabled.ALL;
+                                storage.dccPrefs.enabledCurrencies.ALL = aDefaultEnabledCurrencies.ALL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.AMD == null) {
-                                storage.dccPrefs.enabledCurrencies.AMD = aDefaultEnabled.AMD;
+                                storage.dccPrefs.enabledCurrencies.AMD = aDefaultEnabledCurrencies.AMD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ANG == null) {
-                                storage.dccPrefs.enabledCurrencies.ANG = aDefaultEnabled.ANG;
+                                storage.dccPrefs.enabledCurrencies.ANG = aDefaultEnabledCurrencies.ANG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.AOA == null) {
-                                storage.dccPrefs.enabledCurrencies.AOA = aDefaultEnabled.AOA;
+                                storage.dccPrefs.enabledCurrencies.AOA = aDefaultEnabledCurrencies.AOA;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ARS == null) {
-                                storage.dccPrefs.enabledCurrencies.ARS = aDefaultEnabled.ARS;
+                                storage.dccPrefs.enabledCurrencies.ARS = aDefaultEnabledCurrencies.ARS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.AUD == null) {
-                                storage.dccPrefs.enabledCurrencies.AUD = aDefaultEnabled.AUD;
+                                storage.dccPrefs.enabledCurrencies.AUD = aDefaultEnabledCurrencies.AUD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.AWG == null) {
-                                storage.dccPrefs.enabledCurrencies.AWG = aDefaultEnabled.AWG;
+                                storage.dccPrefs.enabledCurrencies.AWG = aDefaultEnabledCurrencies.AWG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.AZN == null) {
-                                storage.dccPrefs.enabledCurrencies.AZN = aDefaultEnabled.AZN;
+                                storage.dccPrefs.enabledCurrencies.AZN = aDefaultEnabledCurrencies.AZN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BAM == null) {
-                                storage.dccPrefs.enabledCurrencies.BAM = aDefaultEnabled.BAM;
+                                storage.dccPrefs.enabledCurrencies.BAM = aDefaultEnabledCurrencies.BAM;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BBD == null) {
-                                storage.dccPrefs.enabledCurrencies.BBD = aDefaultEnabled.BBD;
+                                storage.dccPrefs.enabledCurrencies.BBD = aDefaultEnabledCurrencies.BBD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BDT == null) {
-                                storage.dccPrefs.enabledCurrencies.BDT = aDefaultEnabled.BDT;
+                                storage.dccPrefs.enabledCurrencies.BDT = aDefaultEnabledCurrencies.BDT;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BGN == null) {
-                                storage.dccPrefs.enabledCurrencies.BGN = aDefaultEnabled.BGN;
+                                storage.dccPrefs.enabledCurrencies.BGN = aDefaultEnabledCurrencies.BGN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BHD == null) {
-                                storage.dccPrefs.enabledCurrencies.BHD = aDefaultEnabled.BHD;
+                                storage.dccPrefs.enabledCurrencies.BHD = aDefaultEnabledCurrencies.BHD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BIF == null) {
-                                storage.dccPrefs.enabledCurrencies.BIF = aDefaultEnabled.BIF;
+                                storage.dccPrefs.enabledCurrencies.BIF = aDefaultEnabledCurrencies.BIF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BMD == null) {
-                                storage.dccPrefs.enabledCurrencies.BMD = aDefaultEnabled.BMD;
+                                storage.dccPrefs.enabledCurrencies.BMD = aDefaultEnabledCurrencies.BMD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BND == null) {
-                                storage.dccPrefs.enabledCurrencies.BND = aDefaultEnabled.BND;
+                                storage.dccPrefs.enabledCurrencies.BND = aDefaultEnabledCurrencies.BND;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BOB == null) {
-                                storage.dccPrefs.enabledCurrencies.BOB = aDefaultEnabled.BOB;
+                                storage.dccPrefs.enabledCurrencies.BOB = aDefaultEnabledCurrencies.BOB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BOV == null) {
-                                storage.dccPrefs.enabledCurrencies.BOV = aDefaultEnabled.BOV;
+                                storage.dccPrefs.enabledCurrencies.BOV = aDefaultEnabledCurrencies.BOV;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BRL == null) {
-                                storage.dccPrefs.enabledCurrencies.BRL = aDefaultEnabled.BRL;
+                                storage.dccPrefs.enabledCurrencies.BRL = aDefaultEnabledCurrencies.BRL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BSD == null) {
-                                storage.dccPrefs.enabledCurrencies.BSD = aDefaultEnabled.BSD;
+                                storage.dccPrefs.enabledCurrencies.BSD = aDefaultEnabledCurrencies.BSD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BTN == null) {
-                                storage.dccPrefs.enabledCurrencies.BTN = aDefaultEnabled.BTN;
+                                storage.dccPrefs.enabledCurrencies.BTN = aDefaultEnabledCurrencies.BTN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BWP == null) {
-                                storage.dccPrefs.enabledCurrencies.BWP = aDefaultEnabled.BWP;
+                                storage.dccPrefs.enabledCurrencies.BWP = aDefaultEnabledCurrencies.BWP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BYR == null) {
-                                storage.dccPrefs.enabledCurrencies.BYR = aDefaultEnabled.BYR;
+                                storage.dccPrefs.enabledCurrencies.BYR = aDefaultEnabledCurrencies.BYR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.BZD == null) {
-                                storage.dccPrefs.enabledCurrencies.BZD = aDefaultEnabled.BZD;
+                                storage.dccPrefs.enabledCurrencies.BZD = aDefaultEnabledCurrencies.BZD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CAD == null) {
-                                storage.dccPrefs.enabledCurrencies.CAD = aDefaultEnabled.CAD;
+                                storage.dccPrefs.enabledCurrencies.CAD = aDefaultEnabledCurrencies.CAD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CDF == null) {
-                                storage.dccPrefs.enabledCurrencies.CDF = aDefaultEnabled.CDF;
+                                storage.dccPrefs.enabledCurrencies.CDF = aDefaultEnabledCurrencies.CDF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CHE == null) {
-                                storage.dccPrefs.enabledCurrencies.CHE = aDefaultEnabled.CHE;
+                                storage.dccPrefs.enabledCurrencies.CHE = aDefaultEnabledCurrencies.CHE;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CHF == null) {
-                                storage.dccPrefs.enabledCurrencies.CHF = aDefaultEnabled.CHF;
+                                storage.dccPrefs.enabledCurrencies.CHF = aDefaultEnabledCurrencies.CHF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CHW == null) {
-                                storage.dccPrefs.enabledCurrencies.CHW = aDefaultEnabled.CHW;
+                                storage.dccPrefs.enabledCurrencies.CHW = aDefaultEnabledCurrencies.CHW;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CLF == null) {
-                                storage.dccPrefs.enabledCurrencies.CLF = aDefaultEnabled.CLF;
+                                storage.dccPrefs.enabledCurrencies.CLF = aDefaultEnabledCurrencies.CLF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CLP == null) {
-                                storage.dccPrefs.enabledCurrencies.CLP = aDefaultEnabled.CLP;
+                                storage.dccPrefs.enabledCurrencies.CLP = aDefaultEnabledCurrencies.CLP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CNY == null) {
-                                storage.dccPrefs.enabledCurrencies.CNY = aDefaultEnabled.CNY;
+                                storage.dccPrefs.enabledCurrencies.CNY = aDefaultEnabledCurrencies.CNY;
                             }
                             if (storage.dccPrefs.enabledCurrencies.COP == null) {
-                                storage.dccPrefs.enabledCurrencies.COP = aDefaultEnabled.COP;
+                                storage.dccPrefs.enabledCurrencies.COP = aDefaultEnabledCurrencies.COP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.COU == null) {
-                                storage.dccPrefs.enabledCurrencies.COU = aDefaultEnabled.COU;
+                                storage.dccPrefs.enabledCurrencies.COU = aDefaultEnabledCurrencies.COU;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CRC == null) {
-                                storage.dccPrefs.enabledCurrencies.CRC = aDefaultEnabled.CRC;
+                                storage.dccPrefs.enabledCurrencies.CRC = aDefaultEnabledCurrencies.CRC;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CUC == null) {
-                                storage.dccPrefs.enabledCurrencies.CUC = aDefaultEnabled.CUC;
+                                storage.dccPrefs.enabledCurrencies.CUC = aDefaultEnabledCurrencies.CUC;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CUP == null) {
-                                storage.dccPrefs.enabledCurrencies.CUP = aDefaultEnabled.CUP;
+                                storage.dccPrefs.enabledCurrencies.CUP = aDefaultEnabledCurrencies.CUP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CVE == null) {
-                                storage.dccPrefs.enabledCurrencies.CVE = aDefaultEnabled.CVE;
+                                storage.dccPrefs.enabledCurrencies.CVE = aDefaultEnabledCurrencies.CVE;
                             }
                             if (storage.dccPrefs.enabledCurrencies.CZK == null) {
-                                storage.dccPrefs.enabledCurrencies.CZK = aDefaultEnabled.CZK;
+                                storage.dccPrefs.enabledCurrencies.CZK = aDefaultEnabledCurrencies.CZK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.DJF == null) {
-                                storage.dccPrefs.enabledCurrencies.DJF = aDefaultEnabled.DJF;
+                                storage.dccPrefs.enabledCurrencies.DJF = aDefaultEnabledCurrencies.DJF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.DKK == null) {
-                                storage.dccPrefs.enabledCurrencies.DKK = aDefaultEnabled.DKK;
+                                storage.dccPrefs.enabledCurrencies.DKK = aDefaultEnabledCurrencies.DKK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.DOP == null) {
-                                storage.dccPrefs.enabledCurrencies.DOP = aDefaultEnabled.DOP;
+                                storage.dccPrefs.enabledCurrencies.DOP = aDefaultEnabledCurrencies.DOP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.DZD == null) {
-                                storage.dccPrefs.enabledCurrencies.DZD = aDefaultEnabled.DZD;
+                                storage.dccPrefs.enabledCurrencies.DZD = aDefaultEnabledCurrencies.DZD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.EGP == null) {
-                                storage.dccPrefs.enabledCurrencies.EGP = aDefaultEnabled.EGP;
+                                storage.dccPrefs.enabledCurrencies.EGP = aDefaultEnabledCurrencies.EGP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ERN == null) {
-                                storage.dccPrefs.enabledCurrencies.ERN = aDefaultEnabled.ERN;
+                                storage.dccPrefs.enabledCurrencies.ERN = aDefaultEnabledCurrencies.ERN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ETB == null) {
-                                storage.dccPrefs.enabledCurrencies.ETB = aDefaultEnabled.ETB;
+                                storage.dccPrefs.enabledCurrencies.ETB = aDefaultEnabledCurrencies.ETB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.EUR == null) {
-                                storage.dccPrefs.enabledCurrencies.EUR = aDefaultEnabled.EUR;
+                                storage.dccPrefs.enabledCurrencies.EUR = aDefaultEnabledCurrencies.EUR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.FJD == null) {
-                                storage.dccPrefs.enabledCurrencies.FJD = aDefaultEnabled.FJD;
+                                storage.dccPrefs.enabledCurrencies.FJD = aDefaultEnabledCurrencies.FJD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.FKP == null) {
-                                storage.dccPrefs.enabledCurrencies.FKP = aDefaultEnabled.FKP;
+                                storage.dccPrefs.enabledCurrencies.FKP = aDefaultEnabledCurrencies.FKP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GBP == null) {
-                                storage.dccPrefs.enabledCurrencies.GBP = aDefaultEnabled.GBP;
+                                storage.dccPrefs.enabledCurrencies.GBP = aDefaultEnabledCurrencies.GBP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GEL == null) {
-                                storage.dccPrefs.enabledCurrencies.GEL = aDefaultEnabled.GEL;
+                                storage.dccPrefs.enabledCurrencies.GEL = aDefaultEnabledCurrencies.GEL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GHS == null) {
-                                storage.dccPrefs.enabledCurrencies.GHS = aDefaultEnabled.GHS;
+                                storage.dccPrefs.enabledCurrencies.GHS = aDefaultEnabledCurrencies.GHS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GIP == null) {
-                                storage.dccPrefs.enabledCurrencies.GIP = aDefaultEnabled.GIP;
+                                storage.dccPrefs.enabledCurrencies.GIP = aDefaultEnabledCurrencies.GIP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GMD == null) {
-                                storage.dccPrefs.enabledCurrencies.GMD = aDefaultEnabled.GMD;
+                                storage.dccPrefs.enabledCurrencies.GMD = aDefaultEnabledCurrencies.GMD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GNF == null) {
-                                storage.dccPrefs.enabledCurrencies.GNF = aDefaultEnabled.GNF;
+                                storage.dccPrefs.enabledCurrencies.GNF = aDefaultEnabledCurrencies.GNF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GTQ == null) {
-                                storage.dccPrefs.enabledCurrencies.GTQ = aDefaultEnabled.GTQ;
+                                storage.dccPrefs.enabledCurrencies.GTQ = aDefaultEnabledCurrencies.GTQ;
                             }
                             if (storage.dccPrefs.enabledCurrencies.GYD == null) {
-                                storage.dccPrefs.enabledCurrencies.GYD = aDefaultEnabled.GYD;
+                                storage.dccPrefs.enabledCurrencies.GYD = aDefaultEnabledCurrencies.GYD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.HKD == null) {
-                                storage.dccPrefs.enabledCurrencies.HKD = aDefaultEnabled.HKD;
+                                storage.dccPrefs.enabledCurrencies.HKD = aDefaultEnabledCurrencies.HKD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.HNL == null) {
-                                storage.dccPrefs.enabledCurrencies.HNL = aDefaultEnabled.HNL;
+                                storage.dccPrefs.enabledCurrencies.HNL = aDefaultEnabledCurrencies.HNL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.HRK == null) {
-                                storage.dccPrefs.enabledCurrencies.HRK = aDefaultEnabled.HRK;
+                                storage.dccPrefs.enabledCurrencies.HRK = aDefaultEnabledCurrencies.HRK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.HTG == null) {
-                                storage.dccPrefs.enabledCurrencies.HTG = aDefaultEnabled.HTG;
+                                storage.dccPrefs.enabledCurrencies.HTG = aDefaultEnabledCurrencies.HTG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.HUF == null) {
-                                storage.dccPrefs.enabledCurrencies.HUF = aDefaultEnabled.HUF;
+                                storage.dccPrefs.enabledCurrencies.HUF = aDefaultEnabledCurrencies.HUF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.IDR == null) {
-                                storage.dccPrefs.enabledCurrencies.IDR = aDefaultEnabled.IDR;
+                                storage.dccPrefs.enabledCurrencies.IDR = aDefaultEnabledCurrencies.IDR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ILS == null) {
-                                storage.dccPrefs.enabledCurrencies.ILS = aDefaultEnabled.ILS;
+                                storage.dccPrefs.enabledCurrencies.ILS = aDefaultEnabledCurrencies.ILS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.INR == null) {
-                                storage.dccPrefs.enabledCurrencies.INR = aDefaultEnabled.INR;
+                                storage.dccPrefs.enabledCurrencies.INR = aDefaultEnabledCurrencies.INR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.IQD == null) {
-                                storage.dccPrefs.enabledCurrencies.IQD = aDefaultEnabled.IQD;
+                                storage.dccPrefs.enabledCurrencies.IQD = aDefaultEnabledCurrencies.IQD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.IRR == null) {
-                                storage.dccPrefs.enabledCurrencies.IRR = aDefaultEnabled.IRR;
+                                storage.dccPrefs.enabledCurrencies.IRR = aDefaultEnabledCurrencies.IRR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ISK == null) {
-                                storage.dccPrefs.enabledCurrencies.ISK = aDefaultEnabled.ISK;
+                                storage.dccPrefs.enabledCurrencies.ISK = aDefaultEnabledCurrencies.ISK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.JMD == null) {
-                                storage.dccPrefs.enabledCurrencies.JMD = aDefaultEnabled.JMD;
+                                storage.dccPrefs.enabledCurrencies.JMD = aDefaultEnabledCurrencies.JMD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.JOD == null) {
-                                storage.dccPrefs.enabledCurrencies.JOD = aDefaultEnabled.JOD;
+                                storage.dccPrefs.enabledCurrencies.JOD = aDefaultEnabledCurrencies.JOD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.JPY == null) {
-                                storage.dccPrefs.enabledCurrencies.JPY = aDefaultEnabled.JPY;
+                                storage.dccPrefs.enabledCurrencies.JPY = aDefaultEnabledCurrencies.JPY;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KES == null) {
-                                storage.dccPrefs.enabledCurrencies.KES = aDefaultEnabled.KES;
+                                storage.dccPrefs.enabledCurrencies.KES = aDefaultEnabledCurrencies.KES;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KGS == null) {
-                                storage.dccPrefs.enabledCurrencies.KGS = aDefaultEnabled.KGS;
+                                storage.dccPrefs.enabledCurrencies.KGS = aDefaultEnabledCurrencies.KGS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KHR == null) {
-                                storage.dccPrefs.enabledCurrencies.KHR = aDefaultEnabled.KHR;
+                                storage.dccPrefs.enabledCurrencies.KHR = aDefaultEnabledCurrencies.KHR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KMF == null) {
-                                storage.dccPrefs.enabledCurrencies.KMF = aDefaultEnabled.KMF;
+                                storage.dccPrefs.enabledCurrencies.KMF = aDefaultEnabledCurrencies.KMF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KPW == null) {
-                                storage.dccPrefs.enabledCurrencies.KPW = aDefaultEnabled.KPW;
+                                storage.dccPrefs.enabledCurrencies.KPW = aDefaultEnabledCurrencies.KPW;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KRW == null) {
-                                storage.dccPrefs.enabledCurrencies.KRW = aDefaultEnabled.KRW;
+                                storage.dccPrefs.enabledCurrencies.KRW = aDefaultEnabledCurrencies.KRW;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KWD == null) {
-                                storage.dccPrefs.enabledCurrencies.KWD = aDefaultEnabled.KWD;
+                                storage.dccPrefs.enabledCurrencies.KWD = aDefaultEnabledCurrencies.KWD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KYD == null) {
-                                storage.dccPrefs.enabledCurrencies.KYD = aDefaultEnabled.KYD;
+                                storage.dccPrefs.enabledCurrencies.KYD = aDefaultEnabledCurrencies.KYD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.KZT == null) {
-                                storage.dccPrefs.enabledCurrencies.KZT = aDefaultEnabled.KZT;
+                                storage.dccPrefs.enabledCurrencies.KZT = aDefaultEnabledCurrencies.KZT;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LAK == null) {
-                                storage.dccPrefs.enabledCurrencies.LAK = aDefaultEnabled.LAK;
+                                storage.dccPrefs.enabledCurrencies.LAK = aDefaultEnabledCurrencies.LAK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LBP == null) {
-                                storage.dccPrefs.enabledCurrencies.LBP = aDefaultEnabled.LBP;
+                                storage.dccPrefs.enabledCurrencies.LBP = aDefaultEnabledCurrencies.LBP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LKR == null) {
-                                storage.dccPrefs.enabledCurrencies.LKR = aDefaultEnabled.LKR;
+                                storage.dccPrefs.enabledCurrencies.LKR = aDefaultEnabledCurrencies.LKR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LRD == null) {
-                                storage.dccPrefs.enabledCurrencies.LRD = aDefaultEnabled.LRD;
+                                storage.dccPrefs.enabledCurrencies.LRD = aDefaultEnabledCurrencies.LRD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LSL == null) {
-                                storage.dccPrefs.enabledCurrencies.LSL = aDefaultEnabled.LSL;
+                                storage.dccPrefs.enabledCurrencies.LSL = aDefaultEnabledCurrencies.LSL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LTL == null) {
-                                storage.dccPrefs.enabledCurrencies.LTL = aDefaultEnabled.LTL;
+                                storage.dccPrefs.enabledCurrencies.LTL = aDefaultEnabledCurrencies.LTL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.LYD == null) {
-                                storage.dccPrefs.enabledCurrencies.LYD = aDefaultEnabled.LYD;
+                                storage.dccPrefs.enabledCurrencies.LYD = aDefaultEnabledCurrencies.LYD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MAD == null) {
-                                storage.dccPrefs.enabledCurrencies.MAD = aDefaultEnabled.MAD;
+                                storage.dccPrefs.enabledCurrencies.MAD = aDefaultEnabledCurrencies.MAD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MDL == null) {
-                                storage.dccPrefs.enabledCurrencies.MDL = aDefaultEnabled.MDL;
+                                storage.dccPrefs.enabledCurrencies.MDL = aDefaultEnabledCurrencies.MDL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MGA == null) {
-                                storage.dccPrefs.enabledCurrencies.MGA = aDefaultEnabled.MGA;
+                                storage.dccPrefs.enabledCurrencies.MGA = aDefaultEnabledCurrencies.MGA;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MKD == null) {
-                                storage.dccPrefs.enabledCurrencies.MKD = aDefaultEnabled.MKD;
+                                storage.dccPrefs.enabledCurrencies.MKD = aDefaultEnabledCurrencies.MKD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MMK == null) {
-                                storage.dccPrefs.enabledCurrencies.MMK = aDefaultEnabled.MMK;
+                                storage.dccPrefs.enabledCurrencies.MMK = aDefaultEnabledCurrencies.MMK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MNT == null) {
-                                storage.dccPrefs.enabledCurrencies.MNT = aDefaultEnabled.MNT;
+                                storage.dccPrefs.enabledCurrencies.MNT = aDefaultEnabledCurrencies.MNT;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MOP == null) {
-                                storage.dccPrefs.enabledCurrencies.MOP = aDefaultEnabled.MOP;
+                                storage.dccPrefs.enabledCurrencies.MOP = aDefaultEnabledCurrencies.MOP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MRO == null) {
-                                storage.dccPrefs.enabledCurrencies.MRO = aDefaultEnabled.MRO;
+                                storage.dccPrefs.enabledCurrencies.MRO = aDefaultEnabledCurrencies.MRO;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MUR == null) {
-                                storage.dccPrefs.enabledCurrencies.MUR = aDefaultEnabled.MUR;
+                                storage.dccPrefs.enabledCurrencies.MUR = aDefaultEnabledCurrencies.MUR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MVR == null) {
-                                storage.dccPrefs.enabledCurrencies.MVR = aDefaultEnabled.MVR;
+                                storage.dccPrefs.enabledCurrencies.MVR = aDefaultEnabledCurrencies.MVR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MWK == null) {
-                                storage.dccPrefs.enabledCurrencies.MWK = aDefaultEnabled.MWK;
+                                storage.dccPrefs.enabledCurrencies.MWK = aDefaultEnabledCurrencies.MWK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MXN == null) {
-                                storage.dccPrefs.enabledCurrencies.MXN = aDefaultEnabled.MXN;
+                                storage.dccPrefs.enabledCurrencies.MXN = aDefaultEnabledCurrencies.MXN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MXV == null) {
-                                storage.dccPrefs.enabledCurrencies.MXV = aDefaultEnabled.MXV;
+                                storage.dccPrefs.enabledCurrencies.MXV = aDefaultEnabledCurrencies.MXV;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MYR == null) {
-                                storage.dccPrefs.enabledCurrencies.MYR = aDefaultEnabled.MYR;
+                                storage.dccPrefs.enabledCurrencies.MYR = aDefaultEnabledCurrencies.MYR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.MZN == null) {
-                                storage.dccPrefs.enabledCurrencies.MZN = aDefaultEnabled.MZN;
+                                storage.dccPrefs.enabledCurrencies.MZN = aDefaultEnabledCurrencies.MZN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NAD == null) {
-                                storage.dccPrefs.enabledCurrencies.NAD = aDefaultEnabled.NAD;
+                                storage.dccPrefs.enabledCurrencies.NAD = aDefaultEnabledCurrencies.NAD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NGN == null) {
-                                storage.dccPrefs.enabledCurrencies.NGN = aDefaultEnabled.NGN;
+                                storage.dccPrefs.enabledCurrencies.NGN = aDefaultEnabledCurrencies.NGN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NIO == null) {
-                                storage.dccPrefs.enabledCurrencies.NIO = aDefaultEnabled.NIO;
+                                storage.dccPrefs.enabledCurrencies.NIO = aDefaultEnabledCurrencies.NIO;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NOK == null) {
-                                storage.dccPrefs.enabledCurrencies.NOK = aDefaultEnabled.NOK;
+                                storage.dccPrefs.enabledCurrencies.NOK = aDefaultEnabledCurrencies.NOK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NPR == null) {
-                                storage.dccPrefs.enabledCurrencies.NPR = aDefaultEnabled.NPR;
+                                storage.dccPrefs.enabledCurrencies.NPR = aDefaultEnabledCurrencies.NPR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.NZD == null) {
-                                storage.dccPrefs.enabledCurrencies.NZD = aDefaultEnabled.NZD;
+                                storage.dccPrefs.enabledCurrencies.NZD = aDefaultEnabledCurrencies.NZD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.OMR == null) {
-                                storage.dccPrefs.enabledCurrencies.OMR = aDefaultEnabled.OMR;
+                                storage.dccPrefs.enabledCurrencies.OMR = aDefaultEnabledCurrencies.OMR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PAB == null) {
-                                storage.dccPrefs.enabledCurrencies.PAB = aDefaultEnabled.PAB;
+                                storage.dccPrefs.enabledCurrencies.PAB = aDefaultEnabledCurrencies.PAB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PEN == null) {
-                                storage.dccPrefs.enabledCurrencies.PEN = aDefaultEnabled.PEN;
+                                storage.dccPrefs.enabledCurrencies.PEN = aDefaultEnabledCurrencies.PEN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PGK == null) {
-                                storage.dccPrefs.enabledCurrencies.PGK = aDefaultEnabled.PGK;
+                                storage.dccPrefs.enabledCurrencies.PGK = aDefaultEnabledCurrencies.PGK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PHP == null) {
-                                storage.dccPrefs.enabledCurrencies.PHP = aDefaultEnabled.PHP;
+                                storage.dccPrefs.enabledCurrencies.PHP = aDefaultEnabledCurrencies.PHP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PKR == null) {
-                                storage.dccPrefs.enabledCurrencies.PKR = aDefaultEnabled.PKR;
+                                storage.dccPrefs.enabledCurrencies.PKR = aDefaultEnabledCurrencies.PKR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PLN == null) {
-                                storage.dccPrefs.enabledCurrencies.PLN = aDefaultEnabled.PLN;
+                                storage.dccPrefs.enabledCurrencies.PLN = aDefaultEnabledCurrencies.PLN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.PYG == null) {
-                                storage.dccPrefs.enabledCurrencies.PYG = aDefaultEnabled.PYG;
+                                storage.dccPrefs.enabledCurrencies.PYG = aDefaultEnabledCurrencies.PYG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.QAR == null) {
-                                storage.dccPrefs.enabledCurrencies.QAR = aDefaultEnabled.QAR;
+                                storage.dccPrefs.enabledCurrencies.QAR = aDefaultEnabledCurrencies.QAR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.RON == null) {
-                                storage.dccPrefs.enabledCurrencies.RON = aDefaultEnabled.RON;
+                                storage.dccPrefs.enabledCurrencies.RON = aDefaultEnabledCurrencies.RON;
                             }
                             if (storage.dccPrefs.enabledCurrencies.RSD == null) {
-                                storage.dccPrefs.enabledCurrencies.RSD = aDefaultEnabled.RSD;
+                                storage.dccPrefs.enabledCurrencies.RSD = aDefaultEnabledCurrencies.RSD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.RUB == null) {
-                                storage.dccPrefs.enabledCurrencies.RUB = aDefaultEnabled.RUB;
+                                storage.dccPrefs.enabledCurrencies.RUB = aDefaultEnabledCurrencies.RUB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.RWF == null) {
-                                storage.dccPrefs.enabledCurrencies.RWF = aDefaultEnabled.RWF;
+                                storage.dccPrefs.enabledCurrencies.RWF = aDefaultEnabledCurrencies.RWF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SAR == null) {
-                                storage.dccPrefs.enabledCurrencies.SAR = aDefaultEnabled.SAR;
+                                storage.dccPrefs.enabledCurrencies.SAR = aDefaultEnabledCurrencies.SAR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SBD == null) {
-                                storage.dccPrefs.enabledCurrencies.SBD = aDefaultEnabled.SBD;
+                                storage.dccPrefs.enabledCurrencies.SBD = aDefaultEnabledCurrencies.SBD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SCR == null) {
-                                storage.dccPrefs.enabledCurrencies.SCR = aDefaultEnabled.SCR;
+                                storage.dccPrefs.enabledCurrencies.SCR = aDefaultEnabledCurrencies.SCR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SDG == null) {
-                                storage.dccPrefs.enabledCurrencies.SDG = aDefaultEnabled.SDG;
+                                storage.dccPrefs.enabledCurrencies.SDG = aDefaultEnabledCurrencies.SDG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SEK == null) {
-                                storage.dccPrefs.enabledCurrencies.SEK = aDefaultEnabled.SEK;
+                                storage.dccPrefs.enabledCurrencies.SEK = aDefaultEnabledCurrencies.SEK;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SGD == null) {
-                                storage.dccPrefs.enabledCurrencies.SGD = aDefaultEnabled.SGD;
+                                storage.dccPrefs.enabledCurrencies.SGD = aDefaultEnabledCurrencies.SGD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SHP == null) {
-                                storage.dccPrefs.enabledCurrencies.SHP = aDefaultEnabled.SHP;
+                                storage.dccPrefs.enabledCurrencies.SHP = aDefaultEnabledCurrencies.SHP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SLL == null) {
-                                storage.dccPrefs.enabledCurrencies.SLL = aDefaultEnabled.SLL;
+                                storage.dccPrefs.enabledCurrencies.SLL = aDefaultEnabledCurrencies.SLL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SOS == null) {
-                                storage.dccPrefs.enabledCurrencies.SOS = aDefaultEnabled.SOS;
+                                storage.dccPrefs.enabledCurrencies.SOS = aDefaultEnabledCurrencies.SOS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SRD == null) {
-                                storage.dccPrefs.enabledCurrencies.SRD = aDefaultEnabled.SRD;
+                                storage.dccPrefs.enabledCurrencies.SRD = aDefaultEnabledCurrencies.SRD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SSP == null) {
-                                storage.dccPrefs.enabledCurrencies.SSP = aDefaultEnabled.SSP;
+                                storage.dccPrefs.enabledCurrencies.SSP = aDefaultEnabledCurrencies.SSP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.STD == null) {
-                                storage.dccPrefs.enabledCurrencies.STD = aDefaultEnabled.STD;
+                                storage.dccPrefs.enabledCurrencies.STD = aDefaultEnabledCurrencies.STD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SVC == null) {
-                                storage.dccPrefs.enabledCurrencies.SVC = aDefaultEnabled.SVC;
+                                storage.dccPrefs.enabledCurrencies.SVC = aDefaultEnabledCurrencies.SVC;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SYP == null) {
-                                storage.dccPrefs.enabledCurrencies.SYP = aDefaultEnabled.SYP;
+                                storage.dccPrefs.enabledCurrencies.SYP = aDefaultEnabledCurrencies.SYP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.SZL == null) {
-                                storage.dccPrefs.enabledCurrencies.SZL = aDefaultEnabled.SZL;
+                                storage.dccPrefs.enabledCurrencies.SZL = aDefaultEnabledCurrencies.SZL;
                             }
                             if (storage.dccPrefs.enabledCurrencies.THB == null) {
-                                storage.dccPrefs.enabledCurrencies.THB = aDefaultEnabled.THB;
+                                storage.dccPrefs.enabledCurrencies.THB = aDefaultEnabledCurrencies.THB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TJS == null) {
-                                storage.dccPrefs.enabledCurrencies.TJS = aDefaultEnabled.TJS;
+                                storage.dccPrefs.enabledCurrencies.TJS = aDefaultEnabledCurrencies.TJS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TMT == null) {
-                                storage.dccPrefs.enabledCurrencies.TMT = aDefaultEnabled.TMT;
+                                storage.dccPrefs.enabledCurrencies.TMT = aDefaultEnabledCurrencies.TMT;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TND == null) {
-                                storage.dccPrefs.enabledCurrencies.TND = aDefaultEnabled.TND;
+                                storage.dccPrefs.enabledCurrencies.TND = aDefaultEnabledCurrencies.TND;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TOP == null) {
-                                storage.dccPrefs.enabledCurrencies.TOP = aDefaultEnabled.TOP;
+                                storage.dccPrefs.enabledCurrencies.TOP = aDefaultEnabledCurrencies.TOP;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TRY == null) {
-                                storage.dccPrefs.enabledCurrencies.TRY = aDefaultEnabled.TRY;
+                                storage.dccPrefs.enabledCurrencies.TRY = aDefaultEnabledCurrencies.TRY;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TTD == null) {
-                                storage.dccPrefs.enabledCurrencies.TTD = aDefaultEnabled.TTD;
+                                storage.dccPrefs.enabledCurrencies.TTD = aDefaultEnabledCurrencies.TTD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TWD == null) {
-                                storage.dccPrefs.enabledCurrencies.TWD = aDefaultEnabled.TWD;
+                                storage.dccPrefs.enabledCurrencies.TWD = aDefaultEnabledCurrencies.TWD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.TZS == null) {
-                                storage.dccPrefs.enabledCurrencies.TZS = aDefaultEnabled.TZS;
+                                storage.dccPrefs.enabledCurrencies.TZS = aDefaultEnabledCurrencies.TZS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.UAH == null) {
-                                storage.dccPrefs.enabledCurrencies.UAH = aDefaultEnabled.UAH;
+                                storage.dccPrefs.enabledCurrencies.UAH = aDefaultEnabledCurrencies.UAH;
                             }
                             if (storage.dccPrefs.enabledCurrencies.UGX == null) {
-                                storage.dccPrefs.enabledCurrencies.UGX = aDefaultEnabled.UGX;
+                                storage.dccPrefs.enabledCurrencies.UGX = aDefaultEnabledCurrencies.UGX;
                             }
                             if (storage.dccPrefs.enabledCurrencies.USD == null) {
-                                storage.dccPrefs.enabledCurrencies.USD = aDefaultEnabled.USD;
+                                storage.dccPrefs.enabledCurrencies.USD = aDefaultEnabledCurrencies.USD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.USN == null) {
-                                storage.dccPrefs.enabledCurrencies.USN = aDefaultEnabled.USN;
+                                storage.dccPrefs.enabledCurrencies.USN = aDefaultEnabledCurrencies.USN;
                             }
                             if (storage.dccPrefs.enabledCurrencies.UYI == null) {
-                                storage.dccPrefs.enabledCurrencies.UYI = aDefaultEnabled.UYI;
+                                storage.dccPrefs.enabledCurrencies.UYI = aDefaultEnabledCurrencies.UYI;
                             }
                             if (storage.dccPrefs.enabledCurrencies.UYU == null) {
-                                storage.dccPrefs.enabledCurrencies.UYU = aDefaultEnabled.UYU;
+                                storage.dccPrefs.enabledCurrencies.UYU = aDefaultEnabledCurrencies.UYU;
                             }
                             if (storage.dccPrefs.enabledCurrencies.UZS == null) {
-                                storage.dccPrefs.enabledCurrencies.UZS = aDefaultEnabled.UZS;
+                                storage.dccPrefs.enabledCurrencies.UZS = aDefaultEnabledCurrencies.UZS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.VEF == null) {
-                                storage.dccPrefs.enabledCurrencies.VEF = aDefaultEnabled.VEF;
+                                storage.dccPrefs.enabledCurrencies.VEF = aDefaultEnabledCurrencies.VEF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.VND == null) {
-                                storage.dccPrefs.enabledCurrencies.VND = aDefaultEnabled.VND;
+                                storage.dccPrefs.enabledCurrencies.VND = aDefaultEnabledCurrencies.VND;
                             }
                             if (storage.dccPrefs.enabledCurrencies.VUV == null) {
-                                storage.dccPrefs.enabledCurrencies.VUV = aDefaultEnabled.VUV;
+                                storage.dccPrefs.enabledCurrencies.VUV = aDefaultEnabledCurrencies.VUV;
                             }
                             if (storage.dccPrefs.enabledCurrencies.WST == null) {
-                                storage.dccPrefs.enabledCurrencies.WST = aDefaultEnabled.WST;
+                                storage.dccPrefs.enabledCurrencies.WST = aDefaultEnabledCurrencies.WST;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XAF == null) {
-                                storage.dccPrefs.enabledCurrencies.XAF = aDefaultEnabled.XAF;
+                                storage.dccPrefs.enabledCurrencies.XAF = aDefaultEnabledCurrencies.XAF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XAG == null) {
-                                storage.dccPrefs.enabledCurrencies.XAG = aDefaultEnabled.XAG;
+                                storage.dccPrefs.enabledCurrencies.XAG = aDefaultEnabledCurrencies.XAG;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XAU == null) {
-                                storage.dccPrefs.enabledCurrencies.XAU = aDefaultEnabled.XAU;
+                                storage.dccPrefs.enabledCurrencies.XAU = aDefaultEnabledCurrencies.XAU;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XBA == null) {
-                                storage.dccPrefs.enabledCurrencies.XBA = aDefaultEnabled.XBA;
+                                storage.dccPrefs.enabledCurrencies.XBA = aDefaultEnabledCurrencies.XBA;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XBB == null) {
-                                storage.dccPrefs.enabledCurrencies.XBB = aDefaultEnabled.XBB;
+                                storage.dccPrefs.enabledCurrencies.XBB = aDefaultEnabledCurrencies.XBB;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XBC == null) {
-                                storage.dccPrefs.enabledCurrencies.XBC = aDefaultEnabled.XBC;
+                                storage.dccPrefs.enabledCurrencies.XBC = aDefaultEnabledCurrencies.XBC;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XBD == null) {
-                                storage.dccPrefs.enabledCurrencies.XBD = aDefaultEnabled.XBD;
+                                storage.dccPrefs.enabledCurrencies.XBD = aDefaultEnabledCurrencies.XBD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XCD == null) {
-                                storage.dccPrefs.enabledCurrencies.XCD = aDefaultEnabled.XCD;
+                                storage.dccPrefs.enabledCurrencies.XCD = aDefaultEnabledCurrencies.XCD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XDR == null) {
-                                storage.dccPrefs.enabledCurrencies.XDR = aDefaultEnabled.XDR;
+                                storage.dccPrefs.enabledCurrencies.XDR = aDefaultEnabledCurrencies.XDR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XOF == null) {
-                                storage.dccPrefs.enabledCurrencies.XOF = aDefaultEnabled.XOF;
+                                storage.dccPrefs.enabledCurrencies.XOF = aDefaultEnabledCurrencies.XOF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XPD == null) {
-                                storage.dccPrefs.enabledCurrencies.XPD = aDefaultEnabled.XPD;
+                                storage.dccPrefs.enabledCurrencies.XPD = aDefaultEnabledCurrencies.XPD;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XPF == null) {
-                                storage.dccPrefs.enabledCurrencies.XPF = aDefaultEnabled.XPF;
+                                storage.dccPrefs.enabledCurrencies.XPF = aDefaultEnabledCurrencies.XPF;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XPT == null) {
-                                storage.dccPrefs.enabledCurrencies.XPT = aDefaultEnabled.XPT;
+                                storage.dccPrefs.enabledCurrencies.XPT = aDefaultEnabledCurrencies.XPT;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XSU == null) {
-                                storage.dccPrefs.enabledCurrencies.XSU = aDefaultEnabled.XSU;
+                                storage.dccPrefs.enabledCurrencies.XSU = aDefaultEnabledCurrencies.XSU;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XTS == null) {
-                                storage.dccPrefs.enabledCurrencies.XTS = aDefaultEnabled.XTS;
+                                storage.dccPrefs.enabledCurrencies.XTS = aDefaultEnabledCurrencies.XTS;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XUA == null) {
-                                storage.dccPrefs.enabledCurrencies.XUA = aDefaultEnabled.XUA;
+                                storage.dccPrefs.enabledCurrencies.XUA = aDefaultEnabledCurrencies.XUA;
                             }
                             if (storage.dccPrefs.enabledCurrencies.XXX == null) {
-                                storage.dccPrefs.enabledCurrencies.XXX = aDefaultEnabled.XXX;
+                                storage.dccPrefs.enabledCurrencies.XXX = aDefaultEnabledCurrencies.XXX;
                             }
                             if (storage.dccPrefs.enabledCurrencies.YER == null) {
-                                storage.dccPrefs.enabledCurrencies.YER = aDefaultEnabled.YER;
+                                storage.dccPrefs.enabledCurrencies.YER = aDefaultEnabledCurrencies.YER;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ZAR == null) {
-                                storage.dccPrefs.enabledCurrencies.ZAR = aDefaultEnabled.ZAR;
+                                storage.dccPrefs.enabledCurrencies.ZAR = aDefaultEnabledCurrencies.ZAR;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ZMW == null) {
-                                storage.dccPrefs.enabledCurrencies.ZMW = aDefaultEnabled.ZMW;
+                                storage.dccPrefs.enabledCurrencies.ZMW = aDefaultEnabledCurrencies.ZMW;
                             }
                             if (storage.dccPrefs.enabledCurrencies.ZWL == null) {
-                                storage.dccPrefs.enabledCurrencies.ZWL = aDefaultEnabled.ZWL;
+                                storage.dccPrefs.enabledCurrencies.ZWL = aDefaultEnabledCurrencies.ZWL;
                             }
                         }
                     }
@@ -955,15 +959,15 @@ const DirectCurrencyConverter = (function() {
         var fromCurrencies = ["AFN", "AED", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XTS", "XUA", "XXX", "YER", "ZAR", "ZMW", "ZWL"];
         // Conversion is made in the following priority order
         // Normal default
-        var defaultEnabled = {"CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "SEK":true, "USD":true};
+        var defaultEnabledCurrencies = {"CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "SEK":true, "USD":true};
         // Test default
-        // defaultEnabled = {"AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHF":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DKK":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "EUR":true, "FJD":true, "FKP":true, "GBP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "ISK":true, "JMD":true, "JOD":true, "JPY":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NOK":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RUB":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SEK":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USD":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
-        // defaultEnabled = {"CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "SEK":true, "USD":true, "AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "FJD":true, "FKP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "JMD":true, "JOD":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
-        defaultEnabled = {"SEK":true, "CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "USD":true, "AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "FJD":true, "FKP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "JMD":true, "JOD":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
+        // defaultEnabledCurrencies = {"AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHF":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DKK":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "EUR":true, "FJD":true, "FKP":true, "GBP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "ISK":true, "JMD":true, "JOD":true, "JPY":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NOK":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RUB":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SEK":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USD":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
+        // defaultEnabledCurrencies = {"CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "SEK":true, "USD":true, "AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "FJD":true, "FKP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "JMD":true, "JOD":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
+        defaultEnabledCurrencies = {"SEK":true, "CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "USD":true, "AFN":true, "AED":true, "ALL":true, "AMD":true, "ANG":true, "AOA":true, "ARS":true, "AUD":true, "AWG":true, "AZN":true, "BAM":true, "BBD":true, "BDT":true, "BGN":true, "BHD":true, "BIF":true, "BMD":true, "BND":true, "BOB":true, "BOV":true, "BRL":true, "BSD":true, "BTN":true, "BWP":true, "BYR":true, "BZD":true, "CAD":true, "CDF":true, "CHE":true, "CHW":true, "CLF":true, "CLP":true, "CNY":true, "COP":true, "COU":true, "CRC":true, "CUC":true, "CUP":true, "CVE":true, "CZK":true, "DJF":true, "DOP":true, "DZD":true, "EGP":true, "ERN":true, "ETB":true, "FJD":true, "FKP":true, "GEL":true, "GHS":true, "GIP":true, "GMD":true, "GNF":true, "GTQ":true, "GYD":true, "HKD":true, "HNL":true, "HRK":true, "HTG":true, "HUF":true, "IDR":true, "ILS":true, "INR":true, "IQD":true, "IRR":true, "JMD":true, "JOD":true, "KES":true, "KGS":true, "KHR":true, "KMF":true, "KPW":true, "KRW":true, "KWD":true, "KYD":true, "KZT":true, "LAK":true, "LBP":true, "LKR":true, "LRD":true, "LSL":true, "LTL":true, "LYD":true, "MAD":true, "MDL":true, "MGA":true, "MKD":true, "MMK":true, "MNT":true, "MOP":true, "MRO":true, "MUR":true, "MVR":true, "MWK":true, "MXN":true, "MXV":true, "MYR":true, "MZN":true, "NAD":true, "NGN":true, "NIO":true, "NPR":true, "NZD":true, "OMR":true, "PAB":true, "PEN":true, "PGK":true, "PHP":true, "PKR":true, "PLN":true, "PYG":true, "QAR":true, "RON":true, "RSD":true, "RWF":true, "SAR":true, "SBD":true, "SCR":true, "SDG":true, "SGD":true, "SHP":true, "SLL":true, "SOS":true, "SRD":true, "SSP":true, "STD":true, "SVC":true, "SYP":true, "SZL":true, "THB":true, "TJS":true, "TMT":true, "TND":true, "TOP":true, "TRY":true, "TTD":true, "TWD":true, "TZS":true, "UAH":true, "UGX":true, "USN":true, "UYI":true, "UYU":true, "UZS":true, "VEF":true, "VND":true, "VUV":true, "WST":true, "XAF":true, "XAG":true, "XAU":true, "XBA":true, "XBB":true, "XBC":true, "XBD":true, "XCD":true, "XDR":true, "XOF":true, "XPD":true, "XPF":true, "XPT":true, "XSU":true, "XTS":true, "XUA":true, "XXX":true, "YER":true, "ZAR":true, "ZMW":true, "ZWL":true};
         var currencyNames = {};
         fromCurrencies.forEach(function(aCurrency) {
-            if (defaultEnabled[aCurrency] == undefined) {
-                defaultEnabled[aCurrency] = false;
+            if (defaultEnabledCurrencies[aCurrency] == undefined) {
+                defaultEnabledCurrencies[aCurrency] = false;
             }
             // FIXME
             // currencyNames[aCurrency] = _.getMessage(aCurrency);
@@ -1064,8 +1068,8 @@ const DirectCurrencyConverter = (function() {
             set decimalSep (aDecimalSep) {
                 aStorageService.decimalSep = aDecimalSep;
             },
-            getDefaultEnabled : function () {
-                return defaultEnabled;
+            getDefaultEnabledCurrencies : function () {
+                return defaultEnabledCurrencies;
             },
             getCurrencyNames : function () {
                 return currencyNames;
@@ -1526,7 +1530,7 @@ const DirectCurrencyConverter = (function() {
             tabsInterface.showTestTab();
         });
         this.loadStorage = function() {
-            storageService.init(informationHolder.getDefaultEnabled());
+            storageService.init(informationHolder.getDefaultEnabledCurrencies());
         };
         this.loadUserCountryAndQuotes = function() {
             quotesService.loadUserCountry();
@@ -1547,7 +1551,6 @@ const DirectCurrencyConverter = (function() {
     var buttonStatus = informationHolder.conversionEnabled;
     const onBrowserAction = function() {
         var toolbarItems = safari.extension.toolbarItems;
-        // returns "0" for (item in toolbarItems) {}
         for (var i = 0; i < toolbarItems.length; i++) {
             var item = toolbarItems[i];
             if (item != null) {
