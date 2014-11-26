@@ -1550,29 +1550,14 @@ const DirectCurrencyConverter = (function() {
     // tabsInterface.registerToTabsEvents();
     var buttonStatus = informationHolder.conversionEnabled;
     const onBrowserAction = function() {
-        var toolbarItems = safari.extension.toolbarItems;
-        for (var i = 0; i < toolbarItems.length; i++) {
-            var item = toolbarItems[i];
-            if (item != null) {
-                if (item.identifier == "dcc-toggle-button") {
-                    buttonStatus = !buttonStatus;
-                    eventAggregator.publish("toggleConversion", buttonStatus);
-                    // var t = item.browserWindow.activeTab;
-                    item.badge = buttonStatus ? 1 : 0;
-/*
-                    item.toolTip = buttonStatus;
-                    if (myState && myT)
-                        item.image = safari.extension.baseURI + 'button+.png';
-                    else if (!myState && myT)
-                        item.image = safari.extension.baseURI + 'button--.png';
-                    else if (!myState && !myT)
-                        item.image = safari.extension.baseURI + 'button-.png';
-                    else
-                        item.image = safari.extension.baseURI + 'button.png';
-*/
-                }
+        const checkToggleButton = function(element) {
+            if (element != null && element.identifier === "dcc-toggle-button") {
+                buttonStatus = !buttonStatus;
+                eventAggregator.publish("toggleConversion", buttonStatus);
+                element.badge = buttonStatus ? 1 : 0;
             }
-        }
+        };
+        safari.extension.toolbarItems.forEach(checkToggleButton);
     };
     // Toggle button listener
     safari.application.addEventListener("command", onBrowserAction);
