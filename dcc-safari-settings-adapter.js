@@ -8,18 +8,20 @@
  *
  * Module pattern is used.
  */
+
 const SettingsAdapter = function() {
-    const options = null;
-    chrome.runtime.sendMessage({command: "show"}, DirectCurrencySettings.showSettings);
-    document.addEventListener('DOMContentLoaded', DirectCurrencySettings);
-    return {
-        save : function(contentScriptParams) {
-            chrome.runtime.sendMessage({command: "save", contentScriptParams: contentScriptParams});
-            window.close();
-        },
-        reset : function() {
-            chrome.runtime.sendMessage({command: "reset"});
-            window.close();
+    const messageListener = function(event) {
+        if (event.name === "updateSettingsTab") {
+            DirectCurrencySettings.showSettings(event.message);
         }
+    };
+    safari.self.addEventListener("message", messageListener, false);
+    const dispatchSettingsShow = function() {
+        safari.self.tab.dispatchMessage("settings", "show");
+    };
+    window.onload = dispatchSettingsShow;
+    return {
+        showSettings: messageListener
     }
+
 }();

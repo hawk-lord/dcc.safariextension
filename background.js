@@ -1236,21 +1236,21 @@ const DirectCurrencyConverter = (function() {
      * @param sender
      * @param sendResponse
      */
-    const onMessageFromSettings = function(message, sender, sendResponse) {
-        if (message.command === "show") {
-            sendResponse(makeContentScriptParams(null, informationHolder));
+    const onMessageFromSettings = function(event) {
+        if (event.message === "show") {
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                "updateSettingsTab", makeContentScriptParams(null, informationHolder));
         }
-        else if (message.command === "save") {
+        else if (event.message === "save") {
             eventAggregator.publish("saveSettings", {
                 contentScriptParams: message.contentScriptParams
             })
         }
-        else if (message.command === "reset") {
+        else if (event.message === "reset") {
             eventAggregator.publish("resetSettings");
         }
     };
-    // FIXME
-    // chrome.runtime.onMessage.addListener(onMessageFromSettings);
+    safari.application.addEventListener("message", onMessageFromSettings, false);
 
     const customTabObjects = [];
 
@@ -1429,6 +1429,48 @@ const DirectCurrencyConverter = (function() {
                     console.error(err);
                 }
             },
+            showSettingsTab: function() {
+                const testUrl = safari.extension.baseURI + "settings.html";
+                const currentWindow = safari.application.activeBrowserWindow;
+                const currentTab = currentWindow.activeTab;
+                if (currentTab.url === "") {
+                    currentTab.url = testUrl;
+                }
+                else {
+                    currentWindow.openTab("foreground").url = testUrl;
+                }
+/*
+                const isOpen = settingsWorker != null && settingsWorker.settingsTab != null;
+                if (!isOpen) {
+                    //index.html is settings page, it must be called index so that navigation buttons will be hidden
+                    tabs.open({url: aUrlProvider.getUrl("settings.html")});
+                }
+                else {
+                    settingsWorker.settingsTab.activate();
+                }
+*/
+            },
+            showTestTab: function() {
+                const testUrl = safari.extension.baseURI + "prices.html";
+                const currentWindow = safari.application.activeBrowserWindow;
+                const currentTab = currentWindow.activeTab;
+                if (currentTab.url === "") {
+                    currentTab.url = testUrl;
+                }
+                else {
+                    currentWindow.openTab("foreground").url = testUrl;
+                }
+
+/*
+                const isOpen = testPageWorker != null && testPageWorker.testTab != null;
+                if (!isOpen) {
+                    tabs.open({url: aUrlProvider.getUrl("prices.html")});
+                }
+                else {
+                    testPageWorker.testPageTab.activate();
+                }
+*/
+            },
             registerToTabsEvents: function() {
                 const setTabs = function(aTab) {
                     // alert ("setTabs");
@@ -1549,15 +1591,21 @@ const DirectCurrencyConverter = (function() {
     controller.loadStorage();
     // tabsInterface.registerToTabsEvents();
     var buttonStatus = informationHolder.conversionEnabled;
-    const onBrowserAction = function() {
-        const checkToggleButton = function(element) {
-            if (element != null && element.identifier === "dcc-toggle-button") {
-                buttonStatus = !buttonStatus;
-                eventAggregator.publish("toggleConversion", buttonStatus);
-                element.badge = buttonStatus ? 1 : 0;
-            }
-        };
-        safari.extension.toolbarItems.forEach(checkToggleButton);
+    const onBrowserAction = function(event) {
+        if (event.command === "toggle") {
+            const checkToggleButton = function(element) {
+                if (element != null && element.identifier === "dcc-toggle-button") {
+                    element.badge = buttonStatus ? 1 : 0;
+                }
+            };
+            safari.extension.toolbarItems.forEach(checkToggleButton);
+            buttonStatus = !buttonStatus;
+            eventAggregator.publish("toggleConversion", buttonStatus);
+        }
+        if (event.command === "tools") {
+            eventAggregator.publish("showSettingsTab");
+            // eventAggregator.publish("showTestTab");
+        }
     };
     // Toggle button listener
     safari.application.addEventListener("command", onBrowserAction);
