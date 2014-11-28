@@ -952,7 +952,7 @@ const DirectCurrencyConverter = (function() {
     // Stereotype Information holder
     const InformationHolder = function(aUrlProvider, aStorageService) {
         // const _ = require("sdk/l10n").get;
-        // FIXME
+        // TODO L10N
         // const _ = chrome.i18n;
         // var conversionEnabled = aStorageService.enableOnStart;
         // alert("920 " + conversionEnabled);
@@ -969,7 +969,7 @@ const DirectCurrencyConverter = (function() {
             if (defaultEnabledCurrencies[aCurrency] == undefined) {
                 defaultEnabledCurrencies[aCurrency] = false;
             }
-            // FIXME
+            // TODO L10N
             // currencyNames[aCurrency] = _.getMessage(aCurrency);
             currencyNames[aCurrency] = aCurrency;
         });
@@ -1237,16 +1237,16 @@ const DirectCurrencyConverter = (function() {
      * @param sendResponse
      */
     const onMessageFromSettings = function(event) {
-        if (event.message === "show") {
+        if (event.name === "show") {
             safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
                 "updateSettingsTab", makeContentScriptParams(null, informationHolder));
         }
-        else if (event.message === "save") {
+        else if (event.name === "save") {
             eventAggregator.publish("saveSettings", {
-                contentScriptParams: message.contentScriptParams
+                contentScriptParams: event.message
             })
         }
-        else if (event.message === "reset") {
+        else if (event.name === "reset") {
             eventAggregator.publish("resetSettings");
         }
     };

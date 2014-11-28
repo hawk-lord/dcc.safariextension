@@ -17,11 +17,19 @@ const SettingsAdapter = function() {
     };
     safari.self.addEventListener("message", messageListener, false);
     const dispatchSettingsShow = function() {
-        safari.self.tab.dispatchMessage("settings", "show");
+        safari.self.tab.dispatchMessage("show");
     };
     window.onload = dispatchSettingsShow;
     return {
-        showSettings: messageListener
+        save : function(contentScriptParams) {
+            // chrome.runtime.sendMessage({command: "save", contentScriptParams: contentScriptParams});
+            safari.self.tab.dispatchMessage("save", contentScriptParams);
+            window.close();
+        },
+        reset : function() {
+            // chrome.runtime.sendMessage({command: "reset"});
+            safari.self.tab.dispatchMessage("reset");
+            window.close();
+        }
     }
-
 }();
