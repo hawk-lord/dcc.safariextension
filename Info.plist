@@ -22,6 +22,32 @@
 		<real>5242880</real>
 		<key>Global Page</key>
 		<string>main.html</string>
+		<key>Menus</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>tools-menu</string>
+				<key>Menu Items</key>
+				<array>
+					<dict>
+						<key>Command</key>
+						<string>open-settings</string>
+						<key>Identifier</key>
+						<string>settings-menuitem</string>
+						<key>Title</key>
+						<string>Open settings</string>
+					</dict>
+					<dict>
+						<key>Command</key>
+						<string>open-testpage</string>
+						<key>Identifier</key>
+						<string>testpage-menuitem</string>
+						<key>Title</key>
+						<string>Open test page</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
@@ -40,13 +66,15 @@
 			</dict>
 			<dict>
 				<key>Command</key>
-				<string>tools</string>
+				<string></string>
 				<key>Identifier</key>
 				<string>dcc-tools-button</string>
 				<key>Image</key>
 				<string>1417201122_repair_cost-16.png</string>
 				<key>Label</key>
 				<string>Direct Currency Converter</string>
+				<key>Menu</key>
+				<string>tools-menu</string>
 				<key>Palette Label</key>
 				<string>Direct Currency Converter tools</string>
 				<key>Tool Tip</key>

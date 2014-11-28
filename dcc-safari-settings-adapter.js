@@ -22,12 +22,10 @@ const SettingsAdapter = function() {
     window.onload = dispatchSettingsShow;
     return {
         save : function(contentScriptParams) {
-            // chrome.runtime.sendMessage({command: "save", contentScriptParams: contentScriptParams});
             safari.self.tab.dispatchMessage("save", contentScriptParams);
             window.close();
         },
         reset : function() {
-            // chrome.runtime.sendMessage({command: "reset"});
             safari.self.tab.dispatchMessage("reset");
             window.close();
         }

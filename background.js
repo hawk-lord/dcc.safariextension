@@ -1602,12 +1602,14 @@ const DirectCurrencyConverter = (function() {
             buttonStatus = !buttonStatus;
             eventAggregator.publish("toggleConversion", buttonStatus);
         }
-        if (event.command === "tools") {
+        if (event.command === "open-settings") {
             eventAggregator.publish("showSettingsTab");
-            // eventAggregator.publish("showTestTab");
+        }
+        else if (event.command === "open-testpage") {
+            eventAggregator.publish("showTestTab");
         }
     };
-    // Toggle button listener
+    // buttons listener
     safari.application.addEventListener("command", onBrowserAction);
 })();
 
