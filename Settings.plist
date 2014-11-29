@@ -6,9 +6,9 @@
 		<key>DefaultValue</key>
 		<string>on</string>
 		<key>Key</key>
-		<string>enabledOnStart</string>
+		<string>enableOnStart</string>
 		<key>Title</key>
-		<string>Enabled on Start (more settings in the settings tab)</string>
+		<string>Enable on start (more settings in the settings tab)</string>
 		<key>Titles</key>
 		<array>
 			<string>On</string>

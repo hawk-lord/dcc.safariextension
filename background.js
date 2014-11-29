@@ -244,7 +244,7 @@ const DirectCurrencyConverter = (function() {
                             safari.extension.settings.subUnitSeparator = ",";
                         }
                         if (safari.extension.settings.enableOnStart == null) {
-                            safari.extension.settings.enableOnStart = true;
+                            safari.extension.settings.enableOnStart = "on";
                             // console.log("safari.extension.settings.enabledOnStart " + safari.extension.settings.enabledOnStart);
                             //safari.extension.settings.enableOnStart = safari.extension.settings.enabledOnStart === "on" ? true : false;
                         }
@@ -855,12 +855,12 @@ const DirectCurrencyConverter = (function() {
             },
             get enableOnStart () {
                 if (safari.extension.settings != null) {
-                    return safari.extension.settings.enableOnStart;
+                    return safari.extension.settings.enableOnStart === "on" ? true : false;
                 }
                 return true;
             },
             set enableOnStart (anEnableOnStart) {
-                safari.extension.settings.enableOnStart = anEnableOnStart;
+                safari.extension.settings.enableOnStart = anEnableOnStart ? "on" : "off";
                 // chrome.storage.local.set(storage);
                 // safari.extension.settings = storage;
             },
