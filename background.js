@@ -1602,7 +1602,7 @@ const DirectCurrencyConverter = (function() {
             buttonStatus = !buttonStatus;
             eventAggregator.publish("toggleConversion", buttonStatus);
         }
-        if (event.command === "open-settings") {
+        else if (event.command === "open-settings") {
             eventAggregator.publish("showSettingsTab");
         }
         else if (event.command === "open-testpage") {
@@ -1610,6 +1610,6 @@ const DirectCurrencyConverter = (function() {
         }
     };
     // buttons listener
-    safari.application.addEventListener("command", onBrowserAction);
+    safari.application.addEventListener("command", onBrowserAction, false);
 })();
 
