@@ -949,7 +949,9 @@ const DirectCurrencyConverter = (function() {
                 //delete storage.dccPrefs;
                 //delete storage.excludedDomains;
                 // storage = {excludedDomains: [], dccPrefs: {}};
-                safari.extension.settings.clear()
+                safari.extension.settings.clear();
+                controller.loadStorage();
+                controller.loadUserCountryAndQuotes();
                 // chrome.storage.local.set(storage);
                 // safari.extension.settings = storage;
             }
