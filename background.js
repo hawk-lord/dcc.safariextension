@@ -95,7 +95,7 @@ const DirectCurrencyConverter = (function() {
                 }
             }
             catch(err) {
-                // console.log("err " + err);
+                console.log("err " + err);
             }
         };
         const quotesHandlerToFrom = function() {
@@ -111,7 +111,7 @@ const DirectCurrencyConverter = (function() {
                 }
             }
             catch(err) {
-                // console.log("err " + err);
+                console.log("err " + err);
             }
         };
         const gramsPerOunce = 31.1034768;
@@ -818,14 +818,14 @@ const DirectCurrencyConverter = (function() {
                 //});
             },
             get convertToCurrency () {
-                console.log("get safari.extension.settings.convertToCurrency " + safari.extension.settings.convertToCurrency);
+                // console.log("get safari.extension.settings.convertToCurrency " + safari.extension.settings.convertToCurrency);
                 //return storage.dccPrefs.convertToCurrency;
                 return safari.extension.settings.convertToCurrency;
             },
             set convertToCurrency (aCurrency) {
                 // console.log("To Currency: " + aCurrency);
                 safari.extension.settings.convertToCurrency = aCurrency;
-                console.log("set safari.extension.settings.convertToCurrency " + safari.extension.settings.convertToCurrency);
+                // console.log("set safari.extension.settings.convertToCurrency " + safari.extension.settings.convertToCurrency);
                 // chrome.storage.local.set(storage);
                 // // safari.extension.settings = storage;
             },
@@ -1262,7 +1262,7 @@ const DirectCurrencyConverter = (function() {
      * Like PageMod
      */
     const ContentScriptInterface = function(aUrlProvider, anInformationHolder) {
-        console.log("new ContentScriptInterface");
+        // console.log("new ContentScriptInterface");
         /*
                 var contentPort;
                 const attachHandler = function (tabId, changeInfo, tab) {
@@ -1314,17 +1314,18 @@ const DirectCurrencyConverter = (function() {
         */
         // chrome.tabs.onUpdated.addListener(attachHandler);
         const attachHandlerSafari = function(event) {
-            console.log("attachHandlerSafari " + event);
+            // console.log("attachHandlerSafari " + event);
             safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
                 "updateSettings", makeContentScriptParams(null, informationHolder));
             // SafariEventListener
             const finishedTabProcessing = function(event) {
-                console.log(event.name + " " + event.message);
+                // TODO do something
+                // console.log(event.name + " " + event.message);
             };
             safari.application.addEventListener("message", finishedTabProcessing, false);
         };
-        // When a tab has been reloaded
-        safari.application.activeBrowserWindow.addEventListener("navigate", attachHandlerSafari, false);
+        // When a tab has been reloaded?
+        safari.application.addEventListener("navigate", attachHandlerSafari, false);
 
         // initialise all tabs
         for (var i = 0; i < safari.application.browserWindows.length; ++i) {
@@ -1341,7 +1342,7 @@ const DirectCurrencyConverter = (function() {
 
         return {
             sendEnabledStatusSafari: function(status) {
-                console.log("sendEnabledStatusSafari");
+                // console.log("sendEnabledStatusSafari");
                 for (var i = 0; i < safari.application.browserWindows.length; ++i) {
                     var browserWindow = safari.application.browserWindows[i];
                     for (var j = 0; j < browserWindow.tabs.length; ++j)
@@ -1506,7 +1507,7 @@ const DirectCurrencyConverter = (function() {
                     //    }
                     //});
                     const navigateEvent2 = function(event) {
-                        console.log("navigate win " + event);
+                        // console.log("navigate win " + event);
                         // convert(event);
                         eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
                     };
