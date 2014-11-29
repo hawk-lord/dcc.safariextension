@@ -1244,6 +1244,12 @@ const DirectCurrencyConverter = (function() {
         else if (event.name === "reset") {
             eventAggregator.publish("resetSettings");
         }
+        // From Prices tab
+        else if (event.name === "showPrices") {
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                "updateSettings", makeContentScriptParams(null, informationHolder));
+            eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
+        }
     };
     safari.application.addEventListener("message", onMessageFromSettings, false);
 
@@ -1409,14 +1415,14 @@ const DirectCurrencyConverter = (function() {
                 }
             },
             showSettingsTab: function() {
-                const testUrl = safari.extension.baseURI + "settings.html";
+                const settingsUrl = safari.extension.baseURI + "settings.html";
                 const currentWindow = safari.application.activeBrowserWindow;
                 const currentTab = currentWindow.activeTab;
                 if (currentTab.url === "") {
-                    currentTab.url = testUrl;
+                    currentTab.url = settingsUrl;
                 }
                 else {
-                    currentWindow.openTab("foreground").url = testUrl;
+                    currentWindow.openTab("foreground").url = settingsUrl;
                 }
 /*
                 const isOpen = settingsWorker != null && settingsWorker.settingsTab != null;
@@ -1430,14 +1436,14 @@ const DirectCurrencyConverter = (function() {
 */
             },
             showTestTab: function() {
-                const testUrl = safari.extension.baseURI + "prices.html";
+                const pricesUrl = safari.extension.baseURI + "prices.html";
                 const currentWindow = safari.application.activeBrowserWindow;
                 const currentTab = currentWindow.activeTab;
                 if (currentTab.url === "") {
-                    currentTab.url = testUrl;
+                    currentTab.url = pricesUrl;
                 }
                 else {
-                    currentWindow.openTab("foreground").url = testUrl;
+                    currentWindow.openTab("foreground").url = pricesUrl;
                 }
 
 /*
