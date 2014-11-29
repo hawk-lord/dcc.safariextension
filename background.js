@@ -1424,6 +1424,15 @@ const DirectCurrencyConverter = (function() {
                     currentTab.url = settingsUrl;
                 }
                 else {
+                    for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+                        var browserWindow = safari.application.browserWindows[i];
+                        for (var j = 0; j < browserWindow.tabs.length; ++j)
+                            if (browserWindow.tabs[j].url === settingsUrl ) {
+                                browserWindow.activate();
+                                browserWindow.tabs[j].activate();
+                                return;
+                            }
+                    }
                     currentWindow.openTab("foreground").url = settingsUrl;
                 }
 /*
