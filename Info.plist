@@ -118,7 +118,7 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://home.aland.net/joint/dcc.plist</string>
+	<string>http://home.aland.net/joint/extensions/safari/dcc.plist</string>
 	<key>Website</key>
 	<string>http://www.joint.ax</string>
 </dict>
