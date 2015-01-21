@@ -619,20 +619,19 @@ const DirectCurrencyConverter = (function() {
         }
         return {
             sendEnabledStatusSafari: function(status) {
-                for (var i = 0; i < safari.application.browserWindows.length; ++i) {
-                    var browserWindow = safari.application.browserWindows[i];
-                    for (var j = 0; j < browserWindow.tabs.length; ++j)
-                        browserWindow.tabs[j].page.dispatchMessage("sendEnabledStatus", status);
-                }
-                var toolbarItems = safari.extension.toolbarItems;
-                for (var i = 0; i < toolbarItems.length; i++) {
-                    var item = toolbarItems[i];
-                    if (item != null) {
-                        if (item.identifier == "dcc-toggle-button") {
-                            item.badge = buttonStatus ? 1 : 0;
-                        }
+                const sendStatusToTab = function(tab) {
+                    tab.page.dispatchMessage("sendEnabledStatus", status);
+                };
+                const sendStatusToWindow = function(window) {
+                    window.tabs.forEach(sendStatusToTab);
+                };
+                safari.application.browserWindows.forEach(sendStatusToWindow);
+                const checkToggleButton = function(element) {
+                    if (element != null && element.identifier === "dcc-tools-button") {
+                        element.badge = buttonStatus ? 1 : 0;
                     }
-                }
+                };
+                safari.extension.toolbarItems.forEach(checkToggleButton);
             }
         }
     };
@@ -777,12 +776,6 @@ const DirectCurrencyConverter = (function() {
     var buttonStatus = informationHolder.conversionEnabled;
     const onBrowserAction = function(event) {
         if (event.command === "toggle") {
-            const checkToggleButton = function(element) {
-                if (element != null && element.identifier === "dcc-toggle-button") {
-                    element.badge = buttonStatus ? 1 : 0;
-                }
-            };
-            safari.extension.toolbarItems.forEach(checkToggleButton);
             buttonStatus = !buttonStatus;
             eventAggregator.publish("toggleConversion", buttonStatus);
         }
