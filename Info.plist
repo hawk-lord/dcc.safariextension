@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Per Johansson</string>
 	<key>Builder Version</key>
-	<string>10600.1.25.1</string>
+	<string>10600.2.5</string>
 	<key>CFBundleDisplayName</key>
 	<string>Direct Currency Converter</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.0.0</string>
+	<string>2.0.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.0.0</string>
+	<string>2.0.2.0</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -29,6 +29,14 @@
 				<string>tools-menu</string>
 				<key>Menu Items</key>
 				<array>
+					<dict>
+						<key>Command</key>
+						<string>toggle</string>
+						<key>Identifier</key>
+						<string>toggle-menuitem</string>
+						<key>Title</key>
+						<string>Toggle conversion</string>
+					</dict>
 					<dict>
 						<key>Command</key>
 						<string>open-settings</string>
@@ -56,7 +64,7 @@
 				<key>Identifier</key>
 				<string>dcc-tools-button</string>
 				<key>Image</key>
-				<string>1417201122_repair_cost-16.png</string>
+				<string>1417201090_currency_exchange_1-16.png</string>
 				<key>Label</key>
 				<string>Direct Currency Converter</string>
 				<key>Menu</key>
@@ -65,20 +73,6 @@
 				<string>Direct Currency Converter tools</string>
 				<key>Tool Tip</key>
 				<string>Direct Currency Converter tools, test and setting</string>
-			</dict>
-			<dict>
-				<key>Command</key>
-				<string>toggle</string>
-				<key>Identifier</key>
-				<string>dcc-toggle-button</string>
-				<key>Image</key>
-				<string>1417201090_currency_exchange_1-16.png</string>
-				<key>Label</key>
-				<string>Direct Currency Converter</string>
-				<key>Palette Label</key>
-				<string>Direct Currency Converter toggle conversion</string>
-				<key>Tool Tip</key>
-				<string>Direct Currency Converter toggle conversion on and off</string>
 			</dict>
 		</array>
 	</dict>

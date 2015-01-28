@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.0.0.0
-Date: 2014-11-30
+Version: 2.0.2.0
+Date: 2015-01-21
 
 After installation, you'll have two new buttons in the toolbar.
 
@@ -54,3 +54,11 @@ History
 Version: 2.0.0
 Date: 2014-11-30
 First Release for Safari.
+
+Version: 2.0.1.0
+Date: 2015-01-19
+Improved support for USD and GHC.
+
+Version: 2.0.2.0
+Date: 2015-01-21
+Fixed an error with decimal calculation.
