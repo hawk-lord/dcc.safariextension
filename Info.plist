@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Per Johansson</string>
 	<key>Builder Version</key>
-	<string>10600.2.5</string>
+	<string>10600.3.18</string>
 	<key>CFBundleDisplayName</key>
 	<string>Direct Currency Converter</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.2.1</string>
+	<string>2.0.2.2</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.2.1</string>
+	<string>2.0.2.2</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -89,8 +89,8 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>dcc-regexes.js</string>
-				<string>dcc-content.js</string>
+				<string>common/dcc-regexes.js</string>
+				<string>common/dcc-content.js</string>
 				<string>dcc-safari-content-adapter.js</string>
 			</array>
 		</dict>
