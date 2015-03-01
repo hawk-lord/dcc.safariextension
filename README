@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.0.2.2
-Date: 2015-02-16
+Version: 2.0.3.0
+Date: 2015-03-02
 
 After installation, you'll have two new buttons in the toolbar.
 
@@ -70,3 +70,9 @@ Internal changes.
 Version: 2.0.2.2
 Date: 2015-02-16
 Internal changes.
+
+Version: 2.0.3.0
+Date: 2015-03-02
+Updated jQuery and jQuery UI versions.
+Rewrote currency regexes.
+
