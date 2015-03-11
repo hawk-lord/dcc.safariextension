@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.0.2.1
-Date: 2015-01-28
+Version: 2.0.3.0
+Date: 2015-03-11
 
 After installation, you'll have two new buttons in the toolbar.
 
@@ -35,13 +35,13 @@ Also, if amount and unit are in different HTML elements (for example when they h
 Optionally, if selected in the settings tab, some traditional units of measurement (such as miles and calories) are converted to SI units (such as kilometres and kilojoules).
 
 Based on code from Simple Currency Converter
-https://addons.mozilla.org/en-US/firefox/addon/simple-currency-converter/
+https://addons.mozilla.org/addon/simple-currency-converter/
 
 Runs on Safari 5.1 and later versions.
 
 External libraries used:
-jQuery 2.1.1
-jQuery UI 1.11.0
+jQuery 2.1.3
+jQuery UI 1.11.2
 
 Icons provided by Iconfinder.
 
@@ -66,3 +66,14 @@ Fixed an error with decimal calculation.
 Version: 2.0.2.1
 Date: 2015-01-28
 Internal changes.
+
+Version: 2.0.2.2
+Date: 2015-02-16
+Internal changes.
+
+Version: 2.0.3.0
+Date: 2015-03-11
+Added support for US cents (¢, ￠).
+Improved support for non-English characters in price matches.
+Internal change: rewrote price regexes.
+Internal change: Updated jQuery and jQuery UI versions.
