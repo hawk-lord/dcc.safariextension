@@ -4,7 +4,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * Based on code from Simple Currency Converter
- * https://addons.mozilla.org/en-US/firefox/addon/simple-currency-converter/
+ * https://addons.mozilla.org/addon/simple-currency-converter/
  *
  * Moved into its own file for no special reason.
  */

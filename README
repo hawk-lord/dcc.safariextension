@@ -35,7 +35,7 @@ Also, if amount and unit are in different HTML elements (for example when they h
 Optionally, if selected in the settings tab, some traditional units of measurement (such as miles and calories) are converted to SI units (such as kilometres and kilojoules).
 
 Based on code from Simple Currency Converter
-https://addons.mozilla.org/en-US/firefox/addon/simple-currency-converter/
+https://addons.mozilla.org/addon/simple-currency-converter/
 
 Runs on Safari 5.1 and later versions.
 
