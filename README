@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.0.3.0
-Date: 2015-03-11
+Version: 2.1.2.0
+Date: 2015-06-07
 
 After installation, you'll have two new buttons in the toolbar.
 
@@ -77,3 +77,7 @@ Added support for US cents (¢, ￠).
 Improved support for non-English characters in price matches.
 Internal change: rewrote price regexes.
 Internal change: Updated jQuery and jQuery UI versions.
+
+Version: 2.1.2.0
+Date: 2015-06-07
+Internal change: porting from Firefox/Chrome
