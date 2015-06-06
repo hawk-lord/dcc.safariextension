@@ -9,6 +9,7 @@
  * Module pattern is used.
  */
 const PriceRegexes = (function() {
+    "use strict";
 	const makePriceRegexes = function(aRegex1, aRegex2) {
     	const begin = "(^|\\s)";
     	const value = "(\\d{1,3}((,|\\.|\\s)\\d{3})+|(\\d+))((\\.|,)\\d{1,9})?";
@@ -195,8 +196,6 @@ const PriceRegexes = (function() {
             aRegex2.LRD = makeRegex2("(LRD|\\$|dollars?)");
             aRegex1.LSL = makeRegex1("(LSL|Maloti|M|Loti)");
             aRegex2.LSL = makeRegex2("(LSL|Maloti|LOTI)");
-            aRegex1.LTL = makeRegex1("(LTL)");
-            aRegex2.LTL = makeRegex2("(LTL|Lt|litai|litų)");
             aRegex1.LYD = makeRegex1("(LYD|L\\.?D\\.?|ل\\.د|دينار)");
             aRegex2.LYD = makeRegex2("(LYD|L\\.?D\\.?|ل\\.د|دينار|dinars?)");
             aRegex1.MAD = makeRegex1("(MAD|د\\.م\\.|دراهم)");
