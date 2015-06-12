@@ -34,7 +34,7 @@ const DirectCurrencyConverter = (function() {
             // console.log("subscribe countryReceived");
             // console.log("countryCode " + countryCode);
             informationHolder.convertToCountry = countryCode;
-            yahooQuotesService.loadQuotes(gcYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
+            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
         });
         eventAggregator.subscribe("quotesFromTo", function(eventArgs) {
             // console.log("subscribe quotesFromTo");
@@ -50,13 +50,15 @@ const DirectCurrencyConverter = (function() {
             if (informationHolder.isAllCurrenciesRead()) {
                 // console.log("isAllCurrenciesRead");
                 contentInterface.watchForPages();
-                //chromeInterface.setConversionButtonState(informationHolder.conversionEnabled);
+                contentInterface.toggleConversion(informationHolder.conversionEnabled);
+                chromeInterface.setConversionButtonState(informationHolder.conversionEnabled);
                 //chromeInterface.setToolsButtonText(informationHolder.getQuoteString());
             }
         });
         eventAggregator.subscribe("toggleConversion", function(eventArgs) {
-            // console.log("subscribe toggleConversion");
+            console.log("subscribe toggleConversion eventArgs " + eventArgs);
             contentInterface.toggleConversion(eventArgs);
+            chromeInterface.setConversionButtonState(eventArgs);
         });
         eventAggregator.subscribe("showSettingsTab", function() {
             // console.log("subscribe showSettingsTab");
@@ -74,7 +76,7 @@ const DirectCurrencyConverter = (function() {
             //contentInterface.closeSettingsTab();
             if (toCurrencyChanged) {
                 // controller.loadQuotes();
-                yahooQuotesService.loadQuotes(gcYahooQuotesService, informationHolder.getFromCurrencies(),
+                yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(),
                     informationHolder.convertToCurrency);
             }
         });
@@ -88,6 +90,7 @@ const DirectCurrencyConverter = (function() {
          * @param sender
          * @param sendResponse
          */
+            /*
         var onMessageFromSettings = function(message, sender, sendResponse) {
             if (message.command === "show") {
                 sendResponse(new ContentScriptParams(null, informationHolder));
@@ -102,15 +105,44 @@ const DirectCurrencyConverter = (function() {
             }
         };
         chrome.runtime.onMessage.addListener(onMessageFromSettings);
+        */
+        /**
+         * Communicate with the Settings tab
+         * @param message
+         * @param sender
+         * @param sendResponse
+         */
+        var onMessageFromSettings = function(event) {
+            if (event.name === "show") {
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                    "updateSettingsTab", new ContentScriptParams(null, informationHolder));
+            }
+            else if (event.name === "save") {
+                eventAggregator.publish("saveSettings", {
+                    contentScriptParams: event.message
+                })
+            }
+            else if (event.name === "reset") {
+                eventAggregator.publish("resetSettings");
+            }
+            // From Prices tab
+            else if (event.name === "showPrices") {
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                    "updateSettings", new ContentScriptParams(null, informationHolder));
+                eventAggregator.publish("toggleConversion", informationHolder.conversionEnabled);
+            }
+        };
+        safari.application.addEventListener("message", onMessageFromSettings, false);
+
         if (!informationHolder.convertToCountry) {
-            geoService.loadUserCountry(gcGeoService);
+            geoService.loadUserCountry(sfGeoService);
         }
         else {
-            yahooQuotesService.loadQuotes(gcYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
+            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
         }
     };
     var onStorageServiceReInitDone = function(informationHolder) {
-        geoService.loadUserCountry(gcGeoService);
+        geoService.loadUserCountry(sfGeoService);
     };
     var onJsonsDone = function() {
         console.log("onJsonsDone");
@@ -173,7 +205,7 @@ const DirectCurrencyConverter = (function() {
     };
     iso4217CurrenciesRequest.send(null);
     var onRegionFormats = function(result) {
-        console.log("onRegionFormats " + result);
+        // console.log("onRegionFormats " + result);
         var regionFormatsJson = result;
         regionFormats = JSON.parse(regionFormatsJson);
         if (currencyData && currencySymbols && regionFormats && regionFormats) {
@@ -196,7 +228,7 @@ const DirectCurrencyConverter = (function() {
     var convertToCountry = "SE";
     var convertToCountry = null;
     if (convertToCountry === null || convertToCountry == null) {
-        geoService.loadUserCountry(gcGeoService, convertToCountry);
+        geoService.loadUserCountry(sfGeoService, convertToCountry);
         eventAggregator.subscribe("countryReceived", function(countryCode) {
             console.log("countryCode " + countryCode);
         });

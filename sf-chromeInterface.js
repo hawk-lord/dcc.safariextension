@@ -4,22 +4,37 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  */
-const SfChromeInterface = function(conversionEnabled) {
+const SfChromeInterface = function(aConversionEnabled) {
     "use strict";
-    var buttonStatus = conversionEnabled;
-    var setButtonAppearance = function() {
-        var colour = buttonStatus ? "#00FF00" : "#FF0000";
-        var text = buttonStatus ? "On" : "Off";
-        chrome.browserAction.setBadgeBackgroundColor({color: colour});
-        chrome.browserAction.setBadgeText({text: text});
+    var buttonStatus = aConversionEnabled;
+    var onBrowserAction = function(event) {
+        if (event.command === "toggle") {
+            buttonStatus = !buttonStatus;
+            var checkToggleButton = function(element) {
+                if (element != null && element.identifier === "dcc-tools-button") {
+                    element.badge = buttonStatus ? 1 : 0;
+                }
+            };
+            safari.extension.toolbarItems.forEach(checkToggleButton);
+            eventAggregator.publish("toggleConversion", buttonStatus);
+        }
+        else if (event.command === "open-settings") {
+            eventAggregator.publish("showSettingsTab");
+        }
+        else if (event.command === "open-testpage") {
+            eventAggregator.publish("showTestTab");
+        }
     };
-    setButtonAppearance();
-    var onBrowserAction = function() {
-        buttonStatus = !buttonStatus;
-        setButtonAppearance();
-        eventAggregator.publish("toggleConversion", buttonStatus);
+    var setConversionButtonState = function(aStatus) {
+        var checkToggleButton = function(element) {
+            if (element != null && element.identifier === "dcc-tools-button") {
+                element.badge = buttonStatus ? 1 : 0;
+            }
+        };
+        safari.extension.toolbarItems.forEach(checkToggleButton);
     };
-    // Toggle button clicked
-    chrome.browserAction.onClicked.addListener(onBrowserAction);
-
+    safari.application.addEventListener("command", onBrowserAction, false);
+    return {
+        setConversionButtonState: setConversionButtonState
+    }
 };

@@ -6,214 +6,165 @@
  */
 const SfStorageServiceProvider = function() {
     "use strict";
-    var storage = {};
     var init = function (aDefaultEnabled, anExcludedDomains) {
-        chrome.storage.local.get(null, function(aStorage) {
-            storage = aStorage;
-            if (!storage.excludedDomains) {
-                storage.excludedDomains = anExcludedDomains;
-                // console.log("storage.excludedDomains " + storage.excludedDomains);
-            }
-            // console.log("storage.dccPrefs " + storage.dccPrefs);
-            if (!storage.dccPrefs) {
-                storage.dccPrefs = {
-                    // convertToCurrency: "EUR",
-                    // convertToCountry: "PL",
-                    customSymbols: {},
-                    enableOnStart: true,
-                    quoteAdjustmentPercent: 0,
-                    roundAmounts: false,
-                    showOriginalPrices: true,
-                    beforeCurrencySymbol: true,
-                    currencySpacing: " ",
-                    monetarySeparatorSymbol: ",",
-                    monetaryGroupingSeparatorSymbol: ".",
-                    tempConvertUnits: false,
-                    enabledCurrencies: aDefaultEnabled
-                };
-                // console.log("done storage.dccPrefs " + storage.dccPrefs);
-            }
-            else {
-                //if (storage.dccPrefs.convertToCurrency == null) {
-                //    storage.dccPrefs.convertToCurrency = "EUR";
-                //}
-                //if (storage.dccPrefs.convertToCountry == null) {
-                //    storage.dccPrefs.convertToCountry = "CZ";
-                //}
-                if (!storage.dccPrefs.customSymbols) {
-                    storage.dccPrefs.customSymbols = {};
+        if (safari.extension.settings.excludedDomains == null) {
+            safari.extension.settings.excludedDomains = anExcludedDomains;
+        }
+        if (safari.extension.settings.customSymbols == null) {
+            safari.extension.settings.customSymbols = {};
+        }
+        if (safari.extension.settings.monetarySeparatorSymbol == null) {
+            safari.extension.settings.monetarySeparatorSymbol = ",";
+        }
+        if (safari.extension.settings.enableOnStart == null) {
+            safari.extension.settings.enableOnStart = "on";
+        }
+        if (safari.extension.settings.quoteAdjustmentPercent == null) {
+            safari.extension.settings.quoteAdjustmentPercent = 0;
+        }
+        if (safari.extension.settings.roundAmounts == null) {
+            safari.extension.settings.roundAmounts = false;
+        }
+        if (safari.extension.settings.currencySpacing == null) {
+            safari.extension.settings.currencySpacing = " ";
+        }
+        if (safari.extension.settings.showOriginalPrices == null) {
+            safari.extension.settings.showOriginalPrices = true;
+        }
+        if (safari.extension.settings.beforeCurrencySymbol == null) {
+            safari.extension.settings.beforeCurrencySymbol = true;
+        }
+        if (safari.extension.settings.tempConvertUnits == null) {
+            safari.extension.settings.tempConvertUnits = false;
+        }
+        if (safari.extension.settings.monetaryGroupingSeparatorSymbol == null) {
+            safari.extension.settings.monetaryGroupingSeparatorSymbol = ".";
+        }
+        if (safari.extension.settings.enabledCurrencies == null) {
+            safari.extension.settings.enabledCurrencies = aDefaultEnabled;
+        }
+        else {
+            var enabledCurrencies = safari.extension.settings.enabledCurrencies;
+            Object.keys(aDefaultEnabled).forEach(
+                function (key, index, array) {
+                    if (enabledCurrencies[key] == null) {
+                        enabledCurrencies[key] = array[key];
+                    }
                 }
-                if (!storage.dccPrefs.monetarySeparatorSymbol) {
-                    storage.dccPrefs.monetarySeparatorSymbol = ",";
-                }
-                if (storage.dccPrefs.enableOnStart === null || storage.dccPrefs.enableOnStart == null) {
-                    storage.dccPrefs.enableOnStart = true;
-                }
-                if (!storage.dccPrefs.quoteAdjustmentPercent) {
-                    storage.dccPrefs.quoteAdjustmentPercent = 0;
-                }
-                if (storage.dccPrefs.roundAmounts === null || storage.dccPrefs.roundAmounts == null) {
-                    storage.dccPrefs.roundAmounts = false;
-                }
-                if ("string" !== typeof storage.dccPrefs.currencySpacing) {
-                    storage.dccPrefs.currencySpacing = " ";
-                }
-                if (storage.dccPrefs.showOriginalPrices === null || storage.dccPrefs.showOriginalPrices == null) {
-                    storage.dccPrefs.showOriginalPrices = true;
-                }
-                if (storage.dccPrefs.beforeCurrencySymbol === null || storage.dccPrefs.beforeCurrencySymbol == null) {
-                    storage.dccPrefs.beforeCurrencySymbol = true;
-                }
-                if (storage.dccPrefs.tempConvertUnits === null || storage.dccPrefs.tempConvertUnits == null) {
-                    storage.dccPrefs.tempConvertUnits = false;
-                }
-                if (!storage.dccPrefs.monetaryGroupingSeparatorSymbol) {
-                    storage.dccPrefs.monetaryGroupingSeparatorSymbol = ".";
-                }
-                if (!storage.dccPrefs.enabledCurrencies) {
-                    storage.dccPrefs.enabledCurrencies = aDefaultEnabled;
-                }
-                else {
-                    Object.keys(aDefaultEnabled).forEach(
-                        function (key, index) {
-                            if (!storage.dccPrefs.enabledCurrencies[key]) {
-                                storage.dccPrefs.enabledCurrencies[key] = aDefaultEnabled[key];
-                            }
-                        }
-                    )
-                }
-            }
-            chrome.storage.local.set(storage);
-            eventAggregator.publish("storageInitDone");
-        });
+            );
+            safari.extension.settings.enabledCurrencies = enabledCurrencies;
+        }
+        eventAggregator.publish("storageInitDone");
     };
     var resetSettings = function(aDefaultEnabled)  {
-        storage.dccPrefs = {
-            // convertToCurrency: "EUR",
-            // convertToCountry: "PL",
-            customSymbols: {},
-            enableOnStart: true,
-            quoteAdjustmentPercent: 0,
-            roundAmounts: false,
-            showOriginalPrices: true,
-            beforeCurrencySymbol: true,
-            currencySpacing: " ",
-            monetarySeparatorSymbol: ",",
-            monetaryGroupingSeparatorSymbol: ".",
-            tempConvertUnits: false,
-            enabledCurrencies: aDefaultEnabled
-        };
-        chrome.storage.local.set(storage);
+        delete safari.extension.settings.convertToCurrency;
+        delete safari.extension.settings.convertToCountry;
+        safari.extension.settings.customSymbols =  {};
+        safari.extension.settings.enableOnStart =  "on";
+        safari.extension.settings.quoteAdjustmentPercent =  0;
+        safari.extension.settings.roundAmounts =  false;
+        safari.extension.settings.showOriginalPrices =  true;
+        safari.extension.settings.beforeCurrencySymbol =  true;
+        safari.extension.settings.currencySpacing =  " ";
+        safari.extension.settings.monetarySeparatorSymbol =  ";";
+        safari.extension.settings.monetaryGroupingSeparatorSymbol =  ".";
+        safari.extension.settings.tempConvertUnits =  false;
+        safari.extension.settings.enabledCurrencies =  aDefaultEnabled;
         eventAggregator.publish("storageReInitDone");
     };
     return {
         init: init,
         get convertToCurrency () {
-            if (storage.dccPrefs) {
-                return storage.dccPrefs.convertToCurrency;
-            }
-            else  {
-                return "EUR";
-            }
+            return safari.extension.settings.convertToCurrency;
         },
         set convertToCurrency (aCurrency) {
-            storage.dccPrefs.convertToCurrency = aCurrency;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.convertToCurrency = aCurrency;
         },
         get convertToCountry () {
-            // console.log("convertToCountry storage.dccPrefs " + storage.dccPrefs);
-            return storage.dccPrefs.convertToCountry;
+            return safari.extension.settings.convertToCountry;
         },
         set convertToCountry (aCountry) {
-            storage.dccPrefs.convertToCountry = aCountry;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.convertToCountry = aCountry;
         },
         get customSymbols () {
-            return storage.dccPrefs.customSymbols;
+            return safari.extension.settings.customSymbols;
         },
         set customSymbols (aCustomSymbols) {
-            storage.dccPrefs.customSymbols = aCustomSymbols;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.customSymbols = aCustomSymbols;
         },
         get monetarySeparatorSymbol () {
-            return storage.dccPrefs.monetarySeparatorSymbol;
+            return safari.extension.settings.monetarySeparatorSymbol;
         },
         set monetarySeparatorSymbol (aMonetarySeparatorSymbol) {
-            storage.dccPrefs.monetarySeparatorSymbol = aMonetarySeparatorSymbol;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.monetarySeparatorSymbol = aMonetarySeparatorSymbol;
         },
         get enableOnStart () {
-            if (storage.dccPrefs) {
-                return storage.dccPrefs.enableOnStart;
+            if (safari.extension.settings != null) {
+                return safari.extension.settings.enableOnStart === "on" ? true : false;
             }
             return true;
         },
         set enableOnStart (anEnableOnStart) {
-            storage.dccPrefs.enableOnStart = anEnableOnStart;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.enableOnStart = anEnableOnStart ? "on" : "off";
         },
         get excludedDomains () {
-            return storage.excludedDomains;
+            return safari.extension.settings.excludedDomains;
         },
         set excludedDomains (anExcludedDomains) {
-            storage.excludedDomains = anExcludedDomains;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.excludedDomains = anExcludedDomains;
         },
         get enabledCurrencies () {
-            return storage.dccPrefs.enabledCurrencies;
+            return safari.extension.settings.enabledCurrencies;
         },
         set enabledCurrencies (anEnabledCurrencies) {
-            storage.dccPrefs.enabledCurrencies = anEnabledCurrencies;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.enabledCurrencies = anEnabledCurrencies;
         },
         get quoteAdjustmentPercent () {
-            return storage.dccPrefs.quoteAdjustmentPercent;
+            return safari.extension.settings.quoteAdjustmentPercent;
         },
         set quoteAdjustmentPercent (aQuoteAdjustmentPercent) {
-            storage.dccPrefs.quoteAdjustmentPercent = aQuoteAdjustmentPercent;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.quoteAdjustmentPercent = aQuoteAdjustmentPercent;
         },
         get roundPrices () {
-            return storage.dccPrefs.roundAmounts;
+            return safari.extension.settings.roundAmounts;
         },
         set roundPrices (aRoundPrices) {
-            storage.dccPrefs.roundAmounts = aRoundPrices;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.roundAmounts = aRoundPrices;
         },
         get currencySpacing () {
-            return storage.dccPrefs.currencySpacing;
+            return safari.extension.settings.currencySpacing;
         },
         set currencySpacing (aCurrencySpacing) {
-            storage.dccPrefs.currencySpacing = aCurrencySpacing;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.currencySpacing = aCurrencySpacing;
         },
         get showOriginalPrices () {
-            return storage.dccPrefs.showOriginalPrices;
+            return safari.extension.settings.showOriginalPrices;
         },
         set showOriginalPrices (aShowOriginalPrices) {
-            storage.dccPrefs.showOriginalPrices = aShowOriginalPrices;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.showOriginalPrices = aShowOriginalPrices;
         },
         get beforeCurrencySymbol () {
-            return storage.dccPrefs.beforeCurrencySymbol;
+            return safari.extension.settings.beforeCurrencySymbol;
         },
         set beforeCurrencySymbol (aBeforeCurrencySymbol) {
-            storage.dccPrefs.beforeCurrencySymbol = aBeforeCurrencySymbol;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.beforeCurrencySymbol = aBeforeCurrencySymbol;
         },
         get monetaryGroupingSeparatorSymbol () {
-            return storage.dccPrefs.monetaryGroupingSeparatorSymbol;
+            return safari.extension.settings.monetaryGroupingSeparatorSymbol;
         },
         set monetaryGroupingSeparatorSymbol (aMonetaryGroupingSeparatorSymbol) {
-            storage.dccPrefs.monetaryGroupingSeparatorSymbol = aMonetaryGroupingSeparatorSymbol;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.monetaryGroupingSeparatorSymbol = aMonetaryGroupingSeparatorSymbol;
         },
         get tempConvertUnits () {
-            return storage.dccPrefs.tempConvertUnits;
+            return safari.extension.settings.tempConvertUnits;
         },
         set tempConvertUnits (aTempConvertUnits) {
-            storage.dccPrefs.tempConvertUnits = aTempConvertUnits;
-                chrome.storage.local.set(storage);
+            safari.extension.settings.tempConvertUnits = aTempConvertUnits;
+        },
+        setEnabledCurrency: function(aCurrency, anEnabled) {
+            var enabledCurrencies = safari.extension.settings.enabledCurrencies;
+            enabledCurrencies[aCurrency] = anEnabled;
+            safari.extension.settings.enabledCurrencies = enabledCurrencies;
         },
         resetSettings: resetSettings
     };

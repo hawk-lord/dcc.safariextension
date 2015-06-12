@@ -96,7 +96,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Converts prices from any currency (USD, GBP, etc.) to prices in a selectable currency automatically.</string>
+	<string>Converts prices from any currency (€, £, $, etc.) to prices in a selectable currency automatically.</string>
 	<key>DeveloperIdentifier</key>
 	<string>3X77WF8NVX</string>
 	<key>ExtensionInfoDictionaryVersion</key>

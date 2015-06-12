@@ -6,175 +6,127 @@
  */
 const SfContentInterface = function(anInformationHolder) {
     "use strict";
-    // let settingsWorker = null;
-    // let testPageWorker = null;
-    var customTabObjects = [];
-    var CustomTabObject = function() {
-        "use strict";
-        this.enabled = false;
-        this.hasConvertedElements = false;
-        //this.workers = [];
-    };
-    var sendEnabledStatus = function(customTabObject, status) {
-        // console.log("sendEnabledStatus " + status);
-        if (customTabObject.port) {
-            try {
-                customTabObject.port.postMessage(status);
-            }
-            catch(err) {
-                // TODO handle Error: Attempting to use a disconnected port object
-            }
-        }
-    };
-    var sendSettingsToPage = function(tabId, changeInfo, tab) {
-        // console.log("sendSettingsToPage " + tabId);
-        var contentPort;
-        var finishedTabProcessingHandler = function (aHasConvertedElements) {
-            try {
-                // console.log("finishedTabProcessingHandler " + aHasConvertedElements);
-                if (!customTabObjects[tabId]) {
-                    customTabObjects[tabId] = new CustomTabObject();
-                }
-                customTabObjects[tabId].isEnabled = anInformationHolder.conversionEnabled;
-                customTabObjects[tabId].hasConvertedElements = aHasConvertedElements;
-                customTabObjects[tabId].port = contentPort;
-            }
-            catch (err) {
-                console.error("finishedTabProcessingHandler " + err);
-            }
-        };
-        var onScriptExecuted = function () {
-            // console.log("onScriptExecuted tabId " + tabId);
-            contentPort = chrome.tabs.connect(tabId, {name: "dccContentPort"});
-            try {
-                // TODO Don't send null
-                contentPort.postMessage(new ContentScriptParams(null, anInformationHolder));            }
-            catch (err) {
-                console.error(err);
-            }
-            contentPort.onMessage.addListener(finishedTabProcessingHandler);
-        };
-        // console.log("attachHandler tabId " + tabId);
-        // console.log("attachHandler changeInfo.status " + changeInfo.status);
-        // console.log("attachHandler changeInfo.url " + changeInfo.url);
-        // console.log("attachHandler tab.url " + tab.url);
-        // Not allowed in https://chrome.google.com/webstore
-        // console.log(changeInfo.status === "complete" && tab && tab.url && tab.url.indexOf("http") === 0);
-        if (changeInfo.status === "complete" && tab && tab.url && tab.url.indexOf("http") === 0
-            && tab.url.indexOf("https://chrome.google.com/webstore") === -1
-            && tab.url.indexOf("https://addons.opera.com") === -1) {
-            chrome.tabs.executeScript(tabId, {file: "common/dcc-regexes.js", allFrames: true}, function(){
-                chrome.tabs.executeScript(tabId, {file: "common/dcc-content.js", allFrames: true}, function(){
-                    chrome.tabs.executeScript(tabId, {file: "dcc-chrome-content-adapter.js", allFrames: true},
-                        onScriptExecuted);
-                });
-            });
-        }
-    };
     var watchForPages = function() {
-        // console.log("watchForPages");
-        var addTabs = function(aTabs) {
-            // console.log("addTabs");
-            aTabs.map(function(aTab) {
-                // console.log("aTab.id " + aTab.id);
-                if (!customTabObjects[aTab.id]) {
-                    customTabObjects[aTab.id] = new CustomTabObject();
+        console.log("watchForPages");
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                    break;
                 }
-                // console.log(aTab);
-                sendSettingsToPage(aTab.id, {status: "complete"}, aTab)
-            });
-        };
-        // FIXME attach to existing tabs
-        var setTabs = function(aTab) {
-            if (!customTabObjects[aTab.id]) {
-                customTabObjects[aTab.id] = new CustomTabObject();
             }
-            customTabObjects[aTab.id].isEnabled = anInformationHolder.conversionEnabled;
-            eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
-        };
-        var releaseTabs = function(aTab) {
-            //if (settingsWorker && settingsWorker.settingsTab) {
-            //    if (settingsWorker.settingsTab.title == aTab.title) {
-            //        settingsWorker.settingsTab = null;
-            //    }
-            //    else {
-            //        customTabObjects[aTab.id] = null;
-            //    }
-            //}
-            //else {
-                customTabObjects[aTab.id] = null;
-            //}
-        };
-        chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-            if (tab.url.indexOf("http") === 0 && changeInfo.status === "complete") {
-                setTabs(tab);
+        }
+        var applicationNavigate = function(event) {
+            // FIXME Works consistently only if delay here.
+            // Is the page completely loaded? No.
+            // Are the scripts injected? Yes
+            //sleep(1000);
+            console.log("applicationNavigate " + anInformationHolder.conversionEnabled + event.type + event.target + event.currentTarget);
+            if (event.target instanceof SafariBrowserTab) {
+                var contentScriptsParams = new ContentScriptParams(null, anInformationHolder);
+                event.target.page.dispatchMessage("updateSettings", contentScriptsParams);
             }
-        });
+        };
+        // When a new tab was opened, a tab was reloaded, a new window was opened
+        safari.application.addEventListener("navigate", applicationNavigate, false);
+        var finishedTabProcessing = function(event) {
+            if (event.name === "finishedTabProcessing") {
+                if (event.target instanceof SafariBrowserTab) {
+                    var status = {};
+                    status.isEnabled = anInformationHolder.conversionEnabled;
+                    status.hasConvertedElements = event.message;
+                    event.target.page.dispatchMessage("sendEnabledStatus", status);
+                    // TODO remember the result; hasConvertedElements
+                    console.log(event.name + " " + event.message);
+                }
+            }
+        };
+        // When a message is received
+        safari.application.addEventListener("message", finishedTabProcessing, false);
+/*
+        var windowNavigate = function(event) {
+            console.log("windowNavigate " + anInformationHolder.conversionEnabled + event.type + event.target + event.currentTarget);
+            //event.target.page.dispatchMessage("updateSettings", new ContentScriptParams(null, anInformationHolder));
+            var status = {};
+            status.isEnabled = anInformationHolder.conversionEnabled;
+            // FIXME hard coded
+            status.hasConvertedElements = false;
+            event.target.page.dispatchMessage("sendEnabledStatus", status);
+            //eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
+        };
+        // initialise all tabs
+        for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+            var browserWindow = safari.application.browserWindows[i];
+            // When a tab was reloaded or opened another page
+            browserWindow.addEventListener("navigate", windowNavigate, false);
+            for (var j = 0; j < browserWindow.tabs.length; ++j) {
+                browserWindow.tabs[j].page.dispatchMessage(
+                    "updateSettings", new ContentScriptParams(null, anInformationHolder));
+            }
 
-        chrome.tabs.onUpdated.addListener(sendSettingsToPage);
-        chrome.tabs.query({}, addTabs);
+        }
+*/
+        for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+            var browserWindow = safari.application.browserWindows[i];
+            for (var j = 0; j < browserWindow.tabs.length; ++j) {
+                browserWindow.tabs[j].page.dispatchMessage(
+                    "updateSettings", new ContentScriptParams(null, anInformationHolder));
+            }
+        }
+        console.log("anInformationHolder.conversionEnabled "  + anInformationHolder.conversionEnabled);
     };
     var toggleConversion = function(aStatus) {
-        // console.log("toggleConversion");
-        var updateTab = function(aTab) {
-            // console.log("aTab.id " + aTab.id);
-            if (!customTabObjects[aTab.id]) {
-                customTabObjects[aTab.id] = new CustomTabObject();
-            }
-            customTabObjects[aTab.id].isEnabled = aStatus;
-            // console.log("aStatus " + aStatus);
-            anInformationHolder.conversionEnabled = aStatus;
-            var makeEnabledStatus = function(customTabObject) {
-                // console.log("sendEnabledStatus ");
-                var status = {};
-                status.isEnabled = aStatus;
-                status.hasConvertedElements = customTabObject.hasConvertedElements;
-                try {
-                    sendEnabledStatus(customTabObject, status);
-                }
-                catch(err) {
-                    console.error("ContentInterface: " + err);
-                }
-            };
-            customTabObjects.map(makeEnabledStatus);
-            customTabObjects[aTab.id].hasConvertedElements = true;
+        var sendStatusToTab = function(aTab) {
+            // FIXME hasConvertedElements
+            var status = {isEnabled: aStatus, hasConvertedElements: false};
+            aTab.page.dispatchMessage("sendEnabledStatus", status);
         };
-        var updateActiveTabs = function(aTabs) {
-            // console.log("updateActiveTabs " + aTabs.length);
-            aTabs.map(updateTab);
+        var sendStatusToWindow = function(window) {
+            window.tabs.forEach(sendStatusToTab);
         };
-        chrome.tabs.query({}, updateActiveTabs);
+        console.log("toggleConversion aStatus " + aStatus);
+        safari.application.browserWindows.forEach(sendStatusToWindow);
     };
-    /*
     var showSettingsTab = function() {
-        var isOpen = settingsWorker && settingsWorker.settingsTab ;
-        if (!isOpen) {
-            tabs.open({url: "./settings.html"});
+        var settingsUrl = safari.extension.baseURI + "settings.html";
+        var currentWindow = safari.application.activeBrowserWindow;
+        var currentTab = currentWindow.activeTab;
+        if (currentTab.url === "") {
+            currentTab.url = settingsUrl;
         }
         else {
-            settingsWorker.settingsTab.activate();
+            for (var i = 0; i < safari.application.browserWindows.length; ++i) {
+                var browserWindow = safari.application.browserWindows[i];
+                for (var j = 0; j < browserWindow.tabs.length; ++j)
+                    if (browserWindow.tabs[j].url === settingsUrl ) {
+                        browserWindow.activate();
+                        browserWindow.tabs[j].activate();
+                        return;
+                    }
+            }
+            currentWindow.openTab("foreground").url = settingsUrl;
         }
     };
     var showTestTab = function() {
-        var isOpen = testPageWorker && testPageWorker.testTab ;
-        if (!isOpen) {
-            tabs.open({url: "./common/prices.html"});
+        var pricesUrl = safari.extension.baseURI + "prices.html";
+        var currentWindow = safari.application.activeBrowserWindow;
+        var currentTab = currentWindow.activeTab;
+        if (currentTab.url === "") {
+            currentTab.url = pricesUrl;
         }
         else {
-            testPageWorker.testPageTab.activate();
+            currentWindow.openTab("foreground").url = pricesUrl;
         }
     };
+    /*
     var closeSettingsTab = function() {
-        if (settingsWorker && settingsWorker.settingsTab) {
-            settingsWorker.settingsTab.close();
-        }
     };
      */
     return {
         watchForPages: watchForPages,
-        toggleConversion: toggleConversion
-        //showSettingsTab: showSettingsTab,
-        //showTestTab: showTestTab,
+        toggleConversion: toggleConversion,
+        showSettingsTab: showSettingsTab,
+        showTestTab: showTestTab
         //closeSettingsTab: closeSettingsTab
     }
 };
