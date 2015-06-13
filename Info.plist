@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Per Johansson</string>
 	<key>Builder Version</key>
-	<string>10600.3.18</string>
+	<string>10600.6.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>Direct Currency Converter</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.3.0</string>
+	<string>2.1.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.3.0</string>
+	<string>2.1.2.0</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -96,7 +96,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Converts prices from any currency (USD, GBP, etc.) to prices in a selectable currency automatically.</string>
+	<string>Converts prices from any currency (€, £, $, etc.) to prices in a selectable currency automatically.</string>
 	<key>DeveloperIdentifier</key>
 	<string>3X77WF8NVX</string>
 	<key>ExtensionInfoDictionaryVersion</key>
