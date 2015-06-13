@@ -56,7 +56,7 @@ const DirectCurrencyConverter = (function() {
             }
         });
         eventAggregator.subscribe("toggleConversion", function(eventArgs) {
-            console.log("subscribe toggleConversion eventArgs " + eventArgs);
+            // console.log("subscribe toggleConversion eventArgs " + eventArgs);
             contentInterface.toggleConversion(eventArgs);
             chromeInterface.setConversionButtonState(eventArgs);
         });
@@ -145,7 +145,7 @@ const DirectCurrencyConverter = (function() {
         geoService.loadUserCountry(sfGeoService);
     };
     var onJsonsDone = function() {
-        console.log("onJsonsDone");
+        // console.log("onJsonsDone");
         eventAggregator.subscribe("storageInitDone", function() {
             informationHolder = new InformationHolder(defaultEnabledCurrencies, defaultExcludedDomains, sfStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
             onStorageServiceInitDone(informationHolder);
@@ -216,23 +216,12 @@ const DirectCurrencyConverter = (function() {
     regionFormatsRequest.overrideMimeType("application/json");
     regionFormatsRequest.open("GET", "dcc-common-lib/regionFormats.json", true);
     regionFormatsRequest.onreadystatechange = function () {
-        console.log("regionFormatsRequest.readyState " + regionFormatsRequest.readyState);
-        console.log("regionFormatsRequest.status " + regionFormatsRequest.status);
+        // console.log("regionFormatsRequest.readyState " + regionFormatsRequest.readyState);
+        // console.log("regionFormatsRequest.status " + regionFormatsRequest.status);
         if (regionFormatsRequest.readyState === 4 && regionFormatsRequest.status === 0) {
             onRegionFormats(regionFormatsRequest.responseText);
         }
     };
     regionFormatsRequest.send(null);
-    console.log("Done");
-/*
-    var convertToCountry = "SE";
-    var convertToCountry = null;
-    if (convertToCountry === null || convertToCountry == null) {
-        geoService.loadUserCountry(sfGeoService, convertToCountry);
-        eventAggregator.subscribe("countryReceived", function(countryCode) {
-            console.log("countryCode " + countryCode);
-        });
-    }
-    quotesService.loadQuotes();
-    */
+    // console.log("Done");
 })();

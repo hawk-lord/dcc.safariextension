@@ -7,21 +7,11 @@
 const SfContentInterface = function(anInformationHolder) {
     "use strict";
     var watchForPages = function() {
-        console.log("watchForPages");
-        function sleep(milliseconds) {
-            var start = new Date().getTime();
-            for (var i = 0; i < 1e7; i++) {
-                if ((new Date().getTime() - start) > milliseconds){
-                    break;
-                }
-            }
-        }
         var applicationNavigate = function(event) {
             // FIXME Works consistently only if delay here.
             // Is the page completely loaded? No.
             // Are the scripts injected? Yes
             //sleep(1000);
-            console.log("applicationNavigate " + anInformationHolder.conversionEnabled + event.type + event.target + event.currentTarget);
             if (event.target instanceof SafariBrowserTab) {
                 var contentScriptsParams = new ContentScriptParams(null, anInformationHolder);
                 event.target.page.dispatchMessage("updateSettings", contentScriptsParams);
@@ -37,7 +27,7 @@ const SfContentInterface = function(anInformationHolder) {
                     status.hasConvertedElements = event.message;
                     event.target.page.dispatchMessage("sendEnabledStatus", status);
                     // TODO remember the result; hasConvertedElements
-                    console.log(event.name + " " + event.message);
+                    // console.log(event.name + " " + event.message);
                 }
             }
         };
@@ -73,7 +63,7 @@ const SfContentInterface = function(anInformationHolder) {
                     "updateSettings", new ContentScriptParams(null, anInformationHolder));
             }
         }
-        console.log("anInformationHolder.conversionEnabled "  + anInformationHolder.conversionEnabled);
+        // console.log("anInformationHolder.conversionEnabled "  + anInformationHolder.conversionEnabled);
     };
     var toggleConversion = function(aStatus) {
         var sendStatusToTab = function(aTab) {
@@ -84,7 +74,7 @@ const SfContentInterface = function(anInformationHolder) {
         var sendStatusToWindow = function(window) {
             window.tabs.forEach(sendStatusToTab);
         };
-        console.log("toggleConversion aStatus " + aStatus);
+        // console.log("toggleConversion aStatus " + aStatus);
         safari.application.browserWindows.forEach(sendStatusToWindow);
     };
     var showSettingsTab = function() {
