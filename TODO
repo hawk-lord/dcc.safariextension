@@ -11,8 +11,8 @@ TypeError: undefined is not an object (evaluating 'safari.application.activeBrow
 
 L10N
 
-Remove console.log and console.error
-Remove === null, etc
-Remove background.js
+-- Remove console.log and console.error
+-- Remove === null, etc
+-- Remove background.js
 
 Jaggillarbacon

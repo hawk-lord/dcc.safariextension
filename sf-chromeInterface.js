@@ -11,7 +11,7 @@ const SfChromeInterface = function(aConversionEnabled) {
         if (event.command === "toggle") {
             buttonStatus = !buttonStatus;
             var checkToggleButton = function(element) {
-                if (element != null && element.identifier === "dcc-tools-button") {
+                if (element && element.identifier === "dcc-tools-button") {
                     element.badge = buttonStatus ? 1 : 0;
                 }
             };
@@ -27,7 +27,7 @@ const SfChromeInterface = function(aConversionEnabled) {
     };
     var setConversionButtonState = function(aStatus) {
         var checkToggleButton = function(element) {
-            if (element != null && element.identifier === "dcc-tools-button") {
+            if (element && element.identifier === "dcc-tools-button") {
                 element.badge = buttonStatus ? 1 : 0;
             }
         };

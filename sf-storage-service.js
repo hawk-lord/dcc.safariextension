@@ -7,25 +7,25 @@
 const SfStorageServiceProvider = function() {
     "use strict";
     var init = function (aDefaultEnabled, anExcludedDomains) {
-        if (safari.extension.settings.excludedDomains == null) {
+        if (!safari.extension.settings.excludedDomains) {
             safari.extension.settings.excludedDomains = anExcludedDomains;
         }
-        if (safari.extension.settings.customSymbols == null) {
+        if (!safari.extension.settings.customSymbols) {
             safari.extension.settings.customSymbols = {};
         }
-        if (safari.extension.settings.monetarySeparatorSymbol == null) {
+        if (!safari.extension.settings.monetarySeparatorSymbol) {
             safari.extension.settings.monetarySeparatorSymbol = ",";
         }
-        if (safari.extension.settings.enableOnStart == null) {
+        if (!safari.extension.settings.enableOnStart) {
             safari.extension.settings.enableOnStart = "on";
         }
-        if (safari.extension.settings.quoteAdjustmentPercent == null) {
+        if (!safari.extension.settings.quoteAdjustmentPercent) {
             safari.extension.settings.quoteAdjustmentPercent = 0;
         }
         if (safari.extension.settings.roundAmounts == null) {
             safari.extension.settings.roundAmounts = false;
         }
-        if (safari.extension.settings.currencySpacing == null) {
+        if (!safari.extension.settings.currencySpacing) {
             safari.extension.settings.currencySpacing = " ";
         }
         if (safari.extension.settings.showOriginalPrices == null) {
@@ -37,10 +37,10 @@ const SfStorageServiceProvider = function() {
         if (safari.extension.settings.tempConvertUnits == null) {
             safari.extension.settings.tempConvertUnits = false;
         }
-        if (safari.extension.settings.monetaryGroupingSeparatorSymbol == null) {
+        if (!safari.extension.settings.monetaryGroupingSeparatorSymbol) {
             safari.extension.settings.monetaryGroupingSeparatorSymbol = ".";
         }
-        if (safari.extension.settings.enabledCurrencies == null) {
+        if (!safari.extension.settings.enabledCurrencies) {
             safari.extension.settings.enabledCurrencies = aDefaultEnabled;
         }
         else {
@@ -99,7 +99,7 @@ const SfStorageServiceProvider = function() {
             safari.extension.settings.monetarySeparatorSymbol = aMonetarySeparatorSymbol;
         },
         get enableOnStart () {
-            if (safari.extension.settings != null) {
+            if (safari.extension.settings.enableOnStart) {
                 return safari.extension.settings.enableOnStart === "on" ? true : false;
             }
             return true;
