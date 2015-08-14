@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.1.2.0
-Date: 2015-06-07
+Version: 2.2.0.0
+Date: 2015-08-14
 
 After installation, you'll have two new buttons in the toolbar.
 
@@ -81,3 +81,8 @@ Internal change: Updated jQuery and jQuery UI versions.
 Version: 2.1.2.0
 Date: 2015-06-07
 Internal change: porting from Firefox/Chrome
+
+Version: 2.2.0.0
+Date: 2015-08-14
+Currency and country name changes from ISO 4217 Amendment Number 160
+Settings screen currency selection improved. Also support for small screens and touch screens.
