@@ -6,7 +6,7 @@
  */
 const SfStorageServiceProvider = function() {
     "use strict";
-    var init = function (aDefaultEnabled, anExcludedDomains) {
+    var init = function (aConvertFroms, anExcludedDomains) {
         if (!safari.extension.settings.excludedDomains) {
             safari.extension.settings.excludedDomains = anExcludedDomains;
         }
@@ -40,23 +40,29 @@ const SfStorageServiceProvider = function() {
         if (!safari.extension.settings.monetaryGroupingSeparatorSymbol) {
             safari.extension.settings.monetaryGroupingSeparatorSymbol = ".";
         }
-        if (!safari.extension.settings.enabledCurrencies) {
-            safari.extension.settings.enabledCurrencies = aDefaultEnabled;
+        if (!safari.extension.settings.convertFroms) {
+            safari.extension.settings.convertFroms = aConvertFroms;
         }
         else {
-            var enabledCurrencies = safari.extension.settings.enabledCurrencies;
-            Object.keys(aDefaultEnabled).forEach(
-                function (key, index, array) {
-                    if (enabledCurrencies[key] == null) {
-                        enabledCurrencies[key] = array[key];
+            for (var currency of aConvertFroms) {
+                var convertFroms = safari.extension.settings.convertFroms;
+                var found = false;
+                for (var storedCurrency of convertFroms) {
+                    if (currency.isoName === storedCurrency.isoName) {
+                        found = true;
+                        break;
                     }
                 }
-            );
-            safari.extension.settings.enabledCurrencies = enabledCurrencies;
+                if (!found){
+                    convertFroms.push(currency);
+                }
+            }
+            safari.extension.settings.convertFroms = convertFroms;
         }
+        safari.extension.settings.enabledCurrencies = null;
         eventAggregator.publish("storageInitDone");
     };
-    var resetSettings = function(aDefaultEnabled)  {
+    var resetSettings = function(aConvertFroms)  {
         delete safari.extension.settings.convertToCurrency;
         delete safari.extension.settings.convertToCountry;
         safari.extension.settings.customSymbols =  {};
@@ -69,7 +75,7 @@ const SfStorageServiceProvider = function() {
         safari.extension.settings.monetarySeparatorSymbol =  ";";
         safari.extension.settings.monetaryGroupingSeparatorSymbol =  ".";
         safari.extension.settings.tempConvertUnits =  false;
-        safari.extension.settings.enabledCurrencies =  aDefaultEnabled;
+        safari.extension.settings.convertFroms =  aConvertFroms;
         eventAggregator.publish("storageReInitDone");
     };
     return {
@@ -113,11 +119,11 @@ const SfStorageServiceProvider = function() {
         set excludedDomains (anExcludedDomains) {
             safari.extension.settings.excludedDomains = anExcludedDomains;
         },
-        get enabledCurrencies () {
-            return safari.extension.settings.enabledCurrencies;
+        get convertFroms () {
+            return safari.extension.settings.convertFroms;
         },
-        set enabledCurrencies (anEnabledCurrencies) {
-            safari.extension.settings.enabledCurrencies = anEnabledCurrencies;
+        set convertFroms (anEnabledCurrencies) {
+            safari.extension.settings.convertFroms = anEnabledCurrencies;
         },
         get quoteAdjustmentPercent () {
             return safari.extension.settings.quoteAdjustmentPercent;
@@ -161,10 +167,20 @@ const SfStorageServiceProvider = function() {
         set tempConvertUnits (aTempConvertUnits) {
             safari.extension.settings.tempConvertUnits = aTempConvertUnits;
         },
-        setEnabledCurrency: function(aCurrency, anEnabled) {
-            var enabledCurrencies = safari.extension.settings.enabledCurrencies;
-            enabledCurrencies[aCurrency] = anEnabled;
-            safari.extension.settings.enabledCurrencies = enabledCurrencies;
+        setEnabledCurrency(aCurrency, anEnabled) {
+            var convertFroms = safari.extension.settings.convertFroms;
+            var found = false;
+            for (var storedCurrency of convertFroms) {
+                if (aCurrency.isoName === storedCurrency.isoName) {
+                    found = true;
+                    aCurrency.enabled = anEnabled;
+                    break;
+                }
+            }
+            if (!found){
+                convertFroms.push({isoName: currency, enabled: anEnabled});
+            }
+            safari.extension.settings.convertFroms = convertFroms;
         },
         resetSettings: resetSettings
     };

@@ -13,7 +13,6 @@ const DirectCurrencyConverter = (function() {
     var iso4217Currencies;
     var regionFormats;
     var defaultExcludedDomains = ["images.google.com", "docs.google.com", "drive.google.com", "twitter.com"];
-    var defaultEnabledCurrencies = {"SEK":true, "CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "USD":true};
     var localisation = new Localisation();
     var _ = localisation._;
     var informationHolder;
@@ -26,57 +25,42 @@ const DirectCurrencyConverter = (function() {
         geoService = new FreegeoipServiceProvider();
         sfYahooQuotesService = new SfYahooQuotesServiceProvider();
         yahooQuotesService = new YahooQuotesServiceProvider(eventAggregator);
-        //var sfStorageServiceProvider = new SfStorageServiceProvider();
-        //var informationHolder = new InformationHolder(aStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
         var contentInterface = new SfContentInterface(informationHolder);
         var chromeInterface = new SfChromeInterface(informationHolder.conversionEnabled);
         eventAggregator.subscribe("countryReceived", function(countryCode) {
-            // console.log("subscribe countryReceived");
-            // console.log("countryCode " + countryCode);
             informationHolder.convertToCountry = countryCode;
             yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
         });
         eventAggregator.subscribe("quotesFromTo", function(eventArgs) {
-            // console.log("subscribe quotesFromTo");
             yahooQuotesService.quotesHandlerFromTo(eventArgs);
         });
         eventAggregator.subscribe("quotesToFrom", function(eventArgs) {
-            // console.log("subscribe quotesToFrom");
             yahooQuotesService.quotesHandlerToFrom(eventArgs);
         });
         eventAggregator.subscribe("quoteReceived", function(eventArgs) {
-            // console.log("subscribe quoteReceived " + eventArgs.quote);
-            informationHolder.setConversionQuote(eventArgs.convertFromCurrency, eventArgs.quote);
+            informationHolder.setConversionQuote(eventArgs.convertFromCurrencyName, eventArgs.quote);
             if (informationHolder.isAllCurrenciesRead()) {
-                // console.log("isAllCurrenciesRead");
                 contentInterface.watchForPages();
                 contentInterface.toggleConversion(informationHolder.conversionEnabled);
                 chromeInterface.setConversionButtonState(informationHolder.conversionEnabled);
-                //chromeInterface.setToolsButtonText(informationHolder.getQuoteString());
             }
         });
         eventAggregator.subscribe("toggleConversion", function(eventArgs) {
-            // console.log("subscribe toggleConversion eventArgs " + eventArgs);
             contentInterface.toggleConversion(eventArgs);
             chromeInterface.setConversionButtonState(eventArgs);
         });
         eventAggregator.subscribe("showSettingsTab", function() {
-            // console.log("subscribe showSettingsTab");
             contentInterface.showSettingsTab();
         });
         eventAggregator.subscribe("showTestTab", function() {
-            // console.log("subscribe showTestTab");
             contentInterface.showTestTab();
         });
         eventAggregator.subscribe("saveSettings", function(eventArgs) {
-            // console.log("subscribe saveSettings");
             var toCurrencyChanged = informationHolder.convertToCurrency != eventArgs.contentScriptParams.convertToCurrency;
             informationHolder.resetReadCurrencies();
             new ParseContentScriptParams(eventArgs.contentScriptParams, informationHolder);
-            //contentInterface.closeSettingsTab();
             if (toCurrencyChanged) {
-                // controller.loadQuotes();
-                yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(),
+                yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(),
                     informationHolder.convertToCurrency);
             }
         });
@@ -84,28 +68,6 @@ const DirectCurrencyConverter = (function() {
             informationHolder.resetSettings();
             informationHolder.resetReadCurrencies();
         });
-        /**
-         * Communicate with the Settings tab
-         * @param message
-         * @param sender
-         * @param sendResponse
-         */
-            /*
-        var onMessageFromSettings = function(message, sender, sendResponse) {
-            if (message.command === "show") {
-                sendResponse(new ContentScriptParams(null, informationHolder));
-            }
-            else if (message.command === "save") {
-                eventAggregator.publish("saveSettings", {
-                    contentScriptParams: message.contentScriptParams
-                })
-            }
-            else if (message.command === "reset") {
-                eventAggregator.publish("resetSettings");
-            }
-        };
-        chrome.runtime.onMessage.addListener(onMessageFromSettings);
-        */
         /**
          * Communicate with the Settings tab
          * @param message
@@ -138,23 +100,22 @@ const DirectCurrencyConverter = (function() {
             geoService.loadUserCountry(sfGeoService);
         }
         else {
-            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
+            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(), informationHolder.convertToCurrency);
         }
     };
     var onStorageServiceReInitDone = function(informationHolder) {
         geoService.loadUserCountry(sfGeoService);
     };
     var onJsonsDone = function() {
-        // console.log("onJsonsDone");
         eventAggregator.subscribe("storageInitDone", function() {
-            informationHolder = new InformationHolder(defaultEnabledCurrencies, defaultExcludedDomains, sfStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
+            informationHolder = new InformationHolder(defaultExcludedDomains, sfStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
             onStorageServiceInitDone(informationHolder);
         });
         eventAggregator.subscribe("storageReInitDone", function() {
             onStorageServiceReInitDone(informationHolder);
         });
         var sfStorageServiceProvider = new SfStorageServiceProvider();
-        sfStorageServiceProvider.init(defaultEnabledCurrencies, defaultExcludedDomains);
+        sfStorageServiceProvider.init(iso4217Currencies, defaultExcludedDomains);
     };
     var onCurrencyData = function(result) {
         var currencyDataJson = result;
@@ -205,7 +166,6 @@ const DirectCurrencyConverter = (function() {
     };
     iso4217CurrenciesRequest.send(null);
     var onRegionFormats = function(result) {
-        // console.log("onRegionFormats " + result);
         var regionFormatsJson = result;
         regionFormats = JSON.parse(regionFormatsJson);
         if (currencyData && currencySymbols && regionFormats && regionFormats) {
@@ -216,12 +176,9 @@ const DirectCurrencyConverter = (function() {
     regionFormatsRequest.overrideMimeType("application/json");
     regionFormatsRequest.open("GET", "dcc-common-lib/regionFormats.json", true);
     regionFormatsRequest.onreadystatechange = function () {
-        // console.log("regionFormatsRequest.readyState " + regionFormatsRequest.readyState);
-        // console.log("regionFormatsRequest.status " + regionFormatsRequest.status);
         if (regionFormatsRequest.readyState === 4 && regionFormatsRequest.status === 0) {
             onRegionFormats(regionFormatsRequest.responseText);
         }
     };
     regionFormatsRequest.send(null);
-    // console.log("Done");
 })();
