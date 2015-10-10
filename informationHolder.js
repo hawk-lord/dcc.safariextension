@@ -8,6 +8,8 @@
 /**
  * Stereotype Information holder
  *
+ * @param aDefaultEnabledCurrencies
+ * @param aDefaultExcludedDomains
  * @param aStorageService
  * @param aCurrencyData
  * @param aCurrencySymbols
@@ -17,8 +19,9 @@
  * @returns {{conversionEnabled, conversionEnabled, convertToCountry, convertToCountry, convertToCurrency, convertToCurrency, getConversionQuotes: Function, setConversionQuote: Function, getCurrencySymbols: Function, customSymbols, customSymbols, monetarySeparatorSymbol, monetarySeparatorSymbol, excludedDomains, excludedDomains, enabledCurrencies, enabledCurrencies, enableOnStart, enableOnStart, quoteAdjustmentPercent, quoteAdjustmentPercent, roundPrices, roundPrices, currencySpacing, currencySpacing, showOriginalPrices, showOriginalPrices, beforeCurrencySymbol, beforeCurrencySymbol, tempConvertUnits, tempConvertUnits, monetaryGroupingSeparatorSymbol, monetaryGroupingSeparatorSymbol, getCurrencyNames: Function, getFromCurrencies: Function, isAllCurrenciesRead: Function, getQuoteString: Function, resetReadCurrencies: Function, resetSettings: Function}}
  * @constructor
  */
-const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymbols, anIso4217Currencies, aRegionFormats, _) {
-    "use strict";
+const InformationHolder = function(aDefaultEnabledCurrencies, aDefaultExcludedDomains, aStorageService, aCurrencyData, aCurrencySymbols, anIso4217Currencies, aRegionFormats, _) {
+    // "use strict";
+    const defaultEnabledCurrencies = aDefaultEnabledCurrencies;
     const conversionQuotes = {};
     const findCurrency = function(aCountry) {
         const regions = aCurrencyData.region;
@@ -51,20 +54,14 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
         return foundCurrency;
     };
     var numberOfReadCurrencies = 0;
-    /**
-     * Domains that should not be converted.
-     * TODO use in PageMod instead
-     * @type {string[]}
-     * @private
-     */
-    const _excludedDomains = ["images.google.com", "docs.google.com", "drive.google.com", "twitter.com"];
-    const defaultEnabledCurrencies = {"SEK":true, "CHF":true, "DKK":true, "EUR":true, "GBP":true, "ISK":true, "JPY":true, "NOK":true, "RUB":true, "USD":true};
-    aStorageService.init(defaultEnabledCurrencies, _excludedDomains);
     var conversionEnabled = aStorageService.enableOnStart;
     const _currencyNames = {};
     anIso4217Currencies.forEach(function(aCurrency) {
-        if (!defaultEnabledCurrencies[aCurrency]) {
+        if (defaultEnabledCurrencies[aCurrency] == null) {
             defaultEnabledCurrencies[aCurrency] = false;
+        }
+        if (aStorageService.enabledCurrencies[aCurrency] == null) {
+            aStorageService.setEnabledCurrency(aCurrency, defaultEnabledCurrencies[aCurrency]);
         }
         _currencyNames[aCurrency] = _(aCurrency);
     });
@@ -107,8 +104,7 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
         numberOfReadCurrencies = 0;
     };
     const resetSettings = function() {
-        aStorageService.resetSettings();
-        aStorageService.init(defaultEnabledCurrencies, _excludedDomains);
+        aStorageService.resetSettings(defaultEnabledCurrencies);
     };
 
     return {
@@ -126,10 +122,18 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
             //const {RegionFormat} = require("./RegionFormat");
             const regionFormat = aRegionFormats[aCountry.toLowerCase()];
             if (regionFormat) {
-                aStorageService.monetarySeparatorSymbol = regionFormat.monetarySeparatorSymbol;
-                aStorageService.currencySpacing = regionFormat.currencySpacing;
-                aStorageService.monetaryGroupingSeparatorSymbol = regionFormat.monetaryGroupingSeparatorSymbol;
-                aStorageService.beforeCurrencySymbol = regionFormat.beforeCurrencySymbol;
+                if (!aStorageService.monetarySeparatorSymbol) {
+                    aStorageService.monetarySeparatorSymbol = regionFormat.monetarySeparatorSymbol;
+                }
+                if ("string" !== typeof aStorageService.currencySpacing) {
+                    aStorageService.currencySpacing = regionFormat.currencySpacing;
+                }
+                if (!aStorageService.monetaryGroupingSeparatorSymbol) {
+                    aStorageService.monetaryGroupingSeparatorSymbol = regionFormat.monetaryGroupingSeparatorSymbol;
+                }
+                if (aStorageService.beforeCurrencySymbol === null || aStorageService.beforeCurrencySymbol == null) {
+                    aStorageService.beforeCurrencySymbol = regionFormat.beforeCurrencySymbol;
+                }
                 if (!aStorageService.convertToCurrency) {
                     aStorageService.convertToCurrency = findCurrency(aCountry);
                 }
@@ -215,6 +219,18 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
         },
         set monetaryGroupingSeparatorSymbol (aMonetaryGroupingSeparatorSymbol) {
             aStorageService.monetaryGroupingSeparatorSymbol = aMonetaryGroupingSeparatorSymbol;
+        },
+        get showDccToolsButton () {
+            return aStorageService.showDccToolsButton;
+        },
+        set showDccToolsButton (aShowDccToolsButton) {
+            aStorageService.showDccToolsButton = aShowDccToolsButton;
+        },
+        get showDccConversionButton () {
+            return aStorageService.showDccConversionButton;
+        },
+        set showDccConversionButton (aShowDccConversionButton) {
+            aStorageService.showDccConversionButton = aShowDccConversionButton;
         },
         getCurrencyNames: getCurrencyNames,
         getFromCurrencies: getFromCurrencies,
