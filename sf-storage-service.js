@@ -29,7 +29,13 @@ const SfStorageServiceProvider = function() {
             safari.extension.settings.currencySpacing = " ";
         }
         if (safari.extension.settings.showOriginalPrices == null) {
-            safari.extension.settings.showOriginalPrices = true;
+            safari.extension.settings.showOriginalPrices = false;
+        }
+        if (safari.extension.settings.showOriginalCurrencies == null) {
+            safari.extension.settings.showOriginalCurrencies = false;
+        }
+        if (safari.extension.settings.showTooltip == null) {
+            safari.extension.settings.showTooltip = true;
         }
         if (safari.extension.settings.beforeCurrencySymbol == null) {
             safari.extension.settings.beforeCurrencySymbol = true;
@@ -69,7 +75,9 @@ const SfStorageServiceProvider = function() {
         safari.extension.settings.enableOnStart =  "on";
         safari.extension.settings.quoteAdjustmentPercent =  0;
         safari.extension.settings.roundAmounts =  false;
-        safari.extension.settings.showOriginalPrices =  true;
+        safari.extension.settings.showOriginalPrices =  false;
+        safari.extension.settings.showOriginalCurrencies = false;
+        safari.extension.settings.showTooltip =  true;
         safari.extension.settings.beforeCurrencySymbol =  true;
         safari.extension.settings.currencySpacing =  " ";
         safari.extension.settings.monetarySeparatorSymbol =  ";";
@@ -148,6 +156,18 @@ const SfStorageServiceProvider = function() {
         },
         set showOriginalPrices (aShowOriginalPrices) {
             safari.extension.settings.showOriginalPrices = aShowOriginalPrices;
+        },
+        get showOriginalCurrencies () {
+            return safari.extension.settings.showOriginalCurrencies;
+        },
+        set showOriginalCurrencies (aShowOriginalCurrencies) {
+            safari.extension.settings.showOriginalCurrencies = aShowOriginalCurrencies;
+        },
+        get showTooltip () {
+            return safari.extension.settings.showTooltip;
+        },
+        set showTooltip (aShowTooltip) {
+            safari.extension.settings.showTooltip = aShowTooltip;
         },
         get beforeCurrencySymbol () {
             return safari.extension.settings.beforeCurrencySymbol;
