@@ -65,8 +65,8 @@ const SfContentInterface = function(anInformationHolder) {
 
         }
 */
-        for (browserWindow of safari.application.browserWindows) {
-            for (tab of browserWindow.tabs) {
+        for (var browserWindow of safari.application.browserWindows) {
+            for (var tab of browserWindow.tabs) {
                 if (tab.page) {
                     tab.page.dispatchMessage(
                         "updateSettings", new ContentScriptParams(null, anInformationHolder));
@@ -97,8 +97,8 @@ const SfContentInterface = function(anInformationHolder) {
             currentTab.url = settingsUrl;
         }
         else {
-            for (browserWindow of safari.application.browserWindows) {
-                for (tab of browserWindow.tabs)
+            for (var browserWindow of safari.application.browserWindows) {
+                for (var tab of browserWindow.tabs)
                     if (tab.url === settingsUrl ) {
                         browserWindow.activate();
                         tab.activate();
