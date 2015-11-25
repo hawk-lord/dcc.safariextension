@@ -29,7 +29,7 @@ const DirectCurrencyConverter = (function() {
         var chromeInterface = new SfChromeInterface(informationHolder.conversionEnabled);
         eventAggregator.subscribe("countryReceived", function(countryCode) {
             informationHolder.convertToCountry = countryCode;
-            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getFromCurrencies(), informationHolder.convertToCurrency);
+            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(), informationHolder.convertToCurrency);
         });
         eventAggregator.subscribe("quotesFromTo", function(eventArgs) {
             yahooQuotesService.quotesHandlerFromTo(eventArgs);

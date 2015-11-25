@@ -1,6 +1,6 @@
 -- Make conversion work on the first run after installation
 -- Make badge show correctly at the same time
-Make conversion work on and after page reload (seems bad in the old one too)
+-- Make conversion work on and after page reload (seems bad in the old one too)
 -- Make conversion work on the test page
 -- Make reset settings work
 Selected currencies
@@ -13,6 +13,9 @@ L10N
 
 -- Remove console.log and console.error
 -- Remove === null, etc
--- Remove background.js
 
 Jaggillarbacon
+
+
+Settings Convert to is blank.
+

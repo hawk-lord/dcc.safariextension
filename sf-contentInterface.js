@@ -12,10 +12,19 @@ const SfContentInterface = function(anInformationHolder) {
             // Is the page completely loaded? No.
             // Are the scripts injected? Yes
             //sleep(1000);
+            var tab;
             if (event.target instanceof SafariBrowserTab) {
-                var contentScriptsParams = new ContentScriptParams(null, anInformationHolder);
-                event.target.page.dispatchMessage("updateSettings", contentScriptsParams);
+                // A background tab could be navigating.
+                if (event.type === "navigate" && event.target != safari.application.activeBrowserWindow.activeTab) {
+                    return;
+                }
+                tab = event.target;
             }
+            else {
+                tab = event.target.activeTab;
+            }
+            var contentScriptsParams = new ContentScriptParams(null, anInformationHolder);
+            event.target.page.dispatchMessage("updateSettings", contentScriptsParams);
         };
         // When a new tab was opened, a tab was reloaded, a new window was opened
         safari.application.addEventListener("navigate", applicationNavigate, false);
@@ -56,11 +65,12 @@ const SfContentInterface = function(anInformationHolder) {
 
         }
 */
-        for (var i = 0; i < safari.application.browserWindows.length; ++i) {
-            var browserWindow = safari.application.browserWindows[i];
-            for (var j = 0; j < browserWindow.tabs.length; ++j) {
-                browserWindow.tabs[j].page.dispatchMessage(
-                    "updateSettings", new ContentScriptParams(null, anInformationHolder));
+        for (browserWindow of safari.application.browserWindows) {
+            for (tab of browserWindow.tabs) {
+                if (tab.page) {
+                    tab.page.dispatchMessage(
+                        "updateSettings", new ContentScriptParams(null, anInformationHolder));
+                }
             }
         }
         // console.log("anInformationHolder.conversionEnabled "  + anInformationHolder.conversionEnabled);
@@ -69,7 +79,9 @@ const SfContentInterface = function(anInformationHolder) {
         var sendStatusToTab = function(aTab) {
             // FIXME hasConvertedElements
             var status = {isEnabled: aStatus, hasConvertedElements: false};
-            aTab.page.dispatchMessage("sendEnabledStatus", status);
+            if (aTab.page) {
+                aTab.page.dispatchMessage("sendEnabledStatus", status);
+            }
         };
         var sendStatusToWindow = function(window) {
             window.tabs.forEach(sendStatusToTab);
@@ -85,12 +97,11 @@ const SfContentInterface = function(anInformationHolder) {
             currentTab.url = settingsUrl;
         }
         else {
-            for (var i = 0; i < safari.application.browserWindows.length; ++i) {
-                var browserWindow = safari.application.browserWindows[i];
-                for (var j = 0; j < browserWindow.tabs.length; ++j)
-                    if (browserWindow.tabs[j].url === settingsUrl ) {
+            for (browserWindow of safari.application.browserWindows) {
+                for (tab of browserWindow.tabs)
+                    if (tab.url === settingsUrl ) {
                         browserWindow.activate();
-                        browserWindow.tabs[j].activate();
+                        tab.activate();
                         return;
                     }
             }
