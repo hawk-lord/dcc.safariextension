@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.4.1.0
-Date: 2015-11-17
+Version: 2.4.2.1
+Date: 2015-12-02
 
 After installation, you'll have a new menu button in the toolbar.
 
@@ -100,3 +100,8 @@ Original price and original currency in brackets can now be hidden and shown sep
 Fix: some settings had been disabled.
 Fix: an error with CHF and SEK conversion.
 Fix: don't suppress original tooltips
+
+Version: 2.4.2.1
+Date: 2015-12-02
+Improved support for subunits (cents etc.).
+Fix: works with dynamically changed data (again).

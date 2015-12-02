@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.4.2.0</string>
+	<string>2.4.2.1</string>
 	<key>CFBundleVersion</key>
-	<string>2.4.2.0</string>
+	<string>2.4.2.1</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -98,7 +98,7 @@
 	<key>Description</key>
 	<string>Converts prices from any currency (€, £, $, etc.) to prices in a selectable currency automatically.</string>
 	<key>DeveloperIdentifier</key>
-	<string>3X77WF8NVX</string>
+	<string>0000000000</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
