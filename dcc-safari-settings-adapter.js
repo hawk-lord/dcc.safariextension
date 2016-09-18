@@ -17,7 +17,7 @@ const SettingsAdapter = function() {
     };
     safari.self.addEventListener("message", messageListener, false);
     const dispatchSettingsShow = function() {
-        safari.self.tab.dispatchMessage("show");
+        safari.self.tab.dispatchMessage("showSettings");
     };
     window.onload = dispatchSettingsShow;
     return {

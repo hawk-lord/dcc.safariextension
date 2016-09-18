@@ -85,7 +85,6 @@ const DirectCurrencyConverter = (function() {
         eventAggregator.subscribe("resetSettings", function() {
             informationHolder.resetSettings(iso4217Currencies);
             informationHolder.resetReadCurrencies();
-            geoServiceFreegeoip.loadUserCountry(sfGeoServiceFreegeoip);
         });
         /**
          * Communicate with the Settings tab
@@ -94,7 +93,7 @@ const DirectCurrencyConverter = (function() {
          * @param sendResponse
          */
         var onMessageFromSettings = function(event) {
-            if (event.name === "show") {
+            if (event.name === "showSettings") {
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
                     "updateSettingsTab", new ContentScriptParams(null, informationHolder));
             }
