@@ -404,6 +404,7 @@ if (!this.DirectCurrencyContent) {
          * Wait for PriceRegexes to be created before running makePriceRegexes.
          * Should be executed once only.
          */
+/*
         const makePriceRegexes = function() {
             const promise = new Promise(
                 function(resolve, reject) {
@@ -430,6 +431,7 @@ if (!this.DirectCurrencyContent) {
         };
 
         makePriceRegexes();
+*/
 
 
         const replaceCurrency = function(aNode) {
@@ -763,7 +765,7 @@ if (!this.DirectCurrencyContent) {
             const startConversionWhenReady = function() {
                 const promise2 = new Promise(
                     function(resolve, reject) {
-                        if (PriceRegexes) {
+                        if (PriceRegexes.makePriceRegexes(regex1, regex2)) {
                             resolve();
                         }
                         else {
