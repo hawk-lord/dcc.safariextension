@@ -83,7 +83,7 @@ const DirectCurrencyConverter = (function() {
             }
         });
         eventAggregator.subscribe("resetSettings", function() {
-            informationHolder.resetSettings();
+            informationHolder.resetSettings(iso4217Currencies);
             informationHolder.resetReadCurrencies();
             geoServiceFreegeoip.loadUserCountry(sfGeoServiceFreegeoip);
         });
