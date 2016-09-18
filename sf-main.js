@@ -16,19 +16,37 @@ const DirectCurrencyConverter = (function() {
     var localisation = new Localisation();
     var _ = localisation._;
     var informationHolder;
-    var sfGeoService;
-    var geoService;
+    var sfGeoServiceFreegeoip;
+    var geoServiceFreegeoip;
+    var sfGeoServiceNekudo;
+    var geoServiceNekudo;
     var sfYahooQuotesService;
     var yahooQuotesService;
     var onStorageServiceInitDone = function(informationHolder) {
-        sfGeoService = new SfFreegeoipServiceProvider();
-        geoService = new FreegeoipServiceProvider();
+        sfGeoServiceFreegeoip = new SfFreegeoipServiceProvider();
+        geoServiceFreegeoip = new FreegeoipServiceProvider();
+        sfGeoServiceNekudo = new SfNekudoServiceProvider();
+        geoServiceNekudo = new NekudoServiceProvider();
         sfYahooQuotesService = new SfYahooQuotesServiceProvider();
         yahooQuotesService = new YahooQuotesServiceProvider(eventAggregator);
         var contentInterface = new SfContentInterface(informationHolder);
         var chromeInterface = new SfChromeInterface(informationHolder.conversionEnabled);
-        eventAggregator.subscribe("countryReceived", function(countryCode) {
-            informationHolder.convertToCountry = countryCode;
+        eventAggregator.subscribe("countryReceivedFreegeoip", function(countryCode) {
+            if (countryCode !== "") {
+                informationHolder.convertToCountry = countryCode;
+                yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(), informationHolder.convertToCurrency);
+            }
+            else {
+                geoServiceNekudo.loadUserCountry(sfGeoServiceNekudo);
+            }
+        });
+        eventAggregator.subscribe("countryReceivedNekudo", function(countryCode) {
+            if (countryCode !== "") {
+                informationHolder.convertToCountry = countryCode;
+            }
+            else {
+                informationHolder.convertToCountry = "CH";
+            }
             yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(), informationHolder.convertToCurrency);
         });
         eventAggregator.subscribe("quotesFromTo", function(eventArgs) {
@@ -67,6 +85,7 @@ const DirectCurrencyConverter = (function() {
         eventAggregator.subscribe("resetSettings", function() {
             informationHolder.resetSettings();
             informationHolder.resetReadCurrencies();
+            geoServiceFreegeoip.loadUserCountry(sfGeoServiceFreegeoip);
         });
         /**
          * Communicate with the Settings tab
@@ -97,18 +116,18 @@ const DirectCurrencyConverter = (function() {
         safari.application.addEventListener("message", onMessageFromSettings, false);
 
         if (!informationHolder.convertToCountry) {
-            geoService.loadUserCountry(sfGeoService);
+            geoServiceFreegeoip.loadUserCountry(sfGeoServiceFreegeoip);
         }
         else {
             yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(), informationHolder.convertToCurrency);
         }
     };
     var onStorageServiceReInitDone = function(informationHolder) {
-        geoService.loadUserCountry(sfGeoService);
+        geoServiceFreegeoip.loadUserCountry(sfGeoServiceFreegeoip);
     };
     var onJsonsDone = function() {
         eventAggregator.subscribe("storageInitDone", function() {
-            informationHolder = new InformationHolder(defaultExcludedDomains, sfStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
+            informationHolder = new InformationHolder(sfStorageServiceProvider, currencyData, currencySymbols, iso4217Currencies, regionFormats, _);
             onStorageServiceInitDone(informationHolder);
         });
         eventAggregator.subscribe("storageReInitDone", function() {

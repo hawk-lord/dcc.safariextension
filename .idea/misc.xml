@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
   <component name="ProjectResources">
     <resource url="http://www.apple.com/DTDs/PropertyList-1.0.dtd" location="$USER_HOME$/Library/Caches/WebStorm9/extResources/c3961c84_PropertyList-1.0.dtd" />
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="false" jdk-15="false" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" assert-keyword="false" jdk-15="false" />
 </project>

@@ -5,7 +5,7 @@
  *
  */
 const ContentScriptParams = function(aTab, anInformationHolder) {
-    "use strict";
+    // "use strict";
     this.conversionQuotes = anInformationHolder.getConversionQuotes();
     this.convertToCurrency = anInformationHolder.convertToCurrency;
     this.convertToCountry = anInformationHolder.convertToCountry;

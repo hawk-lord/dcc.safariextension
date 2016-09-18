@@ -51,19 +51,17 @@ const SfStorageServiceProvider = function() {
         }
         else {
             for (var currency of aConvertFroms) {
-                var convertFroms = safari.extension.settings.convertFroms;
                 var found = false;
-                for (var storedCurrency of convertFroms) {
+                for (var storedCurrency of safari.extension.settings.convertFroms) {
                     if (currency.isoName === storedCurrency.isoName) {
                         found = true;
                         break;
                     }
                 }
                 if (!found){
-                    convertFroms.push(currency);
+                    safari.extension.settings.convertFroms.push(currency);
                 }
             }
-            safari.extension.settings.convertFroms = convertFroms;
         }
         safari.extension.settings.enabledCurrencies = null;
         eventAggregator.publish("storageInitDone");
@@ -188,9 +186,8 @@ const SfStorageServiceProvider = function() {
             safari.extension.settings.tempConvertUnits = aTempConvertUnits;
         },
         setEnabledCurrency(aCurrency, anEnabled) {
-            var convertFroms = safari.extension.settings.convertFroms;
             var found = false;
-            for (var storedCurrency of convertFroms) {
+            for (var storedCurrency of safari.extension.settings.convertFroms) {
                 if (aCurrency.isoName === storedCurrency.isoName) {
                     found = true;
                     aCurrency.enabled = anEnabled;
@@ -198,9 +195,8 @@ const SfStorageServiceProvider = function() {
                 }
             }
             if (!found){
-                convertFroms.push({isoName: currency, enabled: anEnabled});
+                safari.extension.settings.convertFroms.push({isoName: currency, enabled: anEnabled});
             }
-            safari.extension.settings.convertFroms = convertFroms;
         },
         resetSettings: resetSettings
     };

@@ -5,13 +5,13 @@
  *
  */
 const YahooQuotesServiceProvider = function(anEventAggregator) {
-    "use strict";
+    // "use strict";
     const eventAggregator = anEventAggregator;
-    let convertToCurrency;
-    let quoteQueriesFromTo = [];
-    let quoteQueriesToFrom = [];
-    let quotesFromTo = [];
-    let quotesToFrom = [];
+    var convertToCurrency;
+    var quoteQueriesFromTo = [];
+    var quoteQueriesToFrom = [];
+    var quotesFromTo = [];
+    var quotesToFrom = [];
     const gramsPerOunce = 31.1034768;
     // Since Yahoo quote response only has four decimals, we sometimes get imprecise quotes
     // In such cases, we use the inverse quote and invert it.
@@ -20,8 +20,8 @@ const YahooQuotesServiceProvider = function(anEventAggregator) {
         quotesFromTo.forEach( function(anElement, anIndex) {
             // "USDEUR=X",0.7317
             // console.log("anElement " + anElement.symbol + anElement.rate);
-            let convertFromCurrency = anElement.symbol.substr(0, 3);
-            let quote = anElement.rate;
+            var convertFromCurrency = anElement.symbol.substr(0, 3);
+            var quote = anElement.rate;
             if (quote < 0.01) {
                 // "EURJPY=X",142.3186
                 convertFromCurrency = quotesToFrom[anIndex].symbol.substr(3, 3);

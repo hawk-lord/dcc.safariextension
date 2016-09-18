@@ -1,8 +1,11 @@
-/**
+/*
+ * © Per Johansson
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  */
-const SfFreegeoipServiceProvider = function() {
-    "use strict";
+const SfNekudoServiceProvider = function() {
+    // "use strict";
     var onComplete = function() {
         try {
             if (this.readyState === this.DONE) {
@@ -14,12 +17,12 @@ const SfFreegeoipServiceProvider = function() {
                 else {
                     countryCode = "";
                 }
-                eventAggregator.publish("countryReceivedFreegeoip", countryCode);
+                eventAggregator.publish("countryReceivedNekudo", countryCode);
             }
         }
         catch(err) {
             console.error("err " + err);
-            eventAggregator.publish("countryReceivedFreegeoip", "");
+            eventAggregator.publish("countryReceivedNekudo", "");
         }
     };
     var findCountry = function (aUrlString, aConvertToCountry) {

@@ -18,7 +18,7 @@
  * @constructor
  */
 const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymbols, aConvertFroms, aRegionFormats, _) {
-    "use strict";
+    // "use strict";
     const conversionQuotes = {
         "inch": 25.4,
         "kcal": 4.184,
@@ -31,7 +31,7 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
     const findCurrency = function(aCountry) {
         const regions = aCurrencyData.region;
         // TODO Default currency
-        let foundCurrency = "GBP";
+        var foundCurrency = "GBP";
         const findCurrentCurrency = function(aCurrency){
             if (!aCurrency["@to"]) {
                 if (aCurrency["@tender"] !== "false") {
@@ -54,13 +54,13 @@ const InformationHolder = function(aStorageService, aCurrencyData, aCurrencySymb
         });
         return foundCurrency;
     };
-    let numberOfReadCurrencies = 0;
-    let conversionEnabled = aStorageService.enableOnStart;
+    var numberOfReadCurrencies = 0;
+    var conversionEnabled = aStorageService.enableOnStart;
     const _currencyNames = {};
     aConvertFroms.forEach(function(aCurrency) {
         _currencyNames[aCurrency.isoName] = _(aCurrency.isoName);
     });
-    let quoteStrings = [];
+    var quoteStrings = [];
 
     const getConversionQuotes = function() {
         return conversionQuotes;

@@ -87,6 +87,7 @@ const SfContentInterface = function(anInformationHolder) {
             window.tabs.forEach(sendStatusToTab);
         };
         // console.log("toggleConversion aStatus " + aStatus);
+        anInformationHolder.conversionEnabled = aStatus;
         safari.application.browserWindows.forEach(sendStatusToWindow);
     };
     var showSettingsTab = function() {

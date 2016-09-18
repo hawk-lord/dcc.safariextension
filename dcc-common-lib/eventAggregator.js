@@ -7,10 +7,10 @@
 
 
 const eventAggregator = (function() {
-    "use strict";
+    // "use strict";
     const grep = function grep( elems, callback, inv ) {
         "use strict";
-        let retVal,
+        var retVal,
             ret = [],
             i = 0,
             length = elems.length;
@@ -34,7 +34,7 @@ const eventAggregator = (function() {
         this._handlers.push(handler);
     };
     Event.prototype.removeHandler = function(handler) {
-        for (let i = 0; i < this._handlers.length; i++) {
+        for (var i = 0; i < this._handlers.length; i++) {
             if (this._handlers[i] == handler) {
                 this._handlers.splice(i, 1);
                 break;
@@ -55,7 +55,7 @@ const eventAggregator = (function() {
     };
     return {
         publish: function(eventName, eventArgs) {
-            let event = getEvent(eventName);
+            var event = getEvent(eventName);
             if (!event) {
                 event = new Event(eventName);
                 events.push(event);
@@ -63,7 +63,7 @@ const eventAggregator = (function() {
             event.fire(eventArgs);
         },
         subscribe: function(eventName, handler) {
-            let event = getEvent(eventName);
+            var event = getEvent(eventName);
             if (!event) {
                 event = new Event(eventName);
                 events.push(event);
