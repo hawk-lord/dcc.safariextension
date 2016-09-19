@@ -24,6 +24,7 @@ const SfContentInterface = function(anInformationHolder) {
                 tab = event.target.activeTab;
             }
             var contentScriptsParams = new ContentScriptParams(null, anInformationHolder);
+
             event.target.page.dispatchMessage("updateSettings", contentScriptsParams);
         };
         // When a new tab was opened, a tab was reloaded, a new window was opened
@@ -42,29 +43,6 @@ const SfContentInterface = function(anInformationHolder) {
         };
         // When a message is received
         safari.application.addEventListener("message", finishedTabProcessing, false);
-/*
-        var windowNavigate = function(event) {
-            console.log("windowNavigate " + anInformationHolder.conversionEnabled + event.type + event.target + event.currentTarget);
-            //event.target.page.dispatchMessage("updateSettings", new ContentScriptParams(null, anInformationHolder));
-            var status = {};
-            status.isEnabled = anInformationHolder.conversionEnabled;
-            // FIXME hard coded
-            status.hasConvertedElements = false;
-            event.target.page.dispatchMessage("sendEnabledStatus", status);
-            //eventAggregator.publish("toggleConversion", anInformationHolder.conversionEnabled);
-        };
-        // initialise all tabs
-        for (var i = 0; i < safari.application.browserWindows.length; ++i) {
-            var browserWindow = safari.application.browserWindows[i];
-            // When a tab was reloaded or opened another page
-            browserWindow.addEventListener("navigate", windowNavigate, false);
-            for (var j = 0; j < browserWindow.tabs.length; ++j) {
-                browserWindow.tabs[j].page.dispatchMessage(
-                    "updateSettings", new ContentScriptParams(null, anInformationHolder));
-            }
-
-        }
-*/
         for (var browserWindow of safari.application.browserWindows) {
             for (var tab of browserWindow.tabs) {
                 if (tab.page) {
@@ -73,7 +51,6 @@ const SfContentInterface = function(anInformationHolder) {
                 }
             }
         }
-        // console.log("anInformationHolder.conversionEnabled "  + anInformationHolder.conversionEnabled);
     };
     var toggleConversion = function(aStatus) {
         var sendStatusToTab = function(aTab) {
@@ -120,16 +97,11 @@ const SfContentInterface = function(anInformationHolder) {
             currentWindow.openTab("foreground").url = pricesUrl;
         }
     };
-    /*
-    var closeSettingsTab = function() {
-    };
-     */
     return {
         watchForPages: watchForPages,
         toggleConversion: toggleConversion,
         showSettingsTab: showSettingsTab,
         showTestTab: showTestTab
-        //closeSettingsTab: closeSettingsTab
     }
 };
 

@@ -400,40 +400,6 @@ if (!this.DirectCurrencyContent) {
             "}", 0);
 
 
-        /*
-         * Wait for PriceRegexes to be created before running makePriceRegexes.
-         * Should be executed once only.
-         */
-/*
-        const makePriceRegexes = function() {
-            const promise = new Promise(
-                function(resolve, reject) {
-                    if (PriceRegexes) {
-                        resolve(PriceRegexes);
-                    }
-                    else {
-                        reject(Error("promise NOK"));
-                    }
-                }
-            );
-            promise.then(
-                function(aPriceRegexes) {
-                    aPriceRegexes.makePriceRegexes(regex1, regex2)
-                },
-                function (err) {
-                    console.error("promise then " + err);
-                }
-            ).catch(
-                function (err) {
-                    console.error("promise catch " + err);
-                }
-            );
-        };
-
-        makePriceRegexes();
-*/
-
-
         const replaceCurrency = function(aNode) {
             if (!aNode) {
                 return;
@@ -757,12 +723,19 @@ if (!this.DirectCurrencyContent) {
                         hasConvertedElements = true;
                     }
                 }
-                ContentAdapter.finish(hasConvertedElements);
+                // TODO Check if ContentAdapter can replace PriceAdapter
+                if (typeof ContentAdapter !== 'undefined') {
+                    ContentAdapter.finish(hasConvertedElements);
+                }
                 isEnabled = contentScriptParams.isEnabled;
 
             };
 
             const startConversionWhenReady = function() {
+                if (PriceRegexes && PriceRegexes.ready) {
+                    startConversion();
+                    return;
+                }
                 const promise2 = new Promise(
                     function(resolve, reject) {
                         if (PriceRegexes.makePriceRegexes(regex1, regex2)) {

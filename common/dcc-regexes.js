@@ -12,6 +12,7 @@
 if (!this.PriceRegexes) {
     const PriceRegexes = (function() {
         // "use strict";
+        var ready = false;
         const makePriceRegexes = function(aRegex1, aRegex2) {
             const begin = "(^|\\s|\\()";
             const value = "(\\d{1,3}((,|\\.|\\s)\\d{3})+|(\\d+))((\\.|,)\\d{1,9})?";
@@ -394,12 +395,15 @@ if (!this.PriceRegexes) {
                 aRegex2.knots = /((\d{1,3}((,|\.|\s)\d{3})+|(\d+))((\.|,)\d{1,9})?)(\s?knop)(?!\w)/g;
                 aRegex1.hp = /NOMATCH(?!\w)/g;
                 aRegex2.hp = /((\d{1,3}((,|\.|\s)\d{3})+|(\d+))((\.|,)\d{1,9})?)(\s?hästkrafter|\s?hkr?|\s?hp)(?!\w)/g;
+                ready = true;
             }
             catch(err) {
                 console.error(err);
             }
+            return true;
         };
         return {
+            ready : ready,
             makePriceRegexes : makePriceRegexes
         };
     })();
