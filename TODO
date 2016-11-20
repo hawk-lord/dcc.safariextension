@@ -19,3 +19,11 @@ Jaggillarbacon
 
 Settings Convert to is blank.
 
+Update manifest set in the Extension Builder
+Old update manifest (still active in the 2.4.11 release):
+http://home.aland.net/joint/extensions/safari/dcc.plist
+
+New update manifest:
+http://personal.inet.fi/business/joint/extensions/safari/dcc.plist
+
+

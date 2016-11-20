@@ -30,7 +30,11 @@
 
                 <key>URL</key>
 
-                <string>http://home.aland.net/joint/extensions/safari/dcc.safariextz</string>
+                <string>http://personal.inet.fi/business/joint/extensions/safari/dcc.safariextz</string>
+
+                <key>Update From Gallery</key>
+
+                <true/>
 
             </dict>
 
