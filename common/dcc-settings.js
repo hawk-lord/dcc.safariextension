@@ -10,7 +10,7 @@
  */
 if (!this.DirectCurrencySettings) {
     const DirectCurrencySettings = (function() {
-        "use strict";
+        // "use strict";
         const escapeHtml = function(s) {
             if (s === null || s == null) {
                 return "";
@@ -88,7 +88,7 @@ if (!this.DirectCurrencySettings) {
                     customSymbols[convertToCurrency] = customSymbol;
                 }
                 const excludedTextAreaString = escapeHtml(jQuery("#excluded_domains").val());
-                let excludedLines = excludedTextAreaString.replace(/\r\n/g, "\n").split("\n");
+                var excludedLines = excludedTextAreaString.replace(/\r\n/g, "\n").split("\n");
                 // remove empty entries
                 excludedLines = jQuery.grep(excludedLines, function(n){ return(n); });
                 if (excludedLines === null || excludedLines[0] === "") {
@@ -98,8 +98,8 @@ if (!this.DirectCurrencySettings) {
                 convertFroms = [];
                 const liFromCurrencies = jQuery("#fromCurrencies").find("li");
                 liFromCurrencies.each(function () {
-                    let inputs = jQuery(this).find("input");
-                    let input = jQuery(inputs)[0];
+                    var inputs = jQuery(this).find("input");
+                    var input = jQuery(inputs)[0];
                     if (input && input.checked) {
                         convertFroms.push({"isoName": jQuery(this).attr("id"), "enabled": true});
                     }
@@ -138,8 +138,8 @@ if (!this.DirectCurrencySettings) {
             jQuery("#select-all-button").click(function() {
                 const liFromCurrencies = jQuery("#fromCurrencies").find("li");
                 liFromCurrencies.each(function () {
-                    let inputs = jQuery(this).find("input");
-                    let input = jQuery(inputs)[0];
+                    var inputs = jQuery(this).find("input");
+                    var input = jQuery(inputs)[0];
                     if (input) {
                         jQuery(input).prop("checked", true);
                     }
@@ -148,32 +148,32 @@ if (!this.DirectCurrencySettings) {
             jQuery("#select-none-button").click(function() {
                 const liFromCurrencies = jQuery("#fromCurrencies").find("li");
                 liFromCurrencies.each(function () {
-                    let inputs = jQuery(this).find("input");
-                    let input = jQuery(inputs)[0];
+                    var inputs = jQuery(this).find("input");
+                    var input = jQuery(inputs)[0];
                     if (input) {
                         jQuery(input).prop("checked", false);
                     }
                 });
             });
         });
-        let convertToCurrency = null;
-        let convertToCountry = null;
-        let currencySymbols = {};
-        let customSymbols = {};
-        let monetarySeparatorSymbol = null;
-        let enableOnStart = null;
-        let excludedDomains = [];
-        let convertFroms = [];
-        let quoteAdjustmentPercent = null;
-        let roundAmounts = null;
-        let currencySpacing = null;
-        let showOriginalPrices = null;
-        let showOriginalCurrencies = null;
-        let showTooltip = null;
-        let beforeCurrencySymbol = true;
-        let tempConvertUnits = null;
-        let monetaryGroupingSeparatorSymbol = null;
-        let currencyNames = {};
+        var convertToCurrency = null;
+        var convertToCountry = null;
+        var currencySymbols = {};
+        var customSymbols = {};
+        var monetarySeparatorSymbol = null;
+        var enableOnStart = null;
+        var excludedDomains = [];
+        var convertFroms = [];
+        var quoteAdjustmentPercent = null;
+        var roundAmounts = null;
+        var currencySpacing = null;
+        var showOriginalPrices = null;
+        var showOriginalCurrencies = null;
+        var showTooltip = null;
+        var beforeCurrencySymbol = true;
+        var tempConvertUnits = null;
+        var monetaryGroupingSeparatorSymbol = null;
+        var currencyNames = {};
         const setUIFromPreferences = function() {
             jQuery("#convert_to_currency").val(convertToCurrency + "_" + convertToCountry);
             onCurrencyChange(convertToCurrency);
@@ -187,13 +187,13 @@ if (!this.DirectCurrencySettings) {
             jQuery("#enable_conversion").prop("checked", enableOnStart);
             const excludedText = excludedDomains.join("\n").replace(/\n/g, "\r\n");
             jQuery("#excluded_domains").val(excludedText);
-            for (let currency of convertFroms) {
-                let li = jQuery(document.createElement("li")).attr({
+            for (var currency of convertFroms) {
+                var li = jQuery(document.createElement("li")).attr({
                     class: "ui-state-default",
                     id: currency.isoName
                 });
                 jQuery("#fromCurrencies").append(li);
-                let label = jQuery(document.createElement("label"));
+                var label = jQuery(document.createElement("label"));
                 li.append(label);
                 if (currency.enabled) {
                     label.append(jQuery(document.createElement("input")).attr({
@@ -239,7 +239,7 @@ if (!this.DirectCurrencySettings) {
             jQuery('#convert_to_currency').val(selectedOption);
         };
         const onCurrencyChange = function(val) {
-            let currencyVal = escapeHtml(val);
+            var currencyVal = escapeHtml(val);
             if (customSymbols[currencyVal]) {
                 jQuery("#custom_symbol").val(customSymbols[currencyVal]);
             }

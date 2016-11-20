@@ -5,7 +5,7 @@
  *
  */
 const NekudoServiceProvider = function() {
-    "use strict";
+    // "use strict";
     const loadUserCountry = function (aGeoService) {
         const urlString = "http://geoip.nekudo.com/api";
         aGeoService.findCountry(urlString);

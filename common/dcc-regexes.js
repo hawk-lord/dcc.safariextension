@@ -11,7 +11,7 @@
 
 if (!this.PriceRegexes) {
     const PriceRegexes = (function() {
-        "use strict";
+        // "use strict";
         const makePriceRegexes = function(aRegex1, aRegex2) {
             const begin = "(^|\\s|\\()";
             const value = "(\\d{1,3}((,|\\.|\\s)\\d{3})+|(\\d+))((\\.|,)\\d{1,9})?";
