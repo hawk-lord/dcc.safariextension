@@ -28,6 +28,9 @@ const SettingsAdapter = function() {
         reset : function() {
             safari.self.tab.dispatchMessage("reset");
             window.close();
+        },
+        resetQuotes : function() {
+            safari.self.tab.dispatchMessage("resetQuotes");
         }
     }
 }();

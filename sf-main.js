@@ -82,6 +82,11 @@ const DirectCurrencyConverter = (function() {
                     informationHolder.convertToCurrency);
             }
         });
+        eventAggregator.subscribe("resetQuotes", function(eventArgs) {
+            informationHolder.resetReadCurrencies();
+            yahooQuotesService.loadQuotes(sfYahooQuotesService, informationHolder.getConvertFroms(),
+                informationHolder.convertToCurrency);
+        });
         eventAggregator.subscribe("resetSettings", function() {
             informationHolder.resetSettings(iso4217Currencies);
             informationHolder.resetReadCurrencies();
@@ -101,6 +106,9 @@ const DirectCurrencyConverter = (function() {
                 eventAggregator.publish("saveSettings", {
                     contentScriptParams: event.message
                 })
+            }
+            else if (event.name === "resetQuotes") {
+                eventAggregator.publish("resetQuotes");
             }
             else if (event.name === "reset") {
                 eventAggregator.publish("resetSettings");
