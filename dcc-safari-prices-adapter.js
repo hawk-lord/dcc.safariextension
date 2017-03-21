@@ -9,24 +9,31 @@
  * Module pattern is used.
  */
 
-const PricesAdapter = function() {
-    const messageListener = function(msg) {
-        if (msg.name === "updateSettings") {
-            DirectCurrencyContent.onUpdateSettings(msg.message);
-        }
-        else if (msg.name === "sendEnabledStatus") {
-            DirectCurrencyContent.onSendEnabledStatus(msg.message);
-        }
-    };
+"use strict";
 
-    /**
-     * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
-     * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
-     */
-    safari.self.addEventListener("message", messageListener, false);
+if (!this.PricesAdapter) {
 
-    const dispatchSettingsShow = function() {
-        safari.self.tab.dispatchMessage("showPrices");
-    };
-    window.onload = dispatchSettingsShow;
-}();
+    const PricesAdapter = function() {
+        const messageListener = (msg) => {
+            if (msg.name === "updateSettings") {
+                DirectCurrencyContent.onUpdateSettings(msg.message);
+            }
+            else if (msg.name === "sendEnabledStatus") {
+                DirectCurrencyContent.onSendEnabledStatus(msg.message);
+            }
+        };
+
+        /**
+         * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
+         * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
+         */
+        safari.self.addEventListener("message", messageListener, false);
+
+        const dispatchSettingsShow = () => {
+            safari.self.tab.dispatchMessage("showPrices");
+        };
+        window.onload = dispatchSettingsShow;
+    }();
+
+    this.PricesAdapter = PricesAdapter;
+}

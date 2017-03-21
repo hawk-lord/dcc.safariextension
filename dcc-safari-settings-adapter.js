@@ -9,28 +9,35 @@
  * Module pattern is used.
  */
 
-const SettingsAdapter = function() {
-    const messageListener = function(event) {
-        if (event.name === "updateSettingsTab") {
-            DirectCurrencySettings.showSettings(event.message);
+"use strict";
+
+if (!this.SettingsAdapter) {
+
+    const SettingsAdapter = function() {
+        const messageListener = (event) => {
+            if (event.name === "updateSettingsTab") {
+                DirectCurrencySettings.showSettings(event.message);
+            }
+        };
+        safari.self.addEventListener("message", messageListener, false);
+        const dispatchSettingsShow = () => {
+            safari.self.tab.dispatchMessage("showSettings");
+        };
+        window.onload = dispatchSettingsShow;
+        return {
+            save : (contentScriptParams) => {
+                safari.self.tab.dispatchMessage("save", contentScriptParams);
+                window.close();
+            },
+            reset : () => {
+                safari.self.tab.dispatchMessage("reset");
+                window.close();
+            },
+            resetQuotes : () => {
+                safari.self.tab.dispatchMessage("resetQuotes");
+            }
         }
-    };
-    safari.self.addEventListener("message", messageListener, false);
-    const dispatchSettingsShow = function() {
-        safari.self.tab.dispatchMessage("showSettings");
-    };
-    window.onload = dispatchSettingsShow;
-    return {
-        save : function(contentScriptParams) {
-            safari.self.tab.dispatchMessage("save", contentScriptParams);
-            window.close();
-        },
-        reset : function() {
-            safari.self.tab.dispatchMessage("reset");
-            window.close();
-        },
-        resetQuotes : function() {
-            safari.self.tab.dispatchMessage("resetQuotes");
-        }
-    }
-}();
+    }();
+
+    this.SettingsAdapter = SettingsAdapter;
+}

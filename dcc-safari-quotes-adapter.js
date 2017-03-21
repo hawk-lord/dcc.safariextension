@@ -8,24 +8,31 @@
  *
  * Module pattern is used.
  */
-const QuotesAdapter = function() {
 
-    const messageListener = function(msg) {
-        if (msg.name === "updateQuotes") {
-            DirectCurrencyQuotes.onUpdateQuotes(msg.message);
-        }
-    };
-    /**
-     * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
-     * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
-     */
-    safari.self.addEventListener("message", messageListener, false);
+"use strict";
 
-    const dispatchQuotesShow = function() {
-        safari.self.tab.dispatchMessage("showQuotes");
-    };
-    window.onload = dispatchQuotesShow;
+if (!this.QuotesAdapter) {
+
+    const QuotesAdapter = function() {
+
+        const messageListener = (msg) => {
+            if (msg.name === "updateQuotes") {
+                DirectCurrencyQuotes.onUpdateQuotes(msg.message);
+            }
+        };
+        /**
+         * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
+         * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
+         */
+        safari.self.addEventListener("message", messageListener, false);
+
+        const dispatchQuotesShow = () => {
+            safari.self.tab.dispatchMessage("showQuotes");
+        };
+        window.onload = dispatchQuotesShow;
 
 
-}();
+    }();
 
+    this.QuotesAdapter = QuotesAdapter;
+}

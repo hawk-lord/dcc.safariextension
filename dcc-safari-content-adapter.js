@@ -8,28 +8,35 @@
  *
  * Module pattern is used.
  */
-const ContentAdapter = function() {
 
-    const messageListener = function(msg) {
-        if (msg.name === "updateSettings") {
-            DirectCurrencyContent.onUpdateSettings(msg.message);
-        }
-        else if (msg.name === "sendEnabledStatus") {
-            DirectCurrencyContent.onSendEnabledStatus(msg.message);
-        }
-    };
+"use strict";
 
-    /**
-     * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
-     * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
-     */
-    safari.self.addEventListener("message", messageListener, false);
+if (!this.ContentAdapter) {
 
-    return {
-        finish: function (hasConvertedElements) {
-            safari.self.tab.dispatchMessage("finishedTabProcessing", hasConvertedElements);
-        }
-    };
+    const ContentAdapter = function() {
 
-}();
+        const messageListener = (msg) => {
+            if (msg.name === "updateSettings") {
+                DirectCurrencyContent.onUpdateSettings(msg.message);
+            }
+            else if (msg.name === "sendEnabledStatus") {
+                DirectCurrencyContent.onSendEnabledStatus(msg.message);
+            }
+        };
 
+        /**
+         * void addEventListener(in DOMString type, in SafariEventListener listener, in boolean useCapture);
+         * https://developer.apple.com/library/safari/documentation/UserExperience/Reference/SafariEventTarget/SafariEventTarget/SafariEventTarget.html#//apple_ref/javascript/instm/SafariEventTarget/addEventListener
+         */
+        safari.self.addEventListener("message", messageListener, false);
+
+        return {
+            finish: (hasConvertedElements) => {
+                safari.self.tab.dispatchMessage("finishedTabProcessing", hasConvertedElements);
+            }
+        };
+
+    }();
+
+    this.ContentAdapter = ContentAdapter;
+}
