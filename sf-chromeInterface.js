@@ -24,6 +24,9 @@ const SfChromeInterface = function(aConversionEnabled) {
         else if (event.command === "open-testpage") {
             eventAggregator.publish("showTestTab");
         }
+        else if (event.command === "open-quotespage") {
+            eventAggregator.publish("showQuotesTab");
+        }
     };
     var setConversionButtonState = function(aStatus) {
         var checkToggleButton = function(element) {

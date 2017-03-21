@@ -1,7 +1,7 @@
 Direct Currency Converter
 
-Version: 2.4.12.0
-Date: 2016-11-20
+Version: 2.5.0.0
+Date: 2017-03-21
 
 After installation, you'll have a new menu button in the toolbar.
 
@@ -11,7 +11,9 @@ The Settings tab is opened with the "Open settings" button.
 Changed settings are saved with the "Save" button in the settings tab.
 Settings can be reset to default with the "Reset" button.
 
-"Open test page" opens a test page with various price examples for all currencies.
+"Open test page" opens a page with various price examples for all currencies.
+
+"Open quotes page" open a page with all available quotes that can be sorted by value and currency.
 
 Currency quotes are taken from Yahoo Finance and updated when you start the program, reset the quotes.  or when you switch currency.
 
@@ -38,11 +40,11 @@ Optionally, if selected in the settings tab, some traditional units of measureme
 Based on code from Simple Currency Converter
 https://addons.mozilla.org/addon/simple-currency-converter/
 
-Runs on Safari 9 and later versions.
+Runs on Safari 10 and later versions.
 
 External libraries used:
-jQuery 2.1.3
-jQuery UI 1.11.2
+jQuery 2.2.4
+jQuery UI 1.12
 
 Icons provided by Iconfinder.
 
@@ -113,3 +115,11 @@ Various changes brought from the Chrome/Firefox versions.
 Version: 2.4.12.0
 Date: 2016-11-20
 Added a button to update currency quotes in the settings form.
+
+Version: 2.5.0.0
+Date: 2017-03-21
+Discontinued support for older Safari versions.
+Added a quotes page, sortable on currency names and values.
+Improved handling of unit multiples ($ million, etc.). More will be found.
+Improved handling of minor units (cents, etc.). Most existing minor units should be found.
+Internal change: improved regular expressions.

@@ -73,6 +73,9 @@ const DirectCurrencyConverter = (function() {
         eventAggregator.subscribe("showTestTab", function() {
             contentInterface.showTestTab();
         });
+        eventAggregator.subscribe("showQuotesTab", function() {
+            contentInterface.showQuotesTab();
+        });
         eventAggregator.subscribe("saveSettings", function(eventArgs) {
             var toCurrencyChanged = informationHolder.convertToCurrency != eventArgs.contentScriptParams.convertToCurrency;
             informationHolder.resetReadCurrencies();
@@ -118,6 +121,10 @@ const DirectCurrencyConverter = (function() {
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
                     "updateSettings", new ContentScriptParams(null, informationHolder));
                 eventAggregator.publish("toggleConversion", informationHolder.conversionEnabled);
+            }
+            else if (event.name === "showQuotes") {
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+                    "updateQuotes", new ContentScriptParams(null, informationHolder));
             }
         };
         safari.application.addEventListener("message", onMessageFromSettings, false);

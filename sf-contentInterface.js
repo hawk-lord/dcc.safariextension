@@ -97,11 +97,23 @@ const SfContentInterface = function(anInformationHolder) {
             currentWindow.openTab("foreground").url = pricesUrl;
         }
     };
+    var showQuotesTab = function() {
+        var quotesUrl = safari.extension.baseURI + "quotes.html";
+        var currentWindow = safari.application.activeBrowserWindow;
+        var currentTab = currentWindow.activeTab;
+        if (currentTab.url === "") {
+            currentTab.url = quotesUrl;
+        }
+        else {
+            currentWindow.openTab("foreground").url = quotesUrl;
+        }
+    };
     return {
         watchForPages: watchForPages,
         toggleConversion: toggleConversion,
         showSettingsTab: showSettingsTab,
-        showTestTab: showTestTab
+        showTestTab: showTestTab,
+        showQuotesTab: showQuotesTab
     }
 };
 
