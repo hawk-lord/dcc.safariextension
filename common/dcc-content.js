@@ -1061,7 +1061,9 @@ if (!this.DirectCurrencyContent) {
                         hasConvertedElements = true;
                     }
                 }
-                ContentAdapter.finish(hasConvertedElements);
+                if (typeof ContentAdapter !== 'undefined') {
+                    ContentAdapter.finish(hasConvertedElements);
+                }
                 isEnabled = contentScriptParams.isEnabled;
 
             };
