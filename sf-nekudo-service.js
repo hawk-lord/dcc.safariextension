@@ -4,37 +4,44 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  */
-const SfNekudoServiceProvider = function() {
-    // "use strict";
-    var onComplete = function() {
-        try {
-            if (this.readyState === this.DONE) {
-                var countryCode;
-                if (this.status === 200) {
-                    var response = JSON.parse(this.responseText);
-                    countryCode = response.country_code;
+
+"use strict";
+
+if (!this.SfNekudoServiceProvider) {
+
+    const SfNekudoServiceProvider = function() {
+        const onComplete = function() {
+            try {
+                if (this.readyState === this.DONE) {
+                    let countryCode;
+                    if (this.status === 200) {
+                        const response = JSON.parse(this.responseText);
+                        countryCode = response.country_code;
+                    }
+                    else {
+                        countryCode = "";
+                    }
+                    eventAggregator.publish("countryReceivedNekudo", countryCode);
                 }
-                else {
-                    countryCode = "";
-                }
-                eventAggregator.publish("countryReceivedNekudo", countryCode);
             }
-        }
-        catch(err) {
-            console.error("err " + err);
-            eventAggregator.publish("countryReceivedNekudo", "");
-        }
+            catch(err) {
+                console.error("err " + err);
+                eventAggregator.publish("countryReceivedNekudo", "");
+            }
+        };
+        const findCountry = (aUrlString, aConvertToCountry) => {
+            const urlString = aUrlString;
+            const userCountry = aConvertToCountry;
+            const request = new XMLHttpRequest();
+            const method = "GET";
+            request.open(method, urlString);
+            request.onreadystatechange = onComplete;
+            request.send();
+        };
+        return {
+            findCountry: findCountry
+        };
     };
-    var findCountry = function (aUrlString, aConvertToCountry) {
-        var urlString = aUrlString;
-        var userCountry = aConvertToCountry;
-        var request = new XMLHttpRequest();
-        var method = "GET";
-        request.open(method, urlString);
-        request.onreadystatechange = onComplete;
-        request.send();
-    };
-    return {
-        findCountry: findCountry
-    };
-};
+
+    this.SfNekudoServiceProvider = SfNekudoServiceProvider;
+}
