@@ -1,7 +1,7 @@
 Direct Currency Converter
 
 Version: 2.5.0.0
-Date: 2017-03-21
+Date: 2017-03-24
 
 After installation, you'll have a new menu button in the toolbar.
 
@@ -13,7 +13,7 @@ Settings can be reset to default with the "Reset" button.
 
 "Open test page" opens a page with various price examples for all currencies.
 
-"Open quotes page" open a page with all available quotes that can be sorted by value and currency.
+"Open quotes page" opens a page with all available quotes that can be sorted by value and currency.
 
 Currency quotes are taken from Yahoo Finance and updated when you start the program, reset the quotes.  or when you switch currency.
 
@@ -117,7 +117,7 @@ Date: 2016-11-20
 Added a button to update currency quotes in the settings form.
 
 Version: 2.5.0.0
-Date: 2017-03-21
+Date: 2017-03-24
 Discontinued support for older Safari versions.
 Added a quotes page, sortable on currency names and values.
 Improved handling of unit multiples ($ million, etc.). More will be found.
